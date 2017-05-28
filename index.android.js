@@ -1,53 +1,25 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+'use strict';
+// import View from './js/Scenes/loginScene';
+import View from './js/Scenes/cadastroUsuarioScene';
 
-import React, { Component } from 'react';
+// import React, { Component} from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
+    AppRegistry,
+    Text,
+    Navigator
 } from 'react-native';
+//
+// class MedClickMobile extends Component {
+//     render(){
+//         return (
+//             <Navigator
+//                 initialRoute={{id:'LOGIN'}}
+//                 renderScene={(route,navigator)=>{
+//
+//                 }}
+//             />
+//         );
+//     }
+// }
 
-export default class MedClickMobile extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
-
-AppRegistry.registerComponent('MedClickMobile', () => MedClickMobile);
+AppRegistry.registerComponent('MedClickMobile', () => View);
