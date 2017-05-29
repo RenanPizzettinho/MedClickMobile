@@ -1,19 +1,8 @@
-import React, {
-    Component
-}  from 'react';
+import React, {Component} from "react";
+import {Button, Image, Text, TextInput, TouchableHighlight, View} from "react-native";
+import styles from "../StyleSheet/mainStyle";
 
-import {
-    View,
-    Text,
-    Button,
-    TextInput,
-    Image,
-    TouchableHighlight
-} from 'react-native';
-
-import styles from '../StyleSheet/styleSheet';
-
-export default class LoginView extends Component {
+export default class LoginScene extends Component {
     constructor(props) {
         super(props);
 
@@ -35,7 +24,7 @@ export default class LoginView extends Component {
                 <Text style={styles.title}>MedClick</Text>
                 <TextInput
                     placeholder={'Login'}
-                    placeholderTextColor={'grey'}
+                    autoFocus={true}
                     style={styles.imput}
                     onChangeText={(login) => {
                         this.setState({form:{login}});

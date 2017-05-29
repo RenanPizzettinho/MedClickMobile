@@ -15,8 +15,8 @@ import {
 export default class MedClickMobile extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
+      <View style={styles.view}>
+        <Text style={styles.title}>
           Welcome to React Native!
         </Text>
         <Text style={styles.instructions}>
@@ -32,13 +32,13 @@ export default class MedClickMobile extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  view: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
+  title: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,

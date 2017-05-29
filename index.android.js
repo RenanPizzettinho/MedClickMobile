@@ -1,6 +1,8 @@
 'use strict';
 // import View from './js/Scenes/loginScene';
 import View from './js/Scenes/cadastroUsuarioScene';
+// import View from './js/Scenes/cadastroMedicoScene';
+// import View from './js/Scenes/cadastroPessoaScene';
 
 // import React, { Component} from 'react';
 import {
