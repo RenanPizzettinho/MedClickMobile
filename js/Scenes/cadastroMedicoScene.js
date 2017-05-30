@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 
-import {Button, Image, Text, TextInput, View} from "react-native";
+import {Button as ButtonNative,Image, Text, TextInput, View} from "react-native";
 
 import styles from "../StyleSheet/mainStyle";
-import {Card} from "react-native-material-design";
+import {Card, Toolbar} from "react-native-material-design";
+import {Container, Header, Title, Button, Left, Right, Body, Icon} from 'native-base';
 
 export default class CadastroMedicoScene extends Component {
     constructor(props) {
@@ -12,7 +13,18 @@ export default class CadastroMedicoScene extends Component {
 
     render() {
         return (
-            <View style={styles.view}>
+            <Container>
+                <Header>
+                    <Left>
+                        <Button transparent>
+                            <Icon name='menu'/>
+                        </Button>
+                    </Left>
+                    <Body>
+                    <Title>Perfil médico</Title>
+                    </Body>
+                    <Right />
+                </Header>
                 <Card style={styles.card}>
                     <View style={styles.formTitleView}>
                         <Image
@@ -28,13 +40,8 @@ export default class CadastroMedicoScene extends Component {
                         />
                     </View>
                 </Card>
-                <Button
-                    text=""
-                    title="Salvar"
-                    disabled={false}
-                    onPress={() => null}
-                />
-            </View>
+                <Button block primary><Text> Primary </Text></Button>
+            </Container>
         );
     }
 }

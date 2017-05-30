@@ -11,8 +11,6 @@ export default class CadastroUsuarioScene extends Component {
 
         this.state = {
             form: {
-                imagem: '',
-                login: '',
                 senha: '',
                 email: '',
             },
@@ -43,13 +41,6 @@ export default class CadastroUsuarioScene extends Component {
                             autoFocus={true}
                             onChangeText={(email) => {
                                 this.setState({form: {email}});
-                            }}
-                        />
-                        <TextInput
-                            placeholder={"Login"}
-                            style={styles.imputForm}
-                            onChangeText={(login) => {
-                                this.setState({form: {login}});
                             }}
                         />
                         <TextInput

@@ -8,13 +8,27 @@ export default class LoginScene extends Component {
 
         this.state = {
             form:{
-                login: "",
+                email: "",
                 senha: ""
             }
         };
     }
 
+    login(){
+        fetch('http://192.168.19.2:3000/api/v1/users/login',{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.state.form)
+        }).then((response)=>{
+            console.log("teste",response.data);
+        });
+    }
+
     render() {
+        const {navigate} = this.props.navigation;
         return (
             <View style={styles.view}>
                 <Image
@@ -23,11 +37,11 @@ export default class LoginScene extends Component {
                 />
                 <Text style={styles.title}>MedClick</Text>
                 <TextInput
-                    placeholder={'Login'}
+                    placeholder={'Email'}
                     autoFocus={true}
                     style={styles.imput}
-                    onChangeText={(login) => {
-                        this.setState({form:{login}});
+                    onChangeText={(email) => {
+                        this.setState({form:{email}});
                     }}
                 />
                 <TextInput
@@ -42,9 +56,10 @@ export default class LoginScene extends Component {
                     text=""
                     title="Entrar"
                     disabled={false}
-                    onPress={() => null}
+                    onPress={() => {this.login()}}
                 />
                 <TouchableHighlight
+                    onPress={() => navigate('CadastroUsuario')}
                 >
                     <Text>
                         Não possui conta?

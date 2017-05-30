@@ -28,6 +28,7 @@ export default class CadastroPessoaScene extends Component {
 
     render() {
         return (
+
             <View style={[styles.view]}>
                 <Card style={[styles.card]}>
                     <Text style={styles.formTitleText}>
