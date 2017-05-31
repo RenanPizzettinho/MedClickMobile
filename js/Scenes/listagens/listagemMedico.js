@@ -1,5 +1,18 @@
-import React, {Component} from 'react';
-import {Container, Content, List, ListItem, Thumbnail, Text, Body} from 'native-base';
+import React, {Component} from "react";
+import {
+    Body,
+    Button,
+    Container,
+    Content,
+    Header,
+    Icon,
+    Left,
+    List,
+    ListItem,
+    Text,
+    Thumbnail,
+    Title
+} from "native-base";
 
 export default class listagemMedico extends Component {
 
@@ -11,9 +24,9 @@ export default class listagemMedico extends Component {
     componentWillMount() {
         this.setState({
             medicos: [
-                {nome: "Rafael Marangoni Waterkemper", descricao: "Olá", img: require("../Images/chapolim.jpg")},
-                {nome: "Renan Pizzeti", descricao: "Vamos codar", img: require("../Images/cachorro.jpg")},
-                {nome: "Uiliam Vogel", descricao: "Bora lá!", img: require("../Images/moto.jpg")}
+                {nome: "Rafael Marangoni Waterkemper", descricao: "Olá", img: require("./../../Images/chapolim.jpg")},
+                {nome: "Renan Pizzeti", descricao: "Vamos codar", img: require("../../Images/cachorro.jpg")},
+                {nome: "Uiliam Vogel", descricao: "Bora lá rapazes!", img: require("../../Images/moto.jpg")}
             ]
         });
     };
@@ -22,6 +35,16 @@ export default class listagemMedico extends Component {
         return (
             <Container>
                 <Content>
+                    <Header>
+                        <Left>
+                            <Button transparent>
+                                <Icon name='arrow-back'/>
+                            </Button>
+                        </Left>
+                        <Body>
+                        <Title>Médicos</Title>
+                        </Body>
+                    </Header>
                     <List>
                         {
                             this.state.medicos.map(function (med) {
