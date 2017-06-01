@@ -1,4 +1,5 @@
 import React from 'react';
+import {fetch} from "react-native";
 
 
 const RestService = {
