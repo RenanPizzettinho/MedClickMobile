@@ -8,19 +8,30 @@ import {Card} from "react-native-material-design";
 export default class CadastroUsuarioScene extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            form: {
-                senha: '',
-                email: '',
-            },
+            nome: '',
+            email: '',
+            senha: '',
             verificarSenha: ''
         }
     }
 
-    cadastrarUsuario() {
-        UsuarioService.cadastrarUsuario(this.state.form);
-        console.log("cadastro");
+    cadastrar() {
+        const {navigate} = this.props.navigation;
+        const form = {
+            nome: this.state.nome,
+            email: this.state.email,
+            senha: this.state.senha
+        };
+        UsuarioService.cadastrarUsuario(form)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                if(responseJson.data._id){
+                    navigate('Main');
+                }
+                //TODO: Fazer validacoes de erro
+            });
     }
 
     render() {
@@ -40,7 +51,14 @@ export default class CadastroUsuarioScene extends Component {
                             style={styles.imputForm}
                             autoFocus={true}
                             onChangeText={(email) => {
-                                this.setState({form: {email}});
+                                this.setState({email});
+                            }}
+                        />
+                        <TextInput
+                            placeholder={"Nome"}
+                            style={styles.imputForm}
+                            onChangeText={(nome) => {
+                                this.setState({nome});
                             }}
                         />
                         <TextInput
@@ -48,7 +66,7 @@ export default class CadastroUsuarioScene extends Component {
                             style={styles.imputForm}
                             secureTextEntry={true}
                             onChangeText={(senha) => {
-                                this.setState({form: {senha}});
+                                this.setState({senha});
                             }}
                         />
                         <TextInput
@@ -65,7 +83,7 @@ export default class CadastroUsuarioScene extends Component {
                     text=""
                     title="Cadastrar"
                     disabled={false}
-                    onPress={() => this.cadastrarUsuario}
+                    onPress={() => this.cadastrar()}
                 />
             </View>
         );

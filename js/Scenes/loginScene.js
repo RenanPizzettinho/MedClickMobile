@@ -1,30 +1,35 @@
 import React, {Component} from "react";
 import {Button, Image, Text, TextInput, TouchableHighlight, View} from "react-native";
 import styles from "../StyleSheet/mainStyle";
+import LoginService from "../Services/loginService";
 
 export default class LoginScene extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            form:{
-                email: "",
-                senha: ""
-            }
+            email: "",
+            senha: ""
         };
     }
 
-    login(){
-        fetch('http://192.168.19.2:3000/api/v1/users/login',{
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(this.state.form)
-        }).then((response)=>{
-            console.log("teste",response.data);
-        });
+    login() {
+        const {navigate} = this.props.navigation;
+        console.log(this.state);
+        const form = {
+            email: this.state.email,
+            senha: this.state.senha
+        };
+
+        LoginService.login(form)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                if (responseJson.data._id) {
+                    navigate('MenuScene');
+                }
+                navigate('MenuScene');
+            });
     }
 
     render() {
@@ -41,7 +46,7 @@ export default class LoginScene extends Component {
                     autoFocus={true}
                     style={styles.imput}
                     onChangeText={(email) => {
-                        this.setState({form:{email}});
+                        this.setState({email});
                     }}
                 />
                 <TextInput
@@ -49,23 +54,27 @@ export default class LoginScene extends Component {
                     secureTextEntry={true}
                     style={styles.imput}
                     onChangeText={(senha) => {
-                        this.setState({form:{senha}});
+                        this.setState({senha});
                     }}
                 />
                 <Button
                     text=""
                     title="Entrar"
                     disabled={false}
-                    onPress={() => {this.login()}}
+                    onPress={() => {
+                        this.login()
+                    }}
                 />
                 <TouchableHighlight
                     onPress={() => navigate('CadastroUsuario')}
+                    style={styles.linksLogin}
                 >
                     <Text>
                         Não possui conta?
                     </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
+                    onPress={() => navigate('RecuperarSenhaScene')}
                 >
                     <Text>
                         Esqueceu a senha?

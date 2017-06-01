@@ -1,0 +1,92 @@
+import React, {Component} from "react";
+import {Badge, Body, Button, Card, CardItem, Container, Content, Icon, Left, Text, Thumbnail} from "native-base";
+import {Image} from "react-native";
+
+export default class MenuScene extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {}
+    }
+
+    render() {
+        return (
+            <Container>
+                <Content>
+                    <Card >
+                        <CardItem>
+                            <Left>
+                                <Thumbnail source={require('../Images/AtendimentoLogo3.png')}/>
+                                <Body>
+                                    <Text>Atendimentos</Text>
+                                    <Text note>Atendimentos em aberto</Text>
+                                    <Badge primary>
+                                        <Text>2</Text>
+                                    </Badge>
+                                </Body>
+                            </Left>
+                        </CardItem>
+                        <CardItem cardBody>
+                            <Image/>
+                        </CardItem>
+                        <CardItem>
+                            <Button transparent>
+                                <Icon active name="thumbs-up"/>
+                                <Text>12 Likes</Text>
+                            </Button>
+                            <Button transparent>
+                                <Icon active name="chatbubbles"/>
+                                <Text>4 Comments</Text>
+                            </Button>
+                            <Text>11h ago</Text>
+                        </CardItem>
+                    </Card>
+                    <Card >
+                        <CardItem>
+                            <Left>
+                                <Thumbnail source={require('../Images/RecadosLogo.png')}/>
+                                <Body>
+                                    <Text>Recados</Text>
+                                    <Text note>Recados não visualizados</Text>
+                                <Badge primary>
+                                    <Text>2</Text>
+                                </Badge>
+                                </Body>
+                            </Left>
+                        </CardItem>
+                        <CardItem cardBody>
+                            <Image/>
+                        </CardItem>
+                    </Card>
+                    <Card >
+                        <CardItem>
+                            <Left>
+                                <Thumbnail source={require('../Images/UserLogo.png')}/>
+                                <Body>
+                                    <Text>Perfil de paciente</Text>
+                                    <Text note>Visualize seu perfil médico</Text>
+                                </Body>
+                            </Left>
+                        </CardItem>
+                        <CardItem cardBody>
+                            <Image/>
+                        </CardItem>
+                    </Card>
+                    <Card >
+                        <CardItem>
+                            <Left>
+                                <Thumbnail source={require('../Images/MedicoLogo.png')}/>
+                                <Body>
+                                    <Text>Perfil de médico</Text>
+                                    <Text note>Visualize seu perfil médico</Text>
+                                </Body>
+                            </Left>
+                        </CardItem>
+                        <CardItem cardBody>
+                            <Image/>
+                        </CardItem>
+                    </Card>
+                </Content>
+            </Container>
+        );
+    }
+}

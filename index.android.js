@@ -1,38 +1,19 @@
 'use strict';
-// import View from './js/Scenes/loginScene';
-// import View from './js/Scenes/cadastroUsuarioScene';
-// import View from './js/Scenes/cadastroMedicoScene';
-// import View from './js/Scenes/cadastroPessoaScene';
+import {AppRegistry} from "react-native";
 
-// import React, { Component} from 'react';
-import {
-    AppRegistry,
-    Text,
-    Navigator
-} from 'react-native';
-
-import {StackNavigator} from 'react-navigation';
+import {StackNavigator} from "react-navigation";
 import CadastroUsuarioScene from "./js/Scenes/cadastroUsuarioScene";
 import LoginScene from "./js/Scenes/loginScene";
-import LayoutExample from "./js/Scenes/Layout";
-import CadastroMedicoScene from "./js/Scenes/cadastroMedicoScene";
-//
-// class MedClickMobile extends Component {
-//     render(){
-//         return (
-//             <Navigator
-//                 initialRoute={{id:'LOGIN'}}
-//                 renderScene={(route,navigator)=>{
-//
-//                 }}
-//             />
-//         );
-//     }
-// }
+import CadastroSolicitacaoScene from "./js/Scenes/cadastroSolicitacaoScene";
+import RecuperarSenhaScene from "./js/Scenes/recuperarSenhaScene";
+import MenuScene from "./js/Scenes/menuScene";
 
 const App = StackNavigator({
     Main: {screen: LoginScene},
-    CadastroUsuario: {screen: CadastroUsuarioScene}
+    MenuScene: {screen: MenuScene},
+    CadastroUsuario: {screen: CadastroUsuarioScene},
+    CadastroSolicitacaoScene: {screen: CadastroSolicitacaoScene},
+    RecuperarSenhaScene: {screen: RecuperarSenhaScene}
 });
 
 AppRegistry.registerComponent('MedClickMobile', () => App);

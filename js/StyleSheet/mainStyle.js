@@ -52,5 +52,8 @@ export default StyleSheet.create({
         alignItems: 'center',
         borderWidth: 1
     },
+    linksLogin:{
+        padding: 10,
+    }
 
 });
