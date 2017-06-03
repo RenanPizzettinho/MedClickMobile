@@ -1,11 +1,12 @@
 import RestService from './restService';
 
 const URI_REST_USUARIO = `${RestService.webService}/users`;
-const URI_REST_RECUPERAR_SENHA = `${RestService.webService}/`
+const URI_REST_RECUPERAR_SENHA = `${RestService.webService}/`;
 
 const UsuarioService = {
     cadastrarUsuario: cadastrarUsuario,
-    recuperarSenha: recuperarSenha
+    recuperarSenha: recuperarSenha,
+    salvarMedico: salvarMedico
 };
 
 function cadastrarUsuario(body) {
@@ -14,6 +15,10 @@ function cadastrarUsuario(body) {
 
 function recuperarSenha(body) {
     return RestService.post(URI_REST_RECUPERAR_SENHA, body);
+}
+
+function salvarMedico(user,body) {
+    return RestService.post(`${URI_REST_USUARIO}/${user}/medicos`,body);
 }
 
 export default UsuarioService;

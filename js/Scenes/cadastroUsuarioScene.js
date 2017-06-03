@@ -24,7 +24,6 @@ export default class CadastroUsuarioScene extends Component {
             senha: this.state.senha
         };
         UsuarioService.cadastrarUsuario(form)
-            .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson);
                 if(responseJson.data._id){

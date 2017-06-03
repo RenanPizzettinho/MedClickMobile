@@ -5,10 +5,29 @@ import {Button as ButtonNative,Image, Text, TextInput, View} from "react-native"
 import styles from "../StyleSheet/mainStyle";
 import {Card, Toolbar} from "react-native-material-design";
 import {Container, Header, Title, Button, Left, Right, Body, Icon} from 'native-base';
+import UsuarioService from "../Services/usuarioService";
+import {Alert} from "react-native";
 
 export default class CadastroMedicoScene extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            crm:''
+        }
+    }
+
+   async cadastrarMedico(){
+        const form = {
+            crm: this.state.crm
+        };
+
+       const userId = await AsyncStorage.getItem('userId');
+
+        UsuarioService.salvarMedico(userId,form)
+            .then((response)=>{
+                Alert.alert('Cadastro','Médico cadastrado com sucesso!')
+            });
     }
 
     render() {

@@ -1,6 +1,4 @@
 import React from 'react';
-import {fetch} from "react-native";
-
 
 const RestService = {
     webService: 'http://192.168.19.2:3000/api/v1',
@@ -15,7 +13,7 @@ const headers = {
 };
 
 function get(uri) {
-    return fetch(uri);
+    return fetch(uri).then((response) => response.json());
 }
 
 function post(uri,body){
@@ -23,14 +21,14 @@ function post(uri,body){
             method: 'POST',
             headers: headers,
             body: JSON.stringify(body)
-        });
+        }).then((response) => response.json());
 }
 function patch(uri,body){
     return fetch(uri,{
         method: 'PATCH',
         headers: headers,
         body: JSON.stringify(body)
-    });
+    }).then((response) => response.json());
 }
 
 export default RestService;

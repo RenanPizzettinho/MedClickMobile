@@ -13,7 +13,6 @@ export default class RecuperarSenhaScene extends Component {
     enviarLink() {
         const {navigate} = this.props.navigation;
         UsuarioService.recuperarSenha(this.state.email)
-            .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status === 200) {
                     navigate('Main');
