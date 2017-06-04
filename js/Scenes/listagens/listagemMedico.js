@@ -155,7 +155,7 @@ export default class listagemMedico extends Component {
                                     </Text>
                                     <Text>
                                         Last Update: <Text
-                                        style={styles.boldrafa}>{this.state.selectedItem.updated_at.slice(0, 10)}</Text>
+                                        style={styles.bold}>{this.state.selectedItem.updated_at.slice(0, 10)}</Text>
                                     </Text>
                                     <CardItem object={styles.buttonInline}>
                                         <Button success>
