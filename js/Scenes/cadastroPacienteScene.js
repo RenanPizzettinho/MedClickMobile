@@ -1,42 +1,49 @@
 import React, {
     Component
 }  from 'react';
-
-import {
-    View,
-    Text,
-    Button,
-    TextInput,
-    Image,
-    TouchableHighlight
-} from 'react-native';
-
-import styles from '../StyleSheet/mainStyle'
-import Card from "react-native-material-design/lib/Card/index";
+import {Card, CheckBox, Container, Content, Form, Input, Item, Label, ListItem, Text} from "native-base";
+import {TouchableOpacity} from "react-native";
 
 export default class CadastroPacienteScene extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            possuiDiabetes: false,
+            possuiPressaoAlta: false
+    };
+
     }
 
     render() {
         return (
-            <View style={styles.view}>
-                <Card style={styles.card}>
-                    <View style={styles.formTitleView}>
-
-                    </View>
-                    <View style={styles.formBodyView}>
-
-                    </View>
-                </Card>
-                <Button
-                    text=""
-                    title="Salvar"
-                    disabled={false}
-                    onPress={() => null}
-                />
-            </View>
+            <Container>
+                <Content>
+                    <Card>
+                        <Form>
+                            <ListItem>
+                                <TouchableOpacity/>
+                                <CheckBox
+                                    checked={this.state.possuiDiabetes}
+                                    onPress={()=>{
+                                        this.setState({possuiDiabetes:!this.state.possuiDiabetes});
+                                    }}
+                                />
+                                <Text>Possui diabetes?</Text>
+                            </ListItem>
+                            <ListItem>
+                                <CheckBox
+                                    checked={this.state.possuiPressaoAlta}
+                                    onPress={()=>{
+                                        this.setState({possuiPressaoAlta:!this.state.possuiPressaoAlta});
+                                    }}
+                                />
+                                <Text>Possui pressão alta?</Text>
+                            </ListItem>
+                        </Form>
+                    </Card>
+                </Content>
+            </Container>
         );
     }
 }
