@@ -1,43 +1,16 @@
 import React, {Component} from "react";
-import {Button, Image, Text, TextInput, TouchableHighlight, View} from "react-native";
+import {Alert, AsyncStorage, Button, Image, Text, TextInput, TouchableHighlight, View} from "react-native";
 import styles from "../StyleSheet/mainStyle";
 import LoginService from "../Services/loginService";
-import {AsyncStorage, Alert} from "react-native";
 
 export default class LoginScene extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            email: "",
-            senha: ""
+            email: "teste@teste.com",
+            senha: "123456"
         };
-    }
-
-    login() {
-        const {navigate} = this.props.navigation;
-        console.log(this.state);
-        const form = {
-            email: this.state.email,
-            senha: this.state.senha
-        };
-
-        LoginService.login(form)
-            .then((responseJson) => {
-                console.log(responseJson);
-                if (responseJson.data._id) {
-                    try {
-                        AsyncStorage.setItem('userId', responseJson.data._id,()=>{
-                            AsyncStorage.getItem('userId',(err,result)=>{Alert.alert('UserID',result);})
-                        });
-                        console.log("Usuario salvo com sucesso!");
-                    } catch (error) {
-                        console.error("Erro ao salvar o id do usuario!");
-                    }
-                    navigate('MenuScene');
-                }
-                // navigate('MenuScene');
-            });
     }
 
     render() {
@@ -52,6 +25,7 @@ export default class LoginScene extends Component {
                 <TextInput
                     placeholder={'Email'}
                     autoFocus={true}
+                    value='teste@teste.com'
                     style={styles.imput}
                     onChangeText={(email) => {
                         this.setState({email});
@@ -60,6 +34,7 @@ export default class LoginScene extends Component {
                 <TextInput
                     placeholder={'Senha'}
                     secureTextEntry={true}
+                    value='123456'
                     style={styles.imput}
                     onChangeText={(senha) => {
                         this.setState({senha});
@@ -68,9 +43,9 @@ export default class LoginScene extends Component {
                 <Button
                     text=""
                     title="Entrar"
-                    disabled={false}
+                    disabled={this.entrarDisabled()}
                     onPress={() => {
-                        this.login()
+                        this.login();
                     }}
                 />
                 <TouchableHighlight
@@ -90,5 +65,38 @@ export default class LoginScene extends Component {
                 </TouchableHighlight>
             </View>
         )
+    }
+
+    login() {
+        const {navigate} = this.props.navigation;
+        const form = {
+            email: this.state.email,
+            senha: this.state.senha
+        };
+
+        LoginService.login(form)
+            .then((responseJson) => {
+                if (responseJson.data._id) {
+                    try {
+                        AsyncStorage.setItem('userId', responseJson.data._id,()=>{
+                            AsyncStorage.getItem('userId',(err,result)=>{Alert.alert('UserID',result);})
+                        });
+
+                    } catch (error) {
+                        console.error("Erro ao salvar o id do usuario!");
+                    }
+                    navigate('MenuScene');
+                } else {
+                    Alert.alert('Erro',responseJson.data);
+                }
+
+            })
+            .catch((error)=>{
+                Alert.alert('Erro',JSON.stringify(error));
+            });
+    }
+
+    entrarDisabled(){
+        return !this.state.email || !this.state.senha;
     }
 }
