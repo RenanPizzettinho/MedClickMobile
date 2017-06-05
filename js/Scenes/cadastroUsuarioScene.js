@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Image, Text, TextInput, View} from "react-native";
+import {Alert, Button, Image, Text, TextInput, View} from "react-native";
 import styles from "../StyleSheet/mainStyle";
 import UsuarioService from "../Services/usuarioService";
 import {Card} from "react-native-material-design";
@@ -14,23 +14,6 @@ export default class CadastroUsuarioScene extends Component {
             senha: '',
             verificarSenha: ''
         }
-    }
-
-    cadastrar() {
-        const {navigate} = this.props.navigation;
-        const form = {
-            nome: this.state.nome,
-            email: this.state.email,
-            senha: this.state.senha
-        };
-        UsuarioService.cadastrarUsuario(form)
-            .then((responseJson) => {
-                console.log(responseJson);
-                if(responseJson.data._id){
-                    navigate('Main');
-                }
-                //TODO: Fazer validacoes de erro
-            });
     }
 
     render() {
@@ -81,10 +64,46 @@ export default class CadastroUsuarioScene extends Component {
                 <Button
                     text=""
                     title="Cadastrar"
-                    disabled={false}
+                    disabled={this.cadastrarDisabled()}
                     onPress={() => this.cadastrar()}
                 />
             </View>
         );
+    }
+
+    cadastrar() {
+        const {navigate} = this.props.navigation;
+        if (this.state.senha !== this.state.verificarSenha){
+            Alert.alert('Atenção','A senha informada não confere com a verificação!');
+            return;
+        }
+
+        if(this.state.senha.length < 6){
+            Alert.alert('Atenção','A senha deve conter ao menos 6 caracteres!');
+            return;
+        }
+
+        const form = {
+            nome: this.state.nome,
+            email: this.state.email,
+            senha: this.state.senha
+        };
+
+        UsuarioService.cadastrarUsuario(form)
+            .then((responseJson) => {
+                console.log(responseJson);
+                if(responseJson.data._id){
+                    navigate('Main');
+                }
+
+            })
+            .catch((error)=>{
+                Alert.alert('Erro',JSON.stringify(error.data));
+            });
+
+    }
+
+    cadastrarDisabled() {
+        return !this.state.email || !this.state.nome || !this.state.senha || !this.state.verificarSenha;
     }
 }
