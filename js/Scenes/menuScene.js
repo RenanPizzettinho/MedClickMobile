@@ -14,6 +14,9 @@ export default class MenuScene extends Component {
         return (
             <Container>
                 <Content>
+                    <TouchableItem onPress={()=>{
+                        navigate('ListagemMedico');
+                    }}>
                     <Card >
                         <CardItem>
                             <Left>
@@ -28,6 +31,7 @@ export default class MenuScene extends Component {
                             </Left>
                         </CardItem>
                     </Card>
+                    </TouchableItem>
                     <Card >
                         <CardItem>
                             <Left>

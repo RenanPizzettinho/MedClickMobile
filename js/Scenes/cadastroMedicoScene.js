@@ -14,8 +14,11 @@ export default class CadastroMedicoScene extends Component {
             crm: '',
             especialidade: '',
             atendeEm: '',
-            segunda: '',
-            terca:'',
+            segunda: false,
+            terca: false,
+            quarta: false,
+            quinta: false,
+            sexta: false
 
         }
     }
