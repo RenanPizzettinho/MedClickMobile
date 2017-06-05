@@ -1,69 +1,81 @@
-import React, {
-    Component
-}  from 'react';
+import React, {Component} from "react";
 
-import {
-    View,
-    Text,
-    Button,
-    TextInput,
-} from 'react-native';
-
-import {Toolbar, Subheader, Avatar, Card, Drawer,} from 'react-native-material-design';
-
-import styles from '../StyleSheet/mainStyle';
+import {Card, Container, Content, Form, Input, Item, Label} from "native-base";
+import {Button} from "react-native";
+import UsuarioService from "../Services/usuarioService";
+import {Alert} from "react-native";
 
 export default class CadastroPessoaScene extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            form: {
-                nome: '',
-                cpf: '',
-                dataNascimento: ''
-            }
+            nome: '',
+            cpf: '',
+            dataNascimento: ''
         }
     }
 
     render() {
         return (
+            <Container>
+                <Content>
+                    <Card>
+                        <Form>
+                            <Item inlineLabel>
+                                <Label>Nome completo:</Label>
+                                <Input
+                                    onChangeText={(nome) => {
+                                        this.setState({dataNascimento});
+                                    }}
+                                />
+                            </Item>
+                            <Item inlineLabel>
+                                <Label>CPF:</Label>
+                                <Input
+                                    onChangeText={(cpf) => {
+                                        this.setState({dataNascimento});
+                                    }}
+                                />
+                            </Item>
+                            <Item inlineLabel>
+                                <Label>Data de nascimento:</Label>
+                                <Input
+                                    onChangeText={(dataNascimento) => {
+                                        this.setState({dataNascimento});
+                                    }}
+                                />
+                            </Item>
+                        </Form>
+                    </Card>
+                    <Button
+                        text="Salvar"
+                        title="Salvar"
+                        onPress={() => {
+                            this.salvar()
+                        }}/>
+                </Content>
+            </Container>
 
-            <View style={[styles.view]}>
-                <Card style={[styles.card]}>
-                    <Text style={styles.formTitleText}>
-                        Informações pessoais
-                    </Text>
-                    <TextInput
-                        placeholder={'Nome completo'}
-                        style={styles.imputForm}
-                        onChangeText={(nome) => {
-                            this.setState({form: {nome}})
-                        }}
-                    />
-                    <TextInput
-                        placeholder={'CPF'}
-                        style={styles.imputForm}
-                        onChangeText={(cpf) => {
-                            this.setState({form: {cpf}})
-                        }}
-                    />
-                    <TextInput
-                        placeholder={'Data de nascimento'}
-                        style={styles.imputForm}
-                        onChangeText={(dataNascimento) => {
-                            this.setState({form: {dataNascimento}})
-                        }}
-                    />
-                </Card>
-                <Button
-                    text=""
-                    title="Salvar"
-                    disabled={false}
-                    onPress={() => null}
-                />
-
-            </View>
         );
+    }
+
+    salvar() {
+        const {navigate} = this.props.navigation;
+
+        let form = {
+            nome: this.state.nome,
+            cpf: this.state.cpf,
+            dataNascimento: this.state.dataNascimento
+        };
+
+        UsuarioService.salvarInformacoesPessoais(form)
+            .then((responseJson)=>{
+                Alert.alert('Sucesso', 'Perfil atualizado com sucesso!');
+
+            })
+            .catch((error)=>{
+                Alert.alert('Erro', 'Erro ao atualizar o perfil!');
+            });
     }
 }

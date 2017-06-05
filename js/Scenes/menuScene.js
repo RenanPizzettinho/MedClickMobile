@@ -27,20 +27,6 @@ export default class MenuScene extends Component {
                                 </Body>
                             </Left>
                         </CardItem>
-                        <CardItem cardBody>
-                            <Image/>
-                        </CardItem>
-                        <CardItem>
-                            <Button transparent>
-                                <Icon active name="thumbs-up"/>
-                                <Text>12 Likes</Text>
-                            </Button>
-                            <Button transparent>
-                                <Icon active name="chatbubbles"/>
-                                <Text>4 Comments</Text>
-                            </Button>
-                            <Text>11h ago</Text>
-                        </CardItem>
                     </Card>
                     <Card >
                         <CardItem>
@@ -55,10 +41,22 @@ export default class MenuScene extends Component {
                                 </Body>
                             </Left>
                         </CardItem>
-                        <CardItem cardBody>
-                            <Image/>
-                        </CardItem>
                     </Card>
+                    <TouchableItem onPress={() => {
+                        navigate('CadastroPessoaScene')
+                    }}>
+                        <Card>
+                            <CardItem>
+                                <Left>
+                                    <Thumbnail source={require('../Images/UserLogo.png')}/>
+                                    <Body>
+                                    <Text>Informações pessoais</Text>
+                                    </Body>
+                                </Left>
+                            </CardItem>
+                        </Card>
+                    </TouchableItem>
+
                     <TouchableItem onPress={() => {
                         navigate('CadastroPacienteScene')
                     }}>
@@ -71,9 +69,6 @@ export default class MenuScene extends Component {
                                     <Text note>Visualize seu perfil médico</Text>
                                     </Body>
                                 </Left>
-                            </CardItem>
-                            <CardItem cardBody>
-                                <Image/>
                             </CardItem>
                         </Card>
                     </TouchableItem>
