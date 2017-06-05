@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import {Button, Card, CardItem, Container, Content, Form, Input, Item, Label, Text} from "native-base";
+import {Card, Container, Content, Form, Input, Item, Label} from "native-base";
 import UsuarioService from "../Services/usuarioService";
+import {Button} from "react-native";
 
 export default class RecuperarSenhaScene extends Component {
     constructor(props) {
@@ -28,22 +29,15 @@ export default class RecuperarSenhaScene extends Component {
                 <Content>
                     <Card>
                         <Form>
-                            <Item floatingLabel label="Email">
-                                <Label>
-                                    Email
-                                </Label>
+                            <Item fixedLabel>
+                                <Label>Email</Label>
                                 <Input />
                             </Item>
                         </Form>
-                        <CardItem>
-                            <Item label="Enviar">
-                                <Button block onPress={() => this.enviarLink()} text="Enviar link para nova senha"
-                                        title="teste">
-                                    <Text>Enviar link para nova senha</Text>
-                                </Button>
-                            </Item>
-                        </CardItem>
                     </Card>
+                    <Button onPress={() => this.enviarLink()} text="Enviar link para nova senha"
+                            title="Enviar link para nova senha">
+                    </Button>
                 </Content>
             </Container>
         );
