@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet} from "react-native";
 
 export default StyleSheet.create({
     view: {
@@ -54,6 +54,26 @@ export default StyleSheet.create({
     },
     linksLogin:{
         padding: 10,
+    },
+    header: {
+        marginLeft: -5,
+        marginTop: 5,
+        marginBottom: 0,
+        lineHeight: 24,
+        color: '#2253b6'
+    },
+    modalImage: {
+        resizeMode: 'contain',
+        height: 200
+    },
+    bold: {
+        fontWeight: '600'
+    },
+    negativeMargin: {
+        marginBottom: -10
+    },
+    buttonInline: {
+        alignItems: 'flex-end',
+        flexDirection: 'row',
     }
-
 });
