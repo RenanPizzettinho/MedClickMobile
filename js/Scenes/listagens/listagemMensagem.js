@@ -65,7 +65,7 @@ export default class listagemMensagem extends Component {
                 <Content>
                     <Header>
                         <Left>
-                            <Button transparent={}>
+                            <Button transparent>
                                 <Icon name='arrow-back'/>
                             </Button>
                         </Left>

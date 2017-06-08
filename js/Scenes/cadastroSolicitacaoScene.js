@@ -52,7 +52,7 @@ export default class CadastroSolicitacaoScene extends Component {
                             <H1>Dra. Muriel Fatima Bernardes</H1>
                             <Item floatingLabel>
                                 <Label>Sintomas apresentados</Label>
-                                <Input />
+                                <Input onChangeText/>
                             </Item>
                             <Item floatingLabel>
                                 <Label>Data da Consulta</Label>
@@ -62,19 +62,19 @@ export default class CadastroSolicitacaoScene extends Component {
                                 <Label>Endereço</Label>
                                 <Input />
                             </Item>
-                            <Item floatingLabel last>
-                                <Label>Observações</Label>
-                                <Input />
-                            </Item>
+                            {/*<Item floatingLabel last>*/}
+                            {/*<Label>Observações</Label>*/}
+                            {/*<Input />*/}
+                            {/*</Item>*/}
+                            <Button text="Registrar"
+                                    disabled={false}
+                                    title="Registrar"
+                                    style={{marginBottom: 0}}
+                                    onPress={() =>
+                                        Alert.alert("Solicitação registrada com sucesso")}
+                            />
                         </ScrollView>
                     </Form>
-                    <Button text="Registrar"
-                            disabled={false}
-                            title="Registrar"
-                            style={{marginBottom: 0}}
-                            onPress={() =>
-                                Alert.alert("Solicitação registrada com sucesso")}
-                    />
                 </Content>
             </Container>
         )
