@@ -84,7 +84,7 @@ export default class listagemMedico extends Component {
 
         return (
             <Container>
-                <Header searchBar rounded style={{backgroundColor: '#6495ed'}}>
+                <Header searchBar rounded>
                     <Item>
                         <Button transparent><Icon name="arrow-back"/></Button>
                         <Icon name="ios-search"/>
@@ -115,22 +115,21 @@ export default class listagemMedico extends Component {
                         onRequestClose={() => {
                             alert("Modal has been closed.")
                         }}
-                    >
+                    ><Header rounded style={{paddingTop: 0}}>
+                        <Left>
+                            <Button transparent onPress={() => {
+                                this.setModalVisible(!this.state.modalVisible, this.state.selectedItem)
+                            }}>
+                                <Icon name='arrow-back'/>
+                            </Button>
+                        </Left>
+                        <Body>
+                        <Title>Médicos</Title>
+                        </Body>
+                    </Header>
                         <Card>
                             {!this.state.selectedItem ? <View />
                                 : <Container style={{paddingTop: 0}}>
-                                    <Header rounded style={{backgroundColor: '#6495ed', paddingTop: 0}}>
-                                        <Left>
-                                            <Button transparent onPress={() => {
-                                                this.setModalVisible(!this.state.modalVisible, this.state.selectedItem)
-                                            }}>
-                                                <Icon name='arrow-back'/>
-                                            </Button>
-                                        </Left>
-                                        <Body>
-                                        <Title>Médicos</Title>
-                                        </Body>
-                                    </Header>
                                     <CardItem style={{alignSelf: 'center', paddingTop: 20}}>
                                         <Image style={styles.modalImage}
                                                source={require('../../Images/chapolim.jpg')}/>
@@ -149,22 +148,9 @@ export default class listagemMedico extends Component {
                                         Language: <Text
                                         object={styles.bold}>{this.state.selectedItem.language}</Text>
                                     </Text>
-                                    <Text object={styles.negativeMargin}>
-                                        Open Issues: <Text
-                                        object={styles.bold}>{this.state.selectedItem.open_issues_count}</Text>
-                                    </Text>
-                                    <Text>
-                                        Last Update: <Text
-                                        style={styles.bold}>{this.state.selectedItem.updated_at.slice(0, 10)}</Text>
-                                    </Text>
                                     <CardItem object={styles.buttonInline}>
                                         <Button success>
-                                            <Text>Send Messagge</Text>
-                                        </Button>
-                                        <Button danger onPress={() => {
-                                            this.setModalVisible(!this.state.modalVisible, this.state.selectedItem)
-                                        }}>
-                                            <Text>Go Back</Text>
+                                            <Text>Atendimento</Text>
                                         </Button>
                                     </CardItem>
                                     </Body>
