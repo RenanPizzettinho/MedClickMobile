@@ -1,10 +1,8 @@
 import React, {Component} from "react";
 
-import {Alert, AsyncStorage, Button, Text} from "react-native";
-
-import styles from "../StyleSheet/mainStyle";
-import {Card, CheckBox, Container, Content, Form, Input, Item, Label, ListItem, Picker} from "native-base";
+import {Alert, AsyncStorage} from "react-native";
 import UsuarioService from "../Services/usuarioService";
+import CadastroMedicoComponent from "../Component/CadastroMedicoComponent";
 
 export default class CadastroMedicoScene extends Component {
     constructor(props) {
@@ -18,124 +16,85 @@ export default class CadastroMedicoScene extends Component {
             terca: false,
             quarta: false,
             quinta: false,
-            sexta: false
-
+            sexta: false,
+            sabado: false,
+            domingo: false
         }
     }
+
 //TODO:ver picker
     render() {
         return (
-            <Container>
-                <Content>
-                    <Card>
-                        <Form>
-                            <Item>
-                                <Text style={styles.formTitleText}>Perfil de médico</Text>
-                            </Item>
-                            <Item>
-                                <Label>CRM</Label>
-                                <Input/>
-                            </Item>
-                            <Picker
-                                supportedOrientations={['portrait', 'landscape']}
-                                headerComponent="Especialidade"
-                                mode="dropdown"
-                                selectedValue={this.state.especialidade}
-                                onValueChange={this.setEspecialidade.bind(this)}>
-                                <Item label="Cardiologista" value="CARDIOLOGISTA"/>
-                                <Item label="Teste" value="TESTE"/>
-                            </Picker>
-                            <Picker
-                                supportedOrientations={['portrait', 'landscape']}
-                                headerComponent="Atende em"
-                                mode="dropdown"
-                                selectedValue={this.state.atendeEm}
-                                onValueChange={this.setLocal.bind(this)}>
-                                <Item label="Criciuma" value="CRICIUMA"/>
-                                <Item label="Içara" value="ICARA"/>
-                                <Item label="Nova Veneza" value="NOVA_VENEZA"/>
-                            </Picker>
-                            <ListItem>
-                                <CheckBox
-                                    checked={this.state.segunda}
-                                    onPress={()=>{
-                                        this.setState({segunda:!this.state.segunda});
-                                    }}
-                                />
-                                <Text>Atende na segunda-feira?</Text>
-                            </ListItem>
-                            <ListItem>
-                                <CheckBox
-                                    checked={this.state.terca}
-                                    onPress={()=>{
-                                        this.setState({terca:!this.state.terca});
-                                    }}
-                                />
-                                <Text>Atende na terça-feira?</Text>
-                            </ListItem>
-                            <ListItem>
-                                <CheckBox
-                                    checked={this.state.quarta}
-                                    onPress={()=>{
-                                        this.setState({quarta:!this.state.quarta});
-                                    }}
-                                />
-                                <Text>Atende na quarta-feira?</Text>
-                            </ListItem>
-                            <ListItem>
-                                <CheckBox
-                                    checked={this.state.quinta}
-                                    onPress={()=>{
-                                        this.setState({quinta:!this.state.quinta});
-                                    }}
-                                />
-                                <Text>Atende na quinta-feira?</Text>
-                            </ListItem>
-                            <ListItem>
-                                <CheckBox
-                                    checked={this.state.sexta}
-                                    onPress={()=>{
-                                        this.setState({sexta:!this.state.sexta});
-                                    }}
-                                />
-                                <Text>Atende na sexta-feira?</Text>
-                            </ListItem>
-                        </Form>
-                    </Card>
-                    <Button
-                        text="Salvar"
-                        title="Salvar"
-                        onPress={() => {
-                            this.cadastrarMedico();
-                        }}/>
-                </Content>
-            </Container>
+            <CadastroMedicoComponent
+                states={this.state}
+                salvar={this.salvarMedico}
+            />
         );
     }
 
-    async cadastrarMedico() {
-        const form = {
-            crm: this.state.crm
+    async componentWillMount() {
+        const userId = await AsyncStorage.getItem('userId');
+        UsuarioService.getUsuario(userId)
+            .then((response) => {
+                let dados = response.data.medico;
+                this.setState({
+                    crm: dados.crm,
+                    especialidade: dados.especialidade,
+                    atendeEm: dados.atendeEm
+                });
+                //TODO: VER LEITURA DO ENUM
+            })
+            .catch(
+                (error) => {
+                    Alert.alert('Erro', JSON.stringify(error));
+                }
+            );
+    }
+
+    async salvarMedico() {
+        let form = {
+            crm: this.state.crm,
+            especialidade: this.state.especialidade,
+            atendeEm: this.state.atendeEm,
+            dias_atendimento_domicilio: []
         };
+
+        //['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom']
+
+        if (this.state.segunda)
+            form.dias_atendimento_domicilio.push('seg');
+
+        if (this.state.terca)
+            form.dias_atendimento_domicilio.push('ter');
+
+        if (this.state.quarta)
+            form.dias_atendimento_domicilio.push('qua');
+
+        if (this.state.quinta)
+            form.dias_atendimento_domicilio.push('qui');
+
+        if (this.state.sexta)
+            form.dias_atendimento_domicilio.push('sex');
+
+        if (this.state.sabado)
+            form.dias_atendimento_domicilio.push('sab');
+
+        if (this.state.domingo)
+            form.dias_atendimento_domicilio.push('dom');
+
 
         const userId = await AsyncStorage.getItem('userId');
 
+        form._id = userId;
+
+        // Alert.alert('Cadastro', JSON.stringify(form))
+
         UsuarioService.salvarMedico(userId, form)
             .then((response) => {
-
                 Alert.alert('Cadastro', JSON.stringify(response))
+            })
+            .catch((error) => {
+                Alert.alert('Erro', JSON.stringify(error));
             });
-    }
-
-    setEspecialidade(value: string) {
-        this.setState({
-            especialidade: value
-        });
-    }
-
-    setLocal(value: string){
-        this.setState({
-            atendeEm: value
-        });
     }
 }

@@ -1,8 +1,7 @@
-import React, {
-    Component
-}  from 'react';
-import {Card, CheckBox, Container, Content, Form, Input, Item, Label, ListItem, Text} from "native-base";
-import {TouchableOpacity} from "react-native";
+import React, {Component} from "react";
+import {Alert, AsyncStorage} from "react-native";
+import UsuarioService from "../Services/usuarioService";
+import CadastroPacienteComponent from "../Component/CadastroPacienteComponent";
 
 export default class CadastroPacienteScene extends Component {
     constructor(props) {
@@ -11,39 +10,50 @@ export default class CadastroPacienteScene extends Component {
         this.state = {
             possuiDiabetes: false,
             possuiPressaoAlta: false
-    };
-
+        };
     }
 
     render() {
         return (
-            <Container>
-                <Content>
-                    <Card>
-                        <Form>
-                            <ListItem>
-                                <TouchableOpacity/>
-                                <CheckBox
-                                    checked={this.state.possuiDiabetes}
-                                    onPress={()=>{
-                                        this.setState({possuiDiabetes:!this.state.possuiDiabetes});
-                                    }}
-                                />
-                                <Text>Possui diabetes?</Text>
-                            </ListItem>
-                            <ListItem>
-                                <CheckBox
-                                    checked={this.state.possuiPressaoAlta}
-                                    onPress={()=>{
-                                        this.setState({possuiPressaoAlta:!this.state.possuiPressaoAlta});
-                                    }}
-                                />
-                                <Text>Possui pressão alta?</Text>
-                            </ListItem>
-                        </Form>
-                    </Card>
-                </Content>
-            </Container>
+            <CadastroPacienteComponent
+                salvar={this.salvarPaciente}
+                states={this.state}
+            />
         );
+    }
+
+    async componentWillMount() {
+        const userId = await AsyncStorage.getItem('userId');
+        UsuarioService.getUsuario(userId)
+            .then((response) => {
+                let dados = response.data.paciente;
+                this.setState({
+                    possuiDiabetes: dados.possuiDiabetes,
+                    possuiPressaoAlta: dados.possuiPressaoAlta
+                });
+            })
+            .catch(
+                (error) => {
+                    Alert.alert('Erro', JSON.stringify(error));
+                }
+            );
+    }
+
+    async salvarPaciente(state) {
+        const userId = await AsyncStorage.getItem('userId');
+
+        let form = {
+            _id: userId,
+            possuiDiabetes: state.possuiDiabetes,
+            possuiPressaoAlta: state.possuiPressaoAlta
+        };
+
+        UsuarioService.salvarPaciente(userId, form)
+            .then((response) => {
+                Alert.alert('Cadastro', JSON.stringify(response))
+            })
+            .catch((error) => {
+                Alert.alert('Erro', JSON.stringify(error));
+            });
     }
 }
