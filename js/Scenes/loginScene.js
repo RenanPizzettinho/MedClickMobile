@@ -25,7 +25,7 @@ export default class LoginScene extends Component {
                 <TextInput
                     placeholder={'Email'}
                     autoFocus={true}
-                    value='teste@teste.com'
+
                     style={styles.imput}
                     onChangeText={(email) => {
                         this.setState({email});
@@ -34,7 +34,7 @@ export default class LoginScene extends Component {
                 <TextInput
                     placeholder={'Senha'}
                     secureTextEntry={true}
-                    value='123456'
+
                     style={styles.imput}
                     onChangeText={(senha) => {
                         this.setState({senha});
@@ -43,7 +43,7 @@ export default class LoginScene extends Component {
                 <Button
                     text=""
                     title="Entrar"
-                    disabled={this.entrarDisabled()}
+                    // disabled={this.entrarDisabled()}
                     onPress={() => {
                         this.login();
                     }}
@@ -73,13 +73,14 @@ export default class LoginScene extends Component {
             email: this.state.email,
             senha: this.state.senha
         };
-
         LoginService.login(form)
             .then((responseJson) => {
+                console.log(responseJson);
                 if (responseJson.data._id) {
                     try {
-                        AsyncStorage.setItem('userId', responseJson.data._id,()=>{
-                            AsyncStorage.getItem('userId',(err,result)=>{Alert.alert('UserID',result);})
+                        AsyncStorage.setItem('userId', responseJson.data._id, () => {
+                            AsyncStorage.getItem('userId', (err, result) => {/*Alert.alert('UserID',result);*/
+                            })
                         });
 
                     } catch (error) {
@@ -87,16 +88,16 @@ export default class LoginScene extends Component {
                     }
                     navigate('MenuScene');
                 } else {
-                    Alert.alert('Erro',responseJson.data);
+                    Alert.alert('Erro', responseJson.data);
                 }
 
             })
-            .catch((error)=>{
-                Alert.alert('Erro',JSON.stringify(error));
+            .catch((error) => {
+                Alert.alert('Erro catch', JSON.stringify(error));
             });
     }
 
-    entrarDisabled(){
+    entrarDisabled() {
         return !this.state.email || !this.state.senha;
     }
 }

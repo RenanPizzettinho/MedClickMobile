@@ -67,7 +67,7 @@ export default class MenuScene extends Component {
                         <Card>
                             <CardItem>
                                 <Left>
-                                    <Thumbnail source={require('../Images/UserLogo.png')}/>
+                                    <Thumbnail source={require('../Images/paciente.png')}/>
                                     <Body>
                                     <Text>Perfil de paciente</Text>
                                     <Text note>Visualize seu perfil médico</Text>
