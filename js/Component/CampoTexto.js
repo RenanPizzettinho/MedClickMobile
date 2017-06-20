@@ -11,6 +11,7 @@ export default class CampoTexto extends Component {
         return (
             <CampoBase
                 label={this.props.label}
+                value={this.props.value}
                 onChange={this.props.onChange}
             />
         );

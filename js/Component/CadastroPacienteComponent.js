@@ -8,6 +8,11 @@ export default class CadastroPacienteComponent extends Component {
         super(props);
         this.state = this.props.states;
         this.salvar = this.props.salvar;
+        this.fetchData = this.props.fetchData;
+    }
+
+    componentWillMount() {
+        this.fetchData().done();
     }
 
     render() {
@@ -18,9 +23,9 @@ export default class CadastroPacienteComponent extends Component {
                         <Form>
                             <CheckBoxBase
                                 label="Possui diabetes?"
-                                checked={this.state.possuiDiabetes}
+                                checked={this.state.possuiDiabete}
                                 onPress={() => {
-                                    this.setState({possuiDiabetes: !this.state.possuiDiabetes});
+                                    this.setState({possuiDiabete: !this.state.possuiDiabete});
                                 }}
                             />
                             <CheckBoxBase

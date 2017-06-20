@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Card, Container, Content, Form, Item, Text} from "native-base";
+import {Card, Container, Content, Form, Item, Text} from "native-base";
 import CampoTexto from "./CampoTexto";
 import CheckBoxBase from "./CheckBoxBase";
 import SelectBase from "./SelectBase";
@@ -10,6 +10,11 @@ export default class CadastroMedicoComponent extends Component {
         super(props);
         this.salvar = this.props.salvar;
         this.state = this.props.states;
+        this.fetchData = this.props.fetchData;
+    }
+
+    componentWillMount() {
+        this.fetchData().done();
     }
 
     render() {
@@ -23,6 +28,7 @@ export default class CadastroMedicoComponent extends Component {
                             </Item>
                             <CampoTexto
                                 label="CRM"
+                                value={this.state.crm}
                                 onChange={(crm) => {
                                     this.setState({crm});
                                 }}

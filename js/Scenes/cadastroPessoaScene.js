@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-import {Alert, AsyncStorage} from "react-native";
+import {Alert, AsyncStorage, DatePickerAndroid} from "react-native";
 import UsuarioService from "../Services/usuarioService";
 import CadastroPessoaComponent from "../Component/CadastroPessoaComponent";
 
@@ -10,16 +10,18 @@ export default class CadastroPessoaScene extends Component {
         this.state = {
             nome: '',
             cpf: '',
-            dataNascimento: ''
+            dtNascimento: new Date()
         }
     }
 
     render() {
-        return (<CadastroPessoaComponent
-            salvar={this.salvar}
-            states={this.state}
-            disabled={CadastroPessoaScene.disabled}
-        />);
+        return (
+            <CadastroPessoaComponent
+                salvar={this.salvar}
+                states={this.state}
+                disabled={CadastroPessoaScene.disabled}
+            />
+        );
     }
 
     async componentWillMount() {
@@ -27,10 +29,11 @@ export default class CadastroPessoaScene extends Component {
         UsuarioService.getUsuario(userId)
             .then((response) => {
                 let dados = response.data;
+                // Alert.alert("resp", JSON.stringify(response));
                 this.setState({
                     nome: dados.nome,
                     cpf: dodos.cpf,
-                    dataNascimento: dados.dataNascimento
+                    dtNascimento: dados.dtNascimento
                 });
             })
             .catch(
@@ -43,23 +46,25 @@ export default class CadastroPessoaScene extends Component {
     async salvar(state) {
         const userId = await AsyncStorage.getItem('userId');
         let form = {
+            id: userId,
             nome: state.nome,
             cpf: state.cpf,
-            dataNascimento: state.dataNascimento
+            dtNascimento: state.dtNascimento
         };
 
-        Alert.alert('Sucesso', 'OK');
+        // Alert.alert('Sucesso', 'OK');
 
-        // UsuarioService.salvarInformacoesPessoais(userId, form)
-        //     .then((responseJson) => {
-        //         Alert.alert('Sucesso', 'Perfil atualizado com sucesso!');
-        //     })
-        //     .catch((error) => {
-        //         Alert.alert('Erro', 'Erro ao atualizar o perfil!');
-        //     });
+        UsuarioService.salvarInformacoesPessoais(userId, form)
+            .then((responseJson) => {
+                Alert.alert('Sucesso', JSON.stringify(responseJson));
+            })
+            .catch((error) => {
+                Alert.alert('Erro', 'Erro ao atualizar o perfil!');
+            });
     }
 
     static disabled(state) {
-        return !state.nome || !state.cpf || !state.dataNascimento;
+        return !state.nome || !state.cpf || !state.dtNascimento;
     }
+
 }

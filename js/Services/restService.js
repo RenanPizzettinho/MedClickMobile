@@ -16,15 +16,15 @@ function get(uri) {
     return fetch(uri).then((response) => response.json());
 }
 
-function post(uri,body){
-    return fetch(uri,{
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(body)
-        }).then((response) => response.json());
+function post(uri, body) {
+    return fetch(uri, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(body)
+    }).then((response) => response.json());
 }
-function patch(uri,body){
-    return fetch(uri,{
+function patch(uri, body) {
+    return fetch(uri, {
         method: 'PATCH',
         headers: headers,
         body: JSON.stringify(body)

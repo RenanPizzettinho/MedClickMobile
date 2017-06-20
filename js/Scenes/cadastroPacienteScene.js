@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Alert, AsyncStorage} from "react-native";
+import {Alert, AsyncStorage, ToastAndroid} from "react-native";
 import UsuarioService from "../Services/usuarioService";
 import CadastroPacienteComponent from "../Component/CadastroPacienteComponent";
 
@@ -8,7 +8,7 @@ export default class CadastroPacienteScene extends Component {
         super(props);
 
         this.state = {
-            possuiDiabetes: false,
+            possuiDiabete: false,
             possuiPressaoAlta: false
         };
     }
@@ -18,17 +18,19 @@ export default class CadastroPacienteScene extends Component {
             <CadastroPacienteComponent
                 salvar={this.salvarPaciente}
                 states={this.state}
+                fetchData={this.fetchData}
             />
         );
     }
 
-    async componentWillMount() {
+    async fetchData() {
         const userId = await AsyncStorage.getItem('userId');
         UsuarioService.getUsuario(userId)
             .then((response) => {
+                // Alert.alert("paciente", JSON.stringify(response));
                 let dados = response.data.paciente;
                 this.setState({
-                    possuiDiabetes: dados.possuiDiabetes,
+                    possuiDiabete: dados.possuiDiabete,
                     possuiPressaoAlta: dados.possuiPressaoAlta
                 });
             })
@@ -44,16 +46,18 @@ export default class CadastroPacienteScene extends Component {
 
         let form = {
             _id: userId,
-            possuiDiabetes: state.possuiDiabetes,
+            possuiDiabete: state.possuiDiabete,
             possuiPressaoAlta: state.possuiPressaoAlta
         };
 
         UsuarioService.salvarPaciente(userId, form)
             .then((response) => {
-                Alert.alert('Cadastro', JSON.stringify(response))
+                ToastAndroid.showWithGravity('Informações de paciente atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
             })
             .catch((error) => {
                 Alert.alert('Erro', JSON.stringify(error));
             });
     }
+
+
 }

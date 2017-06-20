@@ -12,6 +12,7 @@
     "react-native": "0.44.0",
     "react-native-material-design": "^0.3.7",
     "react-native-material-kit": "^0.4.1",
+    "react-native-modal-datetime-picker": "^4.7.0",
     "react-native-sidebar": "^0.3.0",
     "react-navigation": "^1.0.0-beta.11"
   },

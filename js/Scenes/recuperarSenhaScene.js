@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import {Card, Container, Content, Form, Input, Item, Label} from "native-base";
 import UsuarioService from "../Services/usuarioService";
-import {Button} from "react-native";
+import RecuperarSenhaComponent from "../Component/RecuperarSenhaComponent";
+import {Alert} from "react-native";
 
 export default class RecuperarSenhaScene extends Component {
     constructor(props) {
@@ -11,35 +11,37 @@ export default class RecuperarSenhaScene extends Component {
         };
     }
 
-    enviarLink() {
+    render() {
+        return (
+            <RecuperarSenhaComponent
+                states={this.state}
+                enviar={this.enviarLink}
+                navigation={this.props.navigation}
+            />
+        );
+    }
+
+    enviarLink(state) {
+        const formatoEmail = /^[a-zA-Z0-9][a-zA-Z0-9\._-]+@([a-zA-Z0-9\._-]+\.)[a-zA-Z-0-9]{2}/;
+
+        if (!formatoEmail.test(state.email)) {
+            Alert.alert("Aviso", "O formato do email esta incorreto. \n Tente algo parecido com exemplo@email.com");
+            return;
+        }
+
         const {navigate} = this.props.navigation;
-        UsuarioService.recuperarSenha(this.state.email)
+
+        UsuarioService.recuperarSenha({email: state.email})
             .then((responseJson) => {
                 if (responseJson.status === 200) {
                     navigate('Main');
                 } else {
                     console.log(responseJson.data);
                 }
+            })
+            .catch((error) => {
+                Alert.alert('Erro', JSON.stringify(error));
             });
     }
 
-    render() {
-        return (
-            <Container>
-                <Content>
-                    <Card>
-                        <Form>
-                            <Item fixedLabel>
-                                <Label>Email</Label>
-                                <Input />
-                            </Item>
-                        </Form>
-                    </Card>
-                    <Button onPress={() => this.enviarLink()} text="Enviar link para nova senha"
-                            title="Enviar link para nova senha">
-                    </Button>
-                </Content>
-            </Container>
-        );
-    }
 }

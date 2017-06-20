@@ -3,6 +3,7 @@ import React, {Component} from "react";
 import {Card, Container, Content, Form} from "native-base";
 import CampoTexto from "./CampoTexto";
 import BotaoBase from "./BotaoBase";
+import CampoData from "./CampoData";
 
 export default class CadastroPessoaComponent extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ export default class CadastroPessoaComponent extends Component {
         this.state = props.states;
         this.salvar = props.salvar;
         this.disabled = props.disabled;
+        this.state.isDateTimePickerVisible = false;
     }
 
     render() {
@@ -30,11 +32,10 @@ export default class CadastroPessoaComponent extends Component {
                                     this.setState({cpf});
                                 }}
                             />
-                            <CampoTexto
+                            <CampoData
                                 label="Data de nascimento"
-                                onChange={(dataNascimento) => {
-                                    this.setState({dataNascimento});
-                                }}
+                                data={this.state.dtNascimento}
+                                setData={(data) => this.setState({dtNascimento: data})}
                             />
                         </Form>
                     </Card>
@@ -47,4 +48,5 @@ export default class CadastroPessoaComponent extends Component {
             </Container>
         );
     }
+
 }

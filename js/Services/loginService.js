@@ -1,6 +1,6 @@
 import RestService from './restService';
 
-const URI_REST_LOGIN = RestService.webService + '/users/login';
+const URI_REST_LOGIN = RestService.webService + '/login';
 
 const LoginService = {
     login: login

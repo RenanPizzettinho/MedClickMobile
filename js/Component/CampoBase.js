@@ -12,6 +12,7 @@ export default class CampoBase extends Component {
             <Item>
                 <Label>{this.props.label}</Label>
                 <Input
+                    value={this.props.value}
                     onChangeText={this.props.onChange}
                     secureTextEntry={this.props.secureTextEntry || false}
                 />
