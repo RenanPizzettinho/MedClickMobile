@@ -25,7 +25,7 @@ function recuperarSenha(body) {
 }
 
 function salvarInformacoesPessoais(user, body) {
-    return RestService.post(`${URI_REST_USUARIO}/${user}`, body);
+    return RestService.post(`${URI_REST_USUARIO}/${user}/perfil-pessoa`, body);
 }
 
 function salvarMedico(user, body) {

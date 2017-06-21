@@ -12,6 +12,11 @@ export default class CadastroPessoaComponent extends Component {
         this.salvar = props.salvar;
         this.disabled = props.disabled;
         this.state.isDateTimePickerVisible = false;
+        this.fetchData= this.props.fetchData;
+    }
+
+    componentWillMount() {
+        this.fetchData().done();
     }
 
     render() {
@@ -22,12 +27,14 @@ export default class CadastroPessoaComponent extends Component {
                         <Form>
                             <CampoTexto
                                 label="Nome completo"
+                                value={this.state.nome}
                                 onChange={(nome) => {
                                     this.setState({nome});
                                 }}
                             />
                             <CampoTexto
                                 label="CPF"
+                                value={this.state.cpf}
                                 onChange={(cpf) => {
                                     this.setState({cpf});
                                 }}

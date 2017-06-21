@@ -20,21 +20,23 @@ export default class CadastroPessoaScene extends Component {
                 salvar={this.salvar}
                 states={this.state}
                 disabled={CadastroPessoaScene.disabled}
+                fetchData={this.fetchData}
             />
         );
     }
 
-    async componentWillMount() {
+    async fetchData() {
         const userId = await AsyncStorage.getItem('userId');
         UsuarioService.getUsuario(userId)
             .then((response) => {
-                let dados = response.data;
-                // Alert.alert("resp", JSON.stringify(response));
-                this.setState({
-                    nome: dados.nome,
-                    cpf: dodos.cpf,
-                    dtNascimento: dados.dtNascimento
-                });
+                let dados = response.data.pessoa;
+                let nome = response.data.nome;
+                Alert.alert("resp", JSON.stringify(dados));
+                this.setState({nome: nome});
+                this.setState({cpf: dados.cpf});
+                this.setState({dtNascimento: dados.dtNascimento});
+
+                // Alert.alert(JSON.stringify(this.state));
             })
             .catch(
                 (error) => {
@@ -46,13 +48,10 @@ export default class CadastroPessoaScene extends Component {
     async salvar(state) {
         const userId = await AsyncStorage.getItem('userId');
         let form = {
-            id: userId,
             nome: state.nome,
             cpf: state.cpf,
             dtNascimento: state.dtNascimento
         };
-
-        // Alert.alert('Sucesso', 'OK');
 
         UsuarioService.salvarInformacoesPessoais(userId, form)
             .then((responseJson) => {

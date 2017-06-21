@@ -15,7 +15,7 @@ export default class CadastroMedicoComponent extends Component {
 
     componentWillMount() {
         this.fetchData().done();
-    }
+    }u
 
     render() {
         return (
