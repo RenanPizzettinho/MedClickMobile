@@ -113,7 +113,7 @@ export default class listagemSolicitacaoMedico extends Component {
                                     <Thumbnail square size={80} source={require("./../../Images/UserLogo.png")}/>
                                     <Body>
                                     <H2 style={{marginLeft: 10}}>Paciente</H2>
-                                    <Text>NOME DO PACIENTE</Text>
+                                    <Text>{solicitacao.nomePaciente}</Text>
                                     <Text note>{solicitacao.dataConsulta}</Text>
                                     <Text note>{solicitacao.descricaoNecessidade}</Text>
                                     </Body>
@@ -148,7 +148,7 @@ export default class listagemSolicitacaoMedico extends Component {
                                     />
                                     <Body>
                                     <H2 style={{marginLeft: 10}}>Paciente</H2>
-                                    <Text>NOME DO PACIENTE</Text>
+                                    <Text>{this.state.selectedItem.nomePaciente}</Text>
                                     <H2 style={{marginLeft: 10}}>Data Consulta</H2>
                                     <H2 style={{marginLeft: 10}}>{this.state.selectedItem.dataConsulta}</H2>
                                     <H2 style={{marginLeft: 10}}>Sintomas</H2>
@@ -160,7 +160,7 @@ export default class listagemSolicitacaoMedico extends Component {
                                         <BotaoBase
                                             title="Confirmar"
                                             disabled={false}
-                                            onPress={() => listagemSolicitacaoMedico.confirmarAtendimento(this.state.selectedItem)}
+                                            onPress={() => listagemSolicitacaoMedico.confirmarAtendimento(this.state.selectedItem).done()}
                                         />}
                                     {this.state.selectedItem.situacao === "CONFIRMADO" ?
                                         <BotaoBase

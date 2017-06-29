@@ -50,8 +50,8 @@ export default class ListagemSolicitacao extends Component {
     }
 
     async fetchData() {
-        // const idPerfil = await AsyncStorage.getItem('idPerfil');
-        SolicitacaoService.getAtendimentos('59500200c16f0b2260b2b682')
+        const idPerfil = await AsyncStorage.getItem('idPerfil');
+        SolicitacaoService.getAtendimentos(idPerfil)
             .then((response) => {
                 this.setState({
                     results: {
@@ -158,7 +158,7 @@ export default class ListagemSolicitacao extends Component {
                                     />
                                     <Body>
                                     <H2 style={{marginLeft: 10}}>Médico</H2>
-                                    <Text>NOME DO MÉDICO</Text>
+                                    <Text>{this.state.selectedItem.nomeMedico}</Text>
                                     <Text note>{this.state.selectedItem.descricaoNecessidade}</Text>
                                     <H2 style={{marginLeft: 10}}>Data Consulta</H2>
                                     <Text style={{marginLeft: 10}}>{this.state.selectedItem.dataConsulta}</Text>
@@ -190,7 +190,7 @@ export default class ListagemSolicitacao extends Component {
                                     {this.state.selectedItem.situacao === "CONFIRMADO" ?
                                         <BotaoBase
                                             title="Enviar"
-                                            onPress={() => this.enviarMensagem(this.state.selectedItem)}
+                                            onPress={() => this.enviarMensagem(this.state.selectedItem).done()}
                                         /> :
                                         <View/>}
                                     </Body>
