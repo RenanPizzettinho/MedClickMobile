@@ -15,7 +15,7 @@ export default class CadastroMedicoComponent extends Component {
 
     componentWillMount() {
         this.fetchData().done();
-    }u
+    }
 
     render() {
         return (
@@ -23,9 +23,6 @@ export default class CadastroMedicoComponent extends Component {
                 <Content>
                     <Card>
                         <Form>
-                            <Item>
-                                <Text >Perfil de médico</Text>
-                            </Item>
                             <CampoTexto
                                 label="CRM"
                                 value={this.state.crm}
@@ -34,12 +31,13 @@ export default class CadastroMedicoComponent extends Component {
                                 }}
                             />
                             <SelectBase
-                                label="Especialidade"
+                                label="Area medica de especialidade"
                                 selectedValue={this.state.especialidade}
                                 onValueChange={(especialidade) => this.setState({especialidade})}
-                                itens={[{label:"Cardiologista",value:"CARDIOLOGISTA"},{label:"Teste",value:"TESTE"}]}
+                                itens={[{label:"Cardiologista",value:"CARDIOLOGISTA"},{label:"Clinico geral",value:"CLINICO_GERAL"}]}
                             />
                             <SelectBase
+                                label="Atende em qual cidade?"
                                 selectedValue={this.state.atendeEm}
                                 onValueChange={(atendeEm) => this.setState({atendeEm})}
                                 itens={[{label:"Criciuma",value:"CRICIUMA"},{label:"Içara",value:"ICARA"},{label:"Nova Veneza",value:"NOVA_VENEZA"}]}

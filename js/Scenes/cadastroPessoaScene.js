@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-import {Alert, AsyncStorage, DatePickerAndroid} from "react-native";
+import {Alert, AsyncStorage, ToastAndroid} from "react-native";
 import UsuarioService from "../Services/usuarioService";
 import CadastroPessoaComponent from "../Component/CadastroPessoaComponent";
 
@@ -10,7 +10,7 @@ export default class CadastroPessoaScene extends Component {
         this.state = {
             nome: '',
             cpf: '',
-            dtNascimento: new Date()
+            dtNascimento: new Date().toDateString()
         }
     }
 
@@ -31,16 +31,18 @@ export default class CadastroPessoaScene extends Component {
             .then((response) => {
                 let dados = response.data.pessoa;
                 let nome = response.data.nome;
-                Alert.alert("resp", JSON.stringify(dados));
+                // Alert.alert("resp", JSON.stringify(dados));
+
+                let data = new Date(dados.dtNascimento);
                 this.setState({nome: nome});
                 this.setState({cpf: dados.cpf});
-                this.setState({dtNascimento: dados.dtNascimento});
+                this.setState({dtNascimento: data});
 
                 // Alert.alert(JSON.stringify(this.state));
             })
             .catch(
                 (error) => {
-                    Alert.alert('Erro', JSON.stringify(error));
+                    // Alert.alert('Erro', JSON.stringify(error));
                 }
             );
     }
@@ -55,7 +57,9 @@ export default class CadastroPessoaScene extends Component {
 
         UsuarioService.salvarInformacoesPessoais(userId, form)
             .then((responseJson) => {
-                Alert.alert('Sucesso', JSON.stringify(responseJson));
+                ToastAndroid.showWithGravity('Informações de usuário atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                // Alert.alert('Sucesso', JSON.stringify(responseJson));
+
             })
             .catch((error) => {
                 Alert.alert('Erro', 'Erro ao atualizar o perfil!');

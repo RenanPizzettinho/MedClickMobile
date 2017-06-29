@@ -23,14 +23,14 @@ export default class CampoData extends Component {
         return (
             <View style={{flex: 1}}>
                 <TouchableItem onPress={this.showPiker}>
-                    <Label>{this.props.label}<Text>{this.props.data.toDateString()}</Text></Label>
+                    <Label>{this.props.label}<Text>{this.props.data.toString()}</Text></Label>
 
                 </TouchableItem>
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this._handleDatePicked}
                     onCancel={this.hidePiker}
-                    date={this.state.dtNascimento}
+                    date={new Date(this.props.data.toString())}
                 />
             </View>
         );

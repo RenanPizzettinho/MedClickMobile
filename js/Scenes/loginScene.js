@@ -1,7 +1,8 @@
 import React, {Component} from "react";
-import {Alert, AsyncStorage, Button, Image, Text, TextInput, TouchableHighlight, View} from "react-native";
+import {Alert, AsyncStorage, Button, Image, Text, TextInput, TouchableHighlight, View, ToastAndroid} from "react-native";
 import styles from "../StyleSheet/mainStyle";
 import LoginService from "../Services/loginService";
+
 
 export default class LoginScene extends Component {
     constructor(props) {
@@ -76,17 +77,16 @@ export default class LoginScene extends Component {
         LoginService.login(form)
             .then((responseJson) => {
                 console.log(responseJson);
+                if (responseJson.status === 403){
+                    ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                }
                 if (responseJson.data._id) {
                     try {
-                        AsyncStorage.setItem('userId', responseJson.data._id, () => {
-                            AsyncStorage.getItem('userId', (err, result) => {/*Alert.alert('UserID',result);*/
-                            })
-                        });
-
+                        AsyncStorage.setItem('userId', responseJson.data._id);
                     } catch (error) {
                         console.error("Erro ao salvar o id do usuario!");
                     }
-                    navigate('MenuScene');
+                    navigate('SelecaoContexto');
                 } else {
                     Alert.alert('Erro', responseJson.data);
                 }

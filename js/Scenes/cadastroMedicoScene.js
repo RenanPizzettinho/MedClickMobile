@@ -44,7 +44,33 @@ export default class CadastroMedicoScene extends Component {
                     atendeEm: dados.atendeEm,
                     especialidade: dados.especialidade
                 });
-                // Alert.alert("crm", JSON.stringify(this.state.crm));
+                // Alert.alert("crm-=", JSON.stringify(this.state.crm));
+
+                dados.diasAtendimentoDomicilio.forEach((item) => {
+                    switch (item) {
+                        case 'seg':
+                            this.setState({segunda: true});
+                            break;
+                        case 'ter':
+                            this.setState({terca: true});
+                            break;
+                        case 'qua':
+                            this.setState({quarta: true});
+                            break;
+                        case 'qui':
+                            this.setState({quinta: true});
+                            break;
+                        case 'sex':
+                            this.setState({sexta: true});
+                            break;
+                        case 'sab':
+                            this.setState({sabado: true});
+                            break;
+                        case 'dom':
+                            this.setState({domingo: true});
+                            break;
+                    }
+                });
 
             })
             .catch(
