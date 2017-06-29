@@ -1,5 +1,15 @@
 import React, {Component} from "react";
-import {Alert, AsyncStorage, Button, Image, Text, TextInput, TouchableHighlight, View, ToastAndroid} from "react-native";
+import {
+    Alert,
+    AsyncStorage,
+    Button,
+    Image,
+    Text,
+    TextInput,
+    ToastAndroid,
+    TouchableHighlight,
+    View
+} from "react-native";
 import styles from "../StyleSheet/mainStyle";
 import LoginService from "../Services/loginService";
 
@@ -40,6 +50,7 @@ export default class LoginScene extends Component {
                     onChangeText={(senha) => {
                         this.setState({senha});
                     }}
+
                 />
                 <Button
                     text=""

@@ -8,7 +8,6 @@ import {
     Content,
     Header,
     Icon,
-    Input,
     Item,
     Left,
     List,
@@ -19,69 +18,113 @@ import {
     Title,
     View
 } from "native-base";
-import {Modal, ScrollView} from "react-native";
-import styles from "../../StyleSheet/mainStyle";
+import {Alert, Modal, ScrollView} from "react-native";
+import MensagemService from "../../Services/mensagemService";
+import CampoTexto from "../../Component/CampoTexto";
 
 export default class listagemMensagem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            results: {mensagens: []},
+            results: {
+                mensagens: []
+            },
+            resultsMensagens: {
+                mensagens: []
+            },
             loading: true,
             selectedItem: undefined,
-            modalVisible: false
+            modalVisible: false,
+            resposta: "",
+            remetente: "Mensagem"
         }
     }
 
     setModalVisible(visible, x) {
+        //passar id usuario no primeiro parametro
+        this.fetchDataAtendimento('5950010437b76e26c0fd5af3', x.idAtendimento);
         this.setState({
             modalVisible: visible,
-            selectedItem: x
+            selectedItem: x,
+            remetente: x.de
         });
+    }
+
+    async fetchData() {
+        //const userId = await AsyncStorage.getItem('userId');
+        //Pegando as mensagens PARA o médico
+        MensagemService.getMensagens('59500200c16f0b2260b2b682')
+            .then((response) => {
+                this.setState({
+                    results: {
+                        mensagens: response.data
+                    }
+                });
+                Alert.alert("resp", JSON.stringify(response.data));
+            })
+            .catch(
+                (error) => {
+                    Alert.alert('Erro', JSON.stringify(error));
+                }
+            );
+    }
+
+    async fetchDataAtendimento(user, idAtendimento) {
+        //const userId = await AsyncStorage.getItem('userId');
+        //Pegando as mensagens PARA o médico
+        MensagemService.getMensagensAtendimento(user, idAtendimento)
+            .then((response) => {
+                // this.setState({
+                //     results: {
+                //         mensagensAtendimento: response.data
+                //     }
+                // });
+                this.setState({
+                    resultsMensagens: {
+                        mensagens: response.data
+                    }
+                });
+
+                Alert.alert("Alerta", JSON.stringify(response.data));
+            })
+            .catch(
+                (error) => {
+                    Alert.alert('Erro', JSON.stringify(error));
+                }
+            );
+    }
+
+    async respostaMensagem() {
+        let chat = this.state.selectedItem;
+        let messagge = {
+            "de": chat.para,
+            "para": chat.de,
+            "idAtendimento": chat.idAtendimento,
+            "mensagem": this.state.resposta
+        };
+        MensagemService.respostaMessagge(messagge);
+        this.setState({"resposta": ""});
     }
 
     //Após avaliação do protótipo adicionar o atributo mensagem nos objetos de retorno.
     componentWillMount() {
-        this.setState({
-            results: {
-                mensagens: [
-                    {
-                        nome: "Dr. Rafael",
-                        descricao: "Olá estou testando o limite dos campos para ver se estoura todo o layout do native basepashfpoasfhpadofhadopfhadsofhpo",
-                        img: require("./../../Images/chapolim.jpg")
-                    },
-                    {nome: "Paciente Amilton", descricao: "Vamos codar", img: require("../../Images/cachorro.jpg")},
-                    {nome: "Dr. Uiliam", descricao: "Bora lá rapazes!", img: require("../../Images/moto.jpg")}
-                ]
-            },
-            loading: false
-        });
-
+        this.fetchData().done();
+        this.setState({loading: false});
     }
 
     render() {
         return (
             <Container>
                 <Content>
-                    <Header>
-                        <Left>
-                            <Button transparent>
-                                <Icon name='arrow-back'/>
-                            </Button>
-                        </Left>
-                        <Body style={{alignSelf: 'center'}}>
-                        <Title>Mensagens</Title>
-                        </Body>
-                    </Header>
                     <Content>
                         {this.state.loading ? <Spinner /> :
-                            <List primaryText="teste" dataArray={this.state.results.mensagens} renderRow={(messagges) =>
-                                <ListItem key={messagges.nome} button
-                                          onPress={() => this.setModalVisible(true, messagges)}>
-                                    <Thumbnail square size={80} source={messagges.img}/>
+                            <List primaryText="teste" dataArray={this.state.results.mensagens} renderRow={(message) =>
+                                <ListItem key={message.dataEnvio} button
+                                          onPress={() => this.setModalVisible(true, message)}>
+                                    <Thumbnail square size={80} source={require("./../../Images/UserLogo.png")}/>
                                     <Body>
-                                    <Text>{messagges.nome}</Text>
-                                    <Text note>{messagges.descricao.substr(0, 30) + "..."}</Text>
+                                    <Text>NOME REMETENTE</Text>
+                                    <Text note>{message.mensagem.substr(0, 30) + "..."}</Text>
                                     </Body>
                                 </ListItem>
                             }/>}
@@ -92,61 +135,54 @@ export default class listagemMensagem extends Component {
                             onRequestClose={() => {
                                 alert("Modal has been closed.")
                             }}
-                        ><Header>
+                        ><Header rounded style={{paddingTop: 0, backgroundColor: 'white'}}>
                             <Left>
                                 <Button transparent onPress={() => {
-                                    this.setModalVisible(!this.state.modalVisible, this.state.selectedItem)
+                                    this.setModalVisible(!this.state.modalVisible, this.state.selectedItem);
                                 }}>
-                                    <Icon name='arrow-back'/>
+                                    <Icon style={{color: 'black'}} name='arrow-back'/>
                                 </Button>
                             </Left>
-                            <Body style={{alignSelf: "center"}}>
-                            <Title>{!this.state.selectedItem ? <View/> :
-                                this.state.selectedItem.nome}</Title>
+                            <Body>
+                            <Title style={{color: 'black'}}>{this.state.remetente}</Title>
                             </Body>
                         </Header>
                             <Card>
                                 {!this.state.selectedItem ? <View />
                                     : <Container>
-                                        <ScrollView>
-                                            <CardItem>
-                                                <Body>
-                                                <Text>
-                                                    Conforme agendado você deve retornar na data 01/08/2017.
-                                                    Obs.:
-                                                </Text>
-                                                <Text note>
-                                                    Continuar tomando seu remédio.
-                                                </Text>
-                                                </Body>
-                                            </CardItem>
-
-                                            <CardItem>
-                                                <Body>
-                                                <Text>
-                                                    Fico muito feliz em ver que a recuperação do senhor está ocorrendo
-                                                    da melhor forma possível.
-                                                </Text>
-                                                <Text note>
-                                                    Lembre-se, o uso correto de seus medicamentos implica diretamente na
-                                                    sua melhora.
-                                                </Text>
-                                                </Body>
-                                            </CardItem>
-
-                                            <CardItem>
-                                                <Item>
-                                                    <Icon name="ios-search"/>
-                                                    <Input placeholder="Awnser"
-                                                           object={styles.imput}
-                                                        /* onChangeText={(text) => this.setState({awnser: text})}*//>
-                                                    <Button transparent>
-                                                        <Text>Send</Text>
-                                                    </Button>
-                                                </Item>
-                                            </CardItem>
-                                        </ScrollView>
+                                        <List primaryText="teste" dataArray={this.state.resultsMensagens.mensagens}
+                                              renderRow={(message) =>
+                                                  <ScrollView>
+                                                      <CardItem>
+                                                          <Body>
+                                                          <Text>
+                                                              {message.de}
+                                                          </Text>
+                                                          <Text>
+                                                              {message.mensagem}
+                                                          </Text>
+                                                          <Text note>
+                                                              Data de envio: {message.dataEnvio}
+                                                          </Text>
+                                                          </Body>
+                                                      </CardItem>
+                                                  </ScrollView>
+                                              }/>
                                     </Container>}
+                                <CardItem>
+                                    <Item>
+                                        <CampoTexto
+                                            label="Awnser"
+                                            // value={this.state.resposta}
+                                            onChange={(resposta) => {
+                                                this.setState({resposta});
+                                            }}
+                                        />
+                                        <Button title={"Enviar"}
+                                                onPress={() => this.respostaMensagem()}>
+                                        </Button>
+                                    </Item>
+                                </CardItem>
                             </Card>
                         </Modal>
                     </Content>

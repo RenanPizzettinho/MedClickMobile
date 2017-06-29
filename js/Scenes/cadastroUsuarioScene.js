@@ -51,7 +51,7 @@ export default class CadastroUsuarioScene extends Component {
                 }
             })
             .catch((error) => {
-                Alert.alert('Erro', JSON.stringify(error.data));
+                Alert.alert('Erro maldito', JSON.stringify(error.data));
             });
 
     }

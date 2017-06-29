@@ -17,28 +17,20 @@ import {
     Title,
     View
 } from "native-base";
-import CampoTexto from "../../Component/CampoTexto";
-import SolicitacaoService from "../../Services/solicitacaoService";
 import {Alert, Image, Modal} from "react-native";
 import BotaoBase from "../../Component/BotaoBase";
+import SolicitacaoService from "../../Services/solicitacaoService";
 import styles from "../../StyleSheet/mainStyle";
-import MensagemService from "../../Services/mensagemService";
 
-//Renomear para listagemSolicitacaoPendente
-//Ou
-//Criar segments ou o picker para usar da mesma tela
-//porém trazendo os pendentes, confirmados e encerrados
-export default class ListagemSolicitacao extends Component {
+export default class listagemSolicitacaoMedico extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             results: {solicitacoes: []},
-            motivoCancelamento: "",
             loading: true,
             selectedItem: undefined,
-            modalVisible: false,
-            primeiraMensagem: ""
+            modalVisible: false
         }
     }
 
@@ -62,50 +54,21 @@ export default class ListagemSolicitacao extends Component {
             })
             .catch(
                 (error) => {
-                    Alert.alert('Erro aqui', JSON.stringify(error));
+                    Alert.alert('Erro', JSON.stringify(error));
                 }
             );
     }
 
-    async cancelarAtendimento(solicitacao) {
-        let cancelamento = {
-            "situacao": "CANCELADO",
-            "motivoCancelamento": this.state.motivoCancelamento
+    static async confirmarAtendimento(solicitacao) {
+        let confirmacao = {
+            "situacao": "CONFIRMADO"
         };
 
-        SolicitacaoService.cancelarSolicitacao(solicitacao._id, cancelamento);
-        Alert.alert("teste", "Cancelamento efetuado.");
+        SolicitacaoService.confirmarSolicitacao(solicitacao._id, confirmacao);
+        Alert.alert("teste", "Confirmação realizada.");
     }
 
-    async enviarMensagem(solicitacao) {
-        //const userId = await AsyncStorage.getItem('userId');
-        let para = '';
-        if (solicitacao.idMedico === '59500200c16f0b2260b2b682') {
-            para = solicitacao.idPaciente;
-        } else {
-            para = solicitacao.idMedico;
-        }
-
-        let messagge = {
-            "de": '59500200c16f0b2260b2b682',
-            "para": para,
-            "idAtendimento": solicitacao._id,
-            "mensagem": this.state.primeiraMensagem
-        };
-        MensagemService.respostaMessagge(messagge);
-        this.setState({"resposta": ""});
-    }
-
-    // async verificarExisteMensagem(idAtendimento) {
-    //     //passa o idAtendimento por param
-    //     MensagemService.getMensagensAtendimento('59500200c16f0b2260b2b682', idAtendimento)
-    //         .then((response) => {
-    //             Alert.alert("Resp", "teste " + !response.data);
-    //             return !response.data;
-    //         });
-    // }
-
-    componentWillMount() {
+    componentDidMount() {
         this.fetchData().done();
         this.setState({loading: false});
     }
@@ -122,8 +85,8 @@ export default class ListagemSolicitacao extends Component {
 
                                     <Thumbnail square size={80} source={require("./../../Images/UserLogo.png")}/>
                                     <Body>
-                                    <H2 style={{marginLeft: 10}}>Médico</H2>
-                                    <Text>NOME DO MÉDICO</Text>
+                                    <H2 style={{marginLeft: 10}}>Paciente</H2>
+                                    <Text>NOME DO PACIENTE</Text>
                                     <Text note>{solicitacao.dataConsulta}</Text>
                                     <Text note>{solicitacao.descricaoNecessidade}</Text>
                                     </Body>
@@ -137,17 +100,16 @@ export default class ListagemSolicitacao extends Component {
                         onRequestClose={() => {
                             alert("Modal has been closed.")
                         }}
-                    ><Header rounded style={{paddingTop: 0, backgroundColor: 'white'}}>
+                    ><Header rounded style={{paddingTop: 0}}>
                         <Left>
-
                             <Button transparent onPress={() => {
-                                this.setModalVisible(!this.state.modalVisible, this.state.selectedItem);
+                                this.setModalVisible(!this.state.modalVisible, this.state.selectedItem)
                             }}>
-                                <Icon style={{color: 'black'}} name='arrow-back'/>
+                                <Icon name='arrow-back'/>
                             </Button>
                         </Left>
                         <Body>
-                        <Title style={{color: 'black'}}>Solicitação</Title>
+                        <Title>Solicitação</Title>
                         </Body>
                     </Header>
                         <Card>
@@ -158,28 +120,27 @@ export default class ListagemSolicitacao extends Component {
                                         style={styles.img}
                                     />
                                     <Body>
-                                    <H2 style={{marginLeft: 10}}>Médico</H2>
-                                    <Text>NOME DO MÉDICO</Text>
-                                    <Text note>{this.state.selectedItem.descricaoNecessidade}</Text>
+                                    <H2 style={{marginLeft: 10}}>Paciente</H2>
+                                    <Text>NOME DO PACIENTE</Text>
                                     <H2 style={{marginLeft: 10}}>Data Consulta</H2>
-                                    <Text style={{marginLeft: 10}}>{this.state.selectedItem.dataConsulta}</Text>
+                                    <H2 style={{marginLeft: 10}}>{this.state.selectedItem.dataConsulta}</H2>
+                                    <H2 style={{marginLeft: 10}}>Sintomas</H2>
+                                    <Text note>{this.state.selectedItem.descricaoNecessidade}</Text>
                                     <H2 style={{marginLeft: 10}}>Situação</H2>
-                                    {this.state.selectedItem.situacao === "CANCELADO" ||
-                                    this.state.selectedItem.situacao === "CONFIRMADO" ? <View/> :
-                                        <CampoTexto
-                                            label="Motivo Canc.:"
-                                            onChange={(motivoCancelamento) =>
-                                                this.setState({motivoCancelamento})
-                                            }
-                                        />}
-                                    <Text style={{marginLeft: 10}}>{this.state.selectedItem.situacao}</Text>
+                                    <H2 style={{marginLeft: 10}}>{this.state.selectedItem.situacao}</H2>
                                     {this.state.selectedItem.situacao === "CANCELADO" ||
                                     this.state.selectedItem.situacao === "CONFIRMADO" ? <View/> :
                                         <BotaoBase
-                                            title="Cancelar"
-                                            disabled={ListagemSolicitacao.disabled(this.state)}
-                                            onPress={() => this.cancelarAtendimento(this.state.selectedItem)}
+                                            title="Confirmar"
+                                            disabled={false}
+                                            onPress={() => listagemSolicitacaoMedico.confirmarAtendimento(this.state.selectedItem)}
                                         />}
+                                    {this.state.selectedItem.situacao === "CONFIRMADO" ?
+                                        <BotaoBase
+                                            title="Mensagem"
+                                            //onPress={navigate()}
+                                        /> :
+                                        <View/>}
                                     {this.state.selectedItem.situacao === "CONFIRMADO" ?
                                         <CampoTexto
                                             label="Mensagem.:"
@@ -201,9 +162,5 @@ export default class ListagemSolicitacao extends Component {
                 </Content>
             </Container >
         )
-    }
-
-    static disabled(state) {
-        return !state.motivoCancelamento;
     }
 }
