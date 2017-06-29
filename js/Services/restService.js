@@ -1,7 +1,7 @@
 import React from "react";
 
 const RestService = {
-    webService: 'http://192.168.19.2:3000/api/v1',
+    webService: 'http://192.168.1.107:3000/api/v1',
     get: get,
     post: post,
     patch: patch,

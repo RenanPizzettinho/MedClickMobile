@@ -19,7 +19,7 @@ import {
 } from "native-base";
 import CampoTexto from "../../Component/CampoTexto";
 import SolicitacaoService from "../../Services/solicitacaoService";
-import {Alert, Image, Modal} from "react-native";
+import {Alert, AsyncStorage, Image, Modal} from "react-native";
 import BotaoBase from "../../Component/BotaoBase";
 import styles from "../../StyleSheet/mainStyle";
 import MensagemService from "../../Services/mensagemService";
@@ -50,7 +50,7 @@ export default class ListagemSolicitacao extends Component {
     }
 
     async fetchData() {
-        //const userId = await AsyncStorage.getItem('userId');
+        // const idPerfil = await AsyncStorage.getItem('idPerfil');
         SolicitacaoService.getAtendimentos('59500200c16f0b2260b2b682')
             .then((response) => {
                 this.setState({
@@ -58,11 +58,11 @@ export default class ListagemSolicitacao extends Component {
                         solicitacoes: response.data
                     }
                 });
-                Alert.alert("resp", JSON.stringify(response.data));
+                // Alert.alert("Mensagem", JSON.stringify(response.data));
             })
             .catch(
                 (error) => {
-                    Alert.alert('Erro aqui', JSON.stringify(error));
+                    Alert.alert('Erro', JSON.stringify(error));
                 }
             );
     }
@@ -74,20 +74,20 @@ export default class ListagemSolicitacao extends Component {
         };
 
         SolicitacaoService.cancelarSolicitacao(solicitacao._id, cancelamento);
-        Alert.alert("teste", "Cancelamento efetuado.");
+        Alert.alert("teste", "Cancelamento efetuado com sucesso.");
     }
 
     async enviarMensagem(solicitacao) {
-        //const userId = await AsyncStorage.getItem('userId');
+        const idPerfil = await AsyncStorage.getItem('idPerfil');
         let para = '';
-        if (solicitacao.idMedico === '59500200c16f0b2260b2b682') {
+        if (solicitacao.idMedico === idPerfil) {
             para = solicitacao.idPaciente;
         } else {
             para = solicitacao.idMedico;
         }
 
         let messagge = {
-            "de": '59500200c16f0b2260b2b682',
+            "de": idPerfil,
             "para": para,
             "idAtendimento": solicitacao._id,
             "mensagem": this.state.primeiraMensagem
@@ -123,7 +123,7 @@ export default class ListagemSolicitacao extends Component {
                                     <Thumbnail square size={80} source={require("./../../Images/UserLogo.png")}/>
                                     <Body>
                                     <H2 style={{marginLeft: 10}}>Médico</H2>
-                                    <Text>NOME DO MÉDICO</Text>
+                                    <Text>{solicitacao.nomeMedico}</Text>
                                     <Text note>{solicitacao.dataConsulta}</Text>
                                     <Text note>{solicitacao.descricaoNecessidade}</Text>
                                     </Body>
@@ -139,7 +139,6 @@ export default class ListagemSolicitacao extends Component {
                         }}
                     ><Header rounded style={{paddingTop: 0, backgroundColor: 'white'}}>
                         <Left>
-
                             <Button transparent onPress={() => {
                                 this.setModalVisible(!this.state.modalVisible, this.state.selectedItem);
                             }}>

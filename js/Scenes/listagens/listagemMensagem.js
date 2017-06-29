@@ -6,8 +6,10 @@ import {
     CardItem,
     Container,
     Content,
+    H2,
     Header,
     Icon,
+    Input,
     Item,
     Left,
     List,
@@ -20,15 +22,13 @@ import {
 } from "native-base";
 import {Alert, Modal, ScrollView} from "react-native";
 import MensagemService from "../../Services/mensagemService";
-import CampoTexto from "../../Component/CampoTexto";
+import SolicitacaoService from "../../Services/solicitacaoService";
 
 export default class listagemMensagem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            results: {
-                mensagens: []
-            },
+            results: {solicitacoes: []},
             resultsMensagens: {
                 mensagens: []
             },
@@ -41,26 +41,23 @@ export default class listagemMensagem extends Component {
     }
 
     setModalVisible(visible, x) {
-        //passar id usuario no primeiro parametro
-        this.fetchDataAtendimento('5950010437b76e26c0fd5af3', x.idAtendimento);
+        this.fetchDataAtendimento('5950010437b76e26c0fd5af3', x._id).done();
         this.setState({
             modalVisible: visible,
-            selectedItem: x,
-            remetente: x.de
+            selectedItem: x
         });
     }
 
     async fetchData() {
-        //const userId = await AsyncStorage.getItem('userId');
-        //Pegando as mensagens PARA o médico
-        MensagemService.getMensagens('59500200c16f0b2260b2b682')
+        // const idPerfil = await AsyncStorage.getItem('idPerfil');
+        SolicitacaoService.getAtendimentos('59500200c16f0b2260b2b682')
             .then((response) => {
                 this.setState({
                     results: {
-                        mensagens: response.data
+                        solicitacoes: response.data
                     }
                 });
-                Alert.alert("resp", JSON.stringify(response.data));
+                // Alert.alert("Mensagem", JSON.stringify(response.data));
             })
             .catch(
                 (error) => {
@@ -74,11 +71,6 @@ export default class listagemMensagem extends Component {
         //Pegando as mensagens PARA o médico
         MensagemService.getMensagensAtendimento(user, idAtendimento)
             .then((response) => {
-                // this.setState({
-                //     results: {
-                //         mensagensAtendimento: response.data
-                //     }
-                // });
                 this.setState({
                     resultsMensagens: {
                         mensagens: response.data
@@ -94,19 +86,41 @@ export default class listagemMensagem extends Component {
             );
     }
 
-    async respostaMensagem() {
-        let chat = this.state.selectedItem;
+    async respostaMensagem(solicitacao) {
+        // const idPerfil = await AsyncStorage.getItem('idPerfil');
+        let para = '';
+        if (solicitacao.idMedico === "5950010437b76e26c0fd5af3") {
+            para = solicitacao.idPaciente;
+        } else {
+            para = solicitacao.idMedico;
+        }
+
         let messagge = {
-            "de": chat.para,
-            "para": chat.de,
-            "idAtendimento": chat.idAtendimento,
+            "de": "5950010437b76e26c0fd5af3",
+            "para": para,
+            "idAtendimento": solicitacao._id,
             "mensagem": this.state.resposta
         };
-        MensagemService.respostaMessagge(messagge);
+        MensagemService.respostaMessagge(messagge)
+            .then(() => {
+                Alert.alert("Mensagem", "Sua mensagem foi enviada.")
+            });
         this.setState({"resposta": ""});
     }
 
-    //Após avaliação do protótipo adicionar o atributo mensagem nos objetos de retorno.
+    // async getRemetente(selecionado) {
+    //     // const idPerfil = await AsyncStorage.getItem('idPerfil');
+    //     let remetente = '';
+    //
+    //     if (selecionado.idMedico === '59500200c16f0b2260b2b682') {
+    //         remetente = selecionado.nomePaciente;
+    //     }else {
+    //         remetente = selecionado.nomeMedico;
+    //     }
+    //     return remetente;
+    // }
+
+//Após avaliação do protótipo adicionar o atributo mensagem nos objetos de retorno.
     componentWillMount() {
         this.fetchData().done();
         this.setState({loading: false});
@@ -116,76 +130,73 @@ export default class listagemMensagem extends Component {
         return (
             <Container>
                 <Content>
-                    <Content>
-                        {this.state.loading ? <Spinner /> :
-                            <List primaryText="teste" dataArray={this.state.results.mensagens} renderRow={(message) =>
-                                <ListItem key={message.dataEnvio} button
-                                          onPress={() => this.setModalVisible(true, message)}>
+                    {this.state.loading ? <Spinner /> :
+                        <List primaryText="" dataArray={this.state.results.solicitacoes} renderRow={(solicitacao) =>
+                            <Card>
+                                <ListItem key={solicitacao._id} button
+                                          onPress={() => this.setModalVisible(true, solicitacao)}>
+
                                     <Thumbnail square size={80} source={require("./../../Images/UserLogo.png")}/>
                                     <Body>
-                                    <Text>NOME REMETENTE</Text>
-                                    <Text note>{message.mensagem.substr(0, 30) + "..."}</Text>
+                                    <H2>{solicitacao.nomeMedico}</H2>
+                                    <Text note>{solicitacao.dataConsulta}</Text>
                                     </Body>
                                 </ListItem>
-                            }/>}
-                        <Modal
-                            animationType="slide"
-                            transparent={false}
-                            visible={this.state.modalVisible}
-                            onRequestClose={() => {
-                                alert("Modal has been closed.")
-                            }}
-                        ><Header rounded style={{paddingTop: 0, backgroundColor: 'white'}}>
-                            <Left>
-                                <Button transparent onPress={() => {
-                                    this.setModalVisible(!this.state.modalVisible, this.state.selectedItem);
-                                }}>
-                                    <Icon style={{color: 'black'}} name='arrow-back'/>
-                                </Button>
-                            </Left>
-                            <Body>
-                            <Title style={{color: 'black'}}>{this.state.remetente}</Title>
-                            </Body>
-                        </Header>
-                            <Card>
-                                {!this.state.selectedItem ? <View />
-                                    : <Container>
-                                        <List primaryText="teste" dataArray={this.state.resultsMensagens.mensagens}
-                                              renderRow={(message) =>
-                                                  <ScrollView>
-                                                      <CardItem>
-                                                          <Body>
-                                                          <Text>
-                                                              {message.de}
-                                                          </Text>
-                                                          <Text>
-                                                              {message.mensagem}
-                                                          </Text>
-                                                          <Text note>
-                                                              Data de envio: {message.dataEnvio}
-                                                          </Text>
-                                                          </Body>
-                                                      </CardItem>
-                                                  </ScrollView>
-                                              }/>
-                                    </Container>}
-                                <CardItem>
-                                    <Item>
-                                        <CampoTexto
-                                            label="Awnser"
-                                            // value={this.state.resposta}
-                                            onChange={(resposta) => {
-                                                this.setState({resposta});
-                                            }}
-                                        />
-                                        <Button title={"Enviar"}
-                                                onPress={() => this.respostaMensagem()}>
-                                        </Button>
-                                    </Item>
-                                </CardItem>
                             </Card>
-                        </Modal>
-                    </Content>
+                        }/>}
+                    <Modal
+                        animationType="slide"
+                        transparent={false}
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => {
+                            alert("Modal has been closed.")
+                        }}
+                    ><Header rounded style={{paddingTop: 0, backgroundColor: 'white'}}>
+                        <Left>
+                            <Button transparent onPress={() => {
+                                this.setModalVisible(!this.state.modalVisible, this.state.selectedItem);
+                            }}>
+                                <Icon style={{color: 'black'}} name='arrow-back'/>
+                            </Button>
+                        </Left>
+                        <Body>
+                        <Title style={{color: 'black'}}>{this.state.remetente}</Title>
+                        </Body>
+                    </Header>
+                        <Card>
+                            {!this.state.selectedItem ? <View />
+                                : <Container>
+                                    <List primaryText="teste" dataArray={this.state.resultsMensagens.mensagens}
+                                          renderRow={(message) =>
+                                              <ScrollView>
+                                                  <CardItem>
+                                                      <Body>
+                                                      {message.idMedico === '59500200c16f0b2260b2b682' ?
+                                                          <Text>{this.state.selectedItem.nomeMedico}</Text> :
+                                                          <Text>{this.state.selectedItem.nomePaciente}</Text>}
+                                                      <Text>
+                                                          {message.mensagem}
+                                                      </Text>
+                                                      <Text note>
+                                                          Data de envio: {message.dataEnvio}
+                                                      </Text>
+                                                      </Body>
+                                                  </CardItem>
+                                              </ScrollView>
+                                          }/>
+                                </Container>}
+                            <CardItem>
+                                <Item>
+                                    <Icon name="ios-search"/>
+                                    <Input placeholder="Search"
+                                           onChangeText={(resposta) => this.setState({resposta})}/>
+                                    <Button transparent onPress={() => this.respostaMensagem(this.state.selectedItem)}>
+                                        <Text>Enviar</Text>
+                                    </Button>
+                                </Item>
+                            </CardItem>
+                        </Card>
+                    </Modal>
                 </Content>
             </Container>
         );

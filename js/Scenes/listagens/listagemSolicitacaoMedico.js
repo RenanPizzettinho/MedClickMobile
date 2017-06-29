@@ -17,10 +17,11 @@ import {
     Title,
     View
 } from "native-base";
-import {Alert, Image, Modal} from "react-native";
+import {Alert, AsyncStorage, Image, Modal} from "react-native";
 import BotaoBase from "../../Component/BotaoBase";
 import SolicitacaoService from "../../Services/solicitacaoService";
 import styles from "../../StyleSheet/mainStyle";
+import MensagemService from "../../Services/mensagemService";
 
 export default class listagemSolicitacaoMedico extends Component {
 
@@ -30,7 +31,8 @@ export default class listagemSolicitacaoMedico extends Component {
             results: {solicitacoes: []},
             loading: true,
             selectedItem: undefined,
-            modalVisible: false
+            modalVisible: false,
+            primeiraMensagem: ""
         }
     }
 
@@ -42,8 +44,8 @@ export default class listagemSolicitacaoMedico extends Component {
     }
 
     async fetchData() {
-        //const userId = await AsyncStorage.getItem('userId');
-        SolicitacaoService.getAtendimentos('59500200c16f0b2260b2b682')
+        const idPerfil = await AsyncStorage.getItem('idPerfil');
+        SolicitacaoService.getAtendimentos(idPerfil)
             .then((response) => {
                 this.setState({
                     results: {
@@ -64,8 +66,33 @@ export default class listagemSolicitacaoMedico extends Component {
             "situacao": "CONFIRMADO"
         };
 
-        SolicitacaoService.confirmarSolicitacao(solicitacao._id, confirmacao);
+        SolicitacaoService.confirmarSolicitacao(solicitacao._id, confirmacao)
+            .then(() => {
+                Alert.alert('Mensagem', "Atendimento confirmado com sucesso.");
+            }).catch(() => {
+                Alert.alert('Erro', "Incapaz de cancelar a solicitação.");
+            }
+        );
         Alert.alert("teste", "Confirmação realizada.");
+    }
+
+    async enviarMensagem(solicitacao) {
+        const idPerfil = await AsyncStorage.getItem('idPerfil');
+        let para = '';
+        if (solicitacao.idMedico === idPerfil) {
+            para = solicitacao.idPaciente;
+        } else {
+            para = solicitacao.idMedico;
+        }
+
+        let messagge = {
+            "de": idPerfil,
+            "para": para,
+            "idAtendimento": solicitacao._id,
+            "mensagem": this.state.primeiraMensagem
+        };
+        MensagemService.respostaMessagge(messagge);
+        this.setState({"resposta": ""});
     }
 
     componentDidMount() {

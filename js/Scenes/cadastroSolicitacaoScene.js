@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import styles from "../StyleSheet/mainStyle";
 import {Card, Container, Content, Form, H1} from "native-base";
-import {Alert, Image, ScrollView} from "react-native";
+import {Alert, AsyncStorage, Image, ScrollView} from "react-native";
 import SolicitacaoService from "../Services/solicitacaoService";
 import CampoTexto from "../Component/CampoTexto";
 import CampoData from "../Component/CampoData";
@@ -14,20 +14,27 @@ export default class CadastroSolicitacaoScene extends Component {
         this.state = {
             sintomas: "",
             dataConsulta: new Date(),
-            localConsulta: ""
-            // isDateTimePickerVisible: false
+            localConsulta: "",
+            nomeMedico: "Médico"
         };
     }
 
     componentWillMount() {
+        this.setState({nomeMedico: CadastroSolicitacaoScene.getNomeMedico()});
+    }
+
+    static async getNomeMedico() {
+        return await AsyncStorage.getItem('nomeMedico');
     }
 
     async cadastrar() {
+        const {navigate} = this.props.navigation;
+        let idPerfil = await AsyncStorage.getItem('idPerfil');
+        let idMedicoConsulta = await AsyncStorage.getItem('idMedicoConsulta');
+
         const form = {
-            //idMedico: await AsyncStorage.getItem('medicoId'),
-            idMedico: "5950010437b76e26c0fd5af3",
-            idPaciente: "5950010437b76e26c0fd5af3",
-            //await AsyncStorage.getItem('userId'),
+            idMedico: idMedicoConsulta,
+            idPaciente: idPerfil,
             descricaoNecessidade: this.state.sintomas,
             dataConsulta: this.state.dataConsulta,
             localConsulta: this.state.localConsulta
@@ -35,11 +42,10 @@ export default class CadastroSolicitacaoScene extends Component {
 
         SolicitacaoService.cadastrarSolicitacao(form)
             .then((responseJson) => {
-                //Incluir mensagem 'Solicitação registrada com sucesso!'
-                Alert.alert("resp", JSON.stringify(responseJson));
-                // if(responseJson.data._id){
-                //     navigate('ListaSolicitacoes');
-                // }
+                Alert.alert("Mensagem", "Solicitação registrada com sucesso.");
+                if (responseJson.data._id) {
+                    navigate('ListaSolicitacoes');
+                }
             }).catch((error) => {
             Alert.alert('Erro', 'Erro ao registrar solicitação de atendimento!');
         });
@@ -53,7 +59,7 @@ export default class CadastroSolicitacaoScene extends Component {
                         <ScrollView>
                             <Card>
                                 <Form>
-                                    <H1>NOME DO MÉDICO</H1>
+                                    <H1>{this.state.nomeMedico}</H1>
                                     <Image
                                         source={require('../Images/UserLogo.png')}
                                         object={styles.img}
