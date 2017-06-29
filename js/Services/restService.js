@@ -1,7 +1,7 @@
 import React from "react";
 
 const RestService = {
-    webService: 'http://192.168.43.222:3000/api/v1',
+    webService: 'http://192.168.19.2:3000/api/v1',
     get: get,
     post: post,
     patch: patch,
@@ -9,7 +9,7 @@ const RestService = {
 };
 
 const headers = {
-    'Accept': 'application/json
+    'Accept': 'application/json',
     'Content-Type': 'application/json'
 };
 

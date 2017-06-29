@@ -25,11 +25,12 @@ export default class CadastroPacienteScene extends Component {
 
     async fetchData() {
         const userId = await AsyncStorage.getItem('userId');
-        UsuarioService.getUsuario(userId)
+        UsuarioService.getPaciente(userId)
             .then((response) => {
-                // Alert.alert("paciente", JSON.stringify(response));
-                let dados = response.data.paciente;
+                //Alert.alert("paciente", JSON.stringify(response));
+                let dados = response.data[0];
                 this.setState({
+                    idPaciente: dados._id,
                     possuiDiabete: dados.possuiDiabete,
                     possuiPressaoAlta: dados.possuiPressaoAlta
                 });
@@ -50,13 +51,25 @@ export default class CadastroPacienteScene extends Component {
             possuiPressaoAlta: state.possuiPressaoAlta
         };
 
-        UsuarioService.salvarPaciente(userId, form)
-            .then((response) => {
-                ToastAndroid.showWithGravity('Informações de paciente atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-            })
-            .catch((error) => {
-                Alert.alert('Erro', JSON.stringify(error));
-            });
+        if (!this.state.idPaciente) {
+            UsuarioService.salvarPaciente(userId, form)
+                .then((response) => {
+                    ToastAndroid.showWithGravity('Informações de paciente cadastradas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                })
+                .catch((error) => {
+                    Alert.alert('Erro', JSON.stringify(error));
+                });
+        } else {
+            UsuarioService.atualizarPaciente(userId, form)
+                .then((response) => {
+                    ToastAndroid.showWithGravity('Informações de paciente atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                })
+                .catch((error) => {
+                    Alert.alert('Erro', JSON.stringify(error));
+                });
+        }
+
+
     }
 
 

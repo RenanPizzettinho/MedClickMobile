@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import MenuComponent from "../Component/MenuComponent";
-import {AsyncStorage} from "react-native";
+import {AsyncStorage, Alert} from "react-native";
 
 export default class MenuScene extends Component {
     constructor(props) {
@@ -53,6 +53,10 @@ export default class MenuScene extends Component {
         ];
     }
 
+    componentWillMount() {
+        this.getPerfil().done();
+    }
+
     render() {
         return (
             <MenuComponent
@@ -65,6 +69,7 @@ export default class MenuScene extends Component {
 
     async getPerfil() {
         this.perfil = await AsyncStorage.getItem('perfil');
+        //Alert.alert("perfil", this.perfil);
     }
 
 }
