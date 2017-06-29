@@ -1,102 +1,70 @@
 import React, {Component} from "react";
-import {Badge, Body, Button, Card, CardItem, Container, Content, Icon, Left, Text, Thumbnail} from "native-base";
-import {Image} from "react-native";
-import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
+import MenuComponent from "../Component/MenuComponent";
+import {AsyncStorage} from "react-native";
 
 export default class MenuScene extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {};
+        this.menus = [
+            {
+                header: 'Solicitar atendimento',
+                nota: 'Solicite aqui a sua proxima consulta',
+                irPara: 'ListagemMedico',
+                icone: require('../Images/AtendimentoLogo2.png'),
+                perfil: 'PACIENTE'
+
+            },
+            {
+                header: 'Atendimentos',
+                nota: 'Atendimentos em aberto',
+                irPara: 'ListagemMedico',
+                icone: require('../Images/AtendimentoLogo3.png'),
+                perfil: null
+            },
+            {
+                header: 'Recados',
+                nota: 'Recados das consultas realizadas',
+                irPara: 'ListagemMedico',
+                icone: require('../Images/RecadosLogo.png'),
+                perfil: null
+            },
+            {
+                header: 'Informações pessoais',
+                nota: 'Informações pessoais',
+                irPara: 'CadastroPessoaScene',
+                icone: require('../Images/UserLogo.png'),
+                perfil: null
+            },
+            {
+                header: 'Perfil de paciente',
+                nota: 'Atualize aqui suas informações de saúde',
+                irPara: 'CadastroPacienteScene',
+                icone: require('../Images/paciente.png'),
+                perfil: 'PACIENTE'
+            },
+            {
+                header: 'Perfil de médico',
+                nota: 'Atualize as informações que vao aparecer no seu perfil médico',
+                irPara: 'CadastroMedicoScene',
+                icone: require('../Images/MedicoLogo.png'),
+                perfil: 'MEDICO'
+            }
+        ];
     }
 
     render() {
-        const {navigate} = this.props.navigation;
         return (
-            <Container>
-                <Content>
-                    <TouchableItem onPress={()=>{
-                        navigate('ListagemMedico');
-                    }}>
-                    <Card >
-                        <CardItem>
-                            <Left>
-                                <Thumbnail source={require('../Images/AtendimentoLogo3.png')}/>
-                                <Body>
-                                <Text>Atendimentos</Text>
-                                <Text note>Atendimentos em aberto</Text>
-                                <Badge primary>
-                                    <Text>2</Text>
-                                </Badge>
-                                </Body>
-                            </Left>
-                        </CardItem>
-                    </Card>
-                    </TouchableItem>
-                    <Card >
-                        <CardItem>
-                            <Left>
-                                <Thumbnail source={require('../Images/RecadosLogo.png')}/>
-                                <Body>
-                                <Text>Recados</Text>
-                                <Text note>Recados não visualizados</Text>
-                                <Badge primary>
-                                    <Text>2</Text>
-                                </Badge>
-                                </Body>
-                            </Left>
-                        </CardItem>
-                    </Card>
-                    <TouchableItem onPress={() => {
-                        navigate('CadastroPessoaScene')
-                    }}>
-                        <Card>
-                            <CardItem>
-                                <Left>
-                                    <Thumbnail source={require('../Images/UserLogo.png')}/>
-                                    <Body>
-                                    <Text>Informações pessoais</Text>
-                                    </Body>
-                                </Left>
-                            </CardItem>
-                        </Card>
-                    </TouchableItem>
-
-                    <TouchableItem onPress={() => {
-                        navigate('CadastroPacienteScene')
-                    }}>
-                        <Card>
-                            <CardItem>
-                                <Left>
-                                    <Thumbnail source={require('../Images/paciente.png')}/>
-                                    <Body>
-                                    <Text>Perfil de paciente</Text>
-                                    <Text note>Visualize seu perfil médico</Text>
-                                    </Body>
-                                </Left>
-                            </CardItem>
-                        </Card>
-                    </TouchableItem>
-                    <TouchableItem onPress={() => {
-                        navigate('CadastroMedicoScene')
-                    }}>
-                        <Card
-                        >
-                            <CardItem>
-                                <Left>
-                                    <Thumbnail source={require('../Images/MedicoLogo.png')}/>
-                                    <Body>
-                                    <Text>Perfil de médico</Text>
-                                    <Text note>Visualize seu perfil médico</Text>
-                                    </Body>
-                                </Left>
-                            </CardItem>
-                            <CardItem cardBody>
-                                <Image/>
-                            </CardItem>
-                        </Card>
-                    </TouchableItem>
-                </Content>
-            </Container>
+            <MenuComponent
+                navigation={this.props.navigation}
+                menus={this.menus}
+                getPerfil={this.getPerfil}
+            />
         );
     }
+
+    async getPerfil() {
+        this.perfil = await AsyncStorage.getItem('perfil');
+    }
+
 }

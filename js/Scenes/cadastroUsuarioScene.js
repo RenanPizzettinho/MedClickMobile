@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Alert, Button, Image, Text, TextInput, View} from "react-native";
+import {Alert} from "react-native";
 import UsuarioService from "../Services/usuarioService";
 import CadastroUsuarioComponent from "../Component/CadastroUsuarioComponent";
 
