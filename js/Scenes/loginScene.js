@@ -19,7 +19,7 @@ export default class LoginScene extends Component {
         super(props);
 
         this.state = {
-            email: "teste@teste.com",
+            email: "batata@abc.com",
             senha: "123456"
         };
     }
@@ -88,15 +88,12 @@ export default class LoginScene extends Component {
         LoginService.login(form)
             .then((responseJson) => {
                 console.log(responseJson);
-                if (responseJson.status === 403){
+                if (responseJson.status === 403) {
                     ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
                 }
                 if (responseJson.data._id) {
-                    try {
-                        AsyncStorage.setItem('userId', responseJson.data._id);
-                    } catch (error) {
-                        console.error("Erro ao salvar o id do usuario!");
-                    }
+                    //Alert.alert("UsuarioLogado", JSON.stringify(responseJson.data));
+                    this.setUsuario(responseJson.data._id).done();
                     navigate('SelecaoContexto');
                 } else {
                     Alert.alert('Erro', responseJson.data);
@@ -110,5 +107,8 @@ export default class LoginScene extends Component {
 
     entrarDisabled() {
         return !this.state.email || !this.state.senha;
+    }
+    async setUsuario(id){
+        await AsyncStorage.setItem('userId', id);
     }
 }

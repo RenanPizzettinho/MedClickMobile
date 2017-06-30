@@ -69,7 +69,8 @@ export default class MenuScene extends Component {
 
     async getPerfil() {
         this.perfil = await AsyncStorage.getItem('perfil');
-        Alert.alert("perfil", this.perfil);
+        this.idPerfil = await AsyncStorage.getItem('idPerfil');
+        Alert.alert("perfil", this.idPerfil);
     }
 
 }
