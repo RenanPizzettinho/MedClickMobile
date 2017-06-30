@@ -19,7 +19,7 @@ export default class LoginScene extends Component {
         super(props);
 
         this.state = {
-            email: "teste@teste.com",
+            email: "rafaelwaterkemper@gmail.com",
             senha: "123456"
         };
     }

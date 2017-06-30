@@ -20,7 +20,7 @@ import {
     Title,
     View
 } from "native-base";
-import {Alert, Modal, ScrollView} from "react-native";
+import {Alert, AsyncStorage, Modal, ScrollView} from "react-native";
 import MensagemService from "../../Services/mensagemService";
 import SolicitacaoService from "../../Services/solicitacaoService";
 
@@ -40,8 +40,9 @@ export default class listagemMensagem extends Component {
         }
     }
 
-    setModalVisible(visible, x) {
-        this.fetchDataAtendimento('5950010437b76e26c0fd5af3', x._id).done();
+    async setModalVisible(visible, x) {
+        const idPerfil = await AsyncStorage.getItem('idPerfil');
+        this.fetchDataAtendimento(idPerfil, x._id).done();
         this.setState({
             modalVisible: visible,
             selectedItem: x
@@ -49,15 +50,14 @@ export default class listagemMensagem extends Component {
     }
 
     async fetchData() {
-        // const idPerfil = await AsyncStorage.getItem('idPerfil');
-        SolicitacaoService.getAtendimentos('59500200c16f0b2260b2b682')
+        const idPerfil = await AsyncStorage.getItem('idPerfil');
+        SolicitacaoService.getAtendimentos(idPerfil)
             .then((response) => {
                 this.setState({
                     results: {
                         solicitacoes: response.data
                     }
                 });
-                // Alert.alert("Mensagem", JSON.stringify(response.data));
             })
             .catch(
                 (error) => {
@@ -67,7 +67,6 @@ export default class listagemMensagem extends Component {
     }
 
     async fetchDataAtendimento(user, idAtendimento) {
-        //const userId = await AsyncStorage.getItem('userId');
         //Pegando as mensagens PARA o médico
         MensagemService.getMensagensAtendimento(user, idAtendimento)
             .then((response) => {
@@ -76,8 +75,6 @@ export default class listagemMensagem extends Component {
                         mensagens: response.data
                     }
                 });
-
-                Alert.alert("Alerta", JSON.stringify(response.data));
             })
             .catch(
                 (error) => {
@@ -87,16 +84,16 @@ export default class listagemMensagem extends Component {
     }
 
     async respostaMensagem(solicitacao) {
-        // const idPerfil = await AsyncStorage.getItem('idPerfil');
+        const idPerfil = await AsyncStorage.getItem('idPerfil');
         let para = '';
-        if (solicitacao.idMedico === "5950010437b76e26c0fd5af3") {
+        if (solicitacao.idMedico === idPerfil) {
             para = solicitacao.idPaciente;
         } else {
             para = solicitacao.idMedico;
         }
 
         let messagge = {
-            "de": "5950010437b76e26c0fd5af3",
+            "de": idPerfil,
             "para": para,
             "idAtendimento": solicitacao._id,
             "mensagem": this.state.resposta
@@ -134,7 +131,7 @@ export default class listagemMensagem extends Component {
                         <List primaryText="" dataArray={this.state.results.solicitacoes} renderRow={(solicitacao) =>
                             <Card>
                                 <ListItem key={solicitacao._id} button
-                                          onPress={() => this.setModalVisible(true, solicitacao)}>
+                                          onPress={() => this.setModalVisible(true, solicitacao).done()}>
 
                                     <Thumbnail square size={80} source={require("./../../Images/UserLogo.png")}/>
                                     <Body>
@@ -190,7 +187,8 @@ export default class listagemMensagem extends Component {
                                     <Icon name="ios-search"/>
                                     <Input placeholder="Search"
                                            onChangeText={(resposta) => this.setState({resposta})}/>
-                                    <Button transparent onPress={() => this.respostaMensagem(this.state.selectedItem)}>
+                                    <Button transparent
+                                            onPress={() => this.respostaMensagem(this.state.selectedItem).done()}>
                                         <Text>Enviar</Text>
                                     </Button>
                                 </Item>

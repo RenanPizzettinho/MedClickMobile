@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import MenuComponent from "../Component/MenuComponent";
-import {AsyncStorage, Alert} from "react-native";
+import {Alert, AsyncStorage} from "react-native";
 
 export default class MenuScene extends Component {
     constructor(props) {
@@ -13,19 +13,25 @@ export default class MenuScene extends Component {
                 irPara: 'ListagemMedico',
                 icone: require('../Images/AtendimentoLogo2.png'),
                 perfil: 'PACIENTE'
-
             },
             {
-                header: 'Atendimentos',
+                header: 'Atendimentos Paciente',
                 nota: 'Atendimentos em aberto',
                 irPara: 'ListagemSolicitacao',
                 icone: require('../Images/AtendimentoLogo3.png'),
                 perfil: null
             },
             {
+                header: 'Atendimentos Medico',
+                nota: 'Atendimentos em aberto',
+                irPara: 'ListagemSolicitacaoMedico',
+                icone: require('../Images/AtendimentoLogo3.png'),
+                perfil: null
+            },
+            {
                 header: 'Recados',
                 nota: 'Recados das consultas realizadas',
-                irPara: 'ListagemMedico',
+                irPara: 'ListagemMensagem',
                 icone: require('../Images/RecadosLogo.png'),
                 perfil: null
             },
@@ -69,6 +75,17 @@ export default class MenuScene extends Component {
 
     async getPerfil() {
         this.perfil = await AsyncStorage.getItem('perfil');
+        let menuAtendimento = {
+            header: 'Atendimentos',
+            nota: 'Atendimentos em aberto',
+            irPara: (this.perfil === 'PACIENTE' ? 'ListagemSolicitacao' : 'ListagemSolicitacaoMedico'),
+            icone: require('../Images/AtendimentoLogo3.png'),
+            perfil: null
+        };
+
+        this.menus.push(menuAtendimento);
+        Alert.alert("Teste", JSON.stringify(this.menus));
+
         Alert.alert("perfil", this.perfil);
     }
 

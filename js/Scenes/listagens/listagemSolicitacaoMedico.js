@@ -22,6 +22,7 @@ import BotaoBase from "../../Component/BotaoBase";
 import SolicitacaoService from "../../Services/solicitacaoService";
 import styles from "../../StyleSheet/mainStyle";
 import MensagemService from "../../Services/mensagemService";
+import CampoTexto from "../../Component/CampoTexto";
 
 export default class listagemSolicitacaoMedico extends Component {
 
@@ -163,12 +164,6 @@ export default class listagemSolicitacaoMedico extends Component {
                                             onPress={() => listagemSolicitacaoMedico.confirmarAtendimento(this.state.selectedItem).done()}
                                         />}
                                     {this.state.selectedItem.situacao === "CONFIRMADO" ?
-                                        <BotaoBase
-                                            title="Mensagem"
-                                            //onPress={navigate()}
-                                        /> :
-                                        <View/>}
-                                    {this.state.selectedItem.situacao === "CONFIRMADO" ?
                                         <CampoTexto
                                             label="Mensagem.:"
                                             onChange={(primeiraMensagem) =>
@@ -179,7 +174,7 @@ export default class listagemSolicitacaoMedico extends Component {
                                     {this.state.selectedItem.situacao === "CONFIRMADO" ?
                                         <BotaoBase
                                             title="Enviar"
-                                            onPress={() => this.enviarMensagem(this.state.selectedItem)}
+                                            onPress={() => this.enviarMensagem(this.state.selectedItem).done()}
                                         /> :
                                         <View/>}
                                     </Body>
