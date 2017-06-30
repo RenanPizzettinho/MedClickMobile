@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Alert} from "react-native";
+import {Alert, ToastAndroid} from "react-native";
 import UsuarioService from "../Services/usuarioService";
 import CadastroUsuarioComponent from "../Component/CadastroUsuarioComponent";
 
@@ -47,6 +47,7 @@ export default class CadastroUsuarioScene extends Component {
             .then((responseJson) => {
                 console.log(responseJson);
                 if (responseJson.data._id) {
+                    ToastAndroid.showWithGravity('Usuário cadastrado', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
                     navigate('Main');
                 }
             })

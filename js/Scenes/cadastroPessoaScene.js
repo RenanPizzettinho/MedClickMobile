@@ -29,9 +29,9 @@ export default class CadastroPessoaScene extends Component {
         const userId = await AsyncStorage.getItem('userId');
         UsuarioService.getUsuario(userId)
             .then((response) => {
-                let dados = response.data.pessoa;
+                let dados = response.data;
                 let nome = response.data.nome;
-                // Alert.alert("resp", JSON.stringify(dados));
+                Alert.alert("resp", JSON.stringify(dados));
 
                 let data = new Date(dados.dtNascimento);
                 this.setState({nome: nome});

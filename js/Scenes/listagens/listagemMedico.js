@@ -22,6 +22,7 @@ import {
     View
 } from "native-base";
 import styles from "../../StyleSheet/mainStyle";
+import UsuarioService from "../../Services/usuarioService";
 
 export default class listagemMedico extends Component {
 
@@ -46,7 +47,7 @@ export default class listagemMedico extends Component {
 
     componentDidMount() {
 
-        var that = this;
+        let that = this;
         this.search();
         this.setState({
             search: ''
@@ -59,16 +60,13 @@ export default class listagemMedico extends Component {
             loading: true
         });
 
-        var that = this;
-        return fetch('https://api.github.com/search/repositories?q=' + this.state.search)
-            .then((response) => response.json())
+        let that = this;
+        UsuarioService.pesquisarMedicos(this.state.search)
             .then((responseJson) => {
                 that.setState({
                     results: responseJson,
                     loading: false
                 });
-
-                return responseJson.Search;
             })
             .catch((error) => {
 
@@ -86,13 +84,12 @@ export default class listagemMedico extends Component {
             <Container>
                 <Header searchBar rounded>
                     <Item>
-                        <Button transparent><Icon name="arrow-back"/></Button>
                         <Icon name="ios-search"/>
                         <Input placeholder="Search" value={this.state.search}
                                onChangeText={(text) => this.setState({search: text})}
                                onSubmitEditing={() => this.search()}/>
                         <Button transparent onPress={() => this.search()}>
-                            <Text>Go</Text>
+                            <Text>Pesquisar</Text>
                         </Button>
                     </Item>
                 </Header>

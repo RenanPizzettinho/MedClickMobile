@@ -9,7 +9,7 @@ export default class CadastroMedicoScene extends Component {
         super(props);
 
         this.state = {
-            crm: '123',
+            crm: '',
             especialidade: '',
             atendeEm: '',
             segunda: false,
@@ -35,11 +35,12 @@ export default class CadastroMedicoScene extends Component {
 
     async fetchData() {
         const userId = await AsyncStorage.getItem('userId');
-        UsuarioService.getUsuario(userId)
+        UsuarioService.getMedico(userId)
             .then((response) => {
-                let dados = response.data.medico;
-                // Alert.alert("medico", JSON.stringify(dados));
+                let dados = response.data[0];
+                //Alert.alert("medico", JSON.stringify(response));
                 this.setState({
+                    idMedico: dados._id,
                     crm: dados.crm,
                     atendeEm: dados.atendeEm,
                     especialidade: dados.especialidade
@@ -75,7 +76,7 @@ export default class CadastroMedicoScene extends Component {
             })
             .catch(
                 (error) => {
-                    Alert.alert('Erro', JSON.stringify(error));
+                    // Alert.alert('Erro', JSON.stringify(error));
                 }
             );
     }
@@ -118,13 +119,26 @@ export default class CadastroMedicoScene extends Component {
 
         // Alert.alert('Cadastro', JSON.stringify(form))
 
-        UsuarioService.salvarMedico(userId, form)
-            .then((response) => {
-                ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                // Alert.alert('Cadastro', JSON.stringify(response))
-            })
-            .catch((error) => {
-                Alert.alert('Erro', JSON.stringify(error));
-            });
+        if (!this.state.idMedico) {
+            UsuarioService.salvarMedico(userId, form)
+                .then((response) => {
+                    ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                    // Alert.alert('Cadastro', JSON.stringify(response))
+                })
+                .catch((error) => {
+                    Alert.alert('Erro', JSON.stringify(error));
+                });
+        } else {
+            UsuarioService.atualizarMedico(userId, form)
+                .then((response) => {
+                    ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                    // Alert.alert('Cadastro', JSON.stringify(response))
+                })
+                .catch((error) => {
+                    Alert.alert('Erro', JSON.stringify(error));
+                });
+        }
+
+
     }
 }
