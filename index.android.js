@@ -1,6 +1,6 @@
 'use strict';
 import {AppRegistry} from "react-native";
-
+//oi
 import {StackNavigator} from "react-navigation";
 import CadastroUsuarioScene from "./js/Scenes/cadastroUsuarioScene";
 import LoginScene from "./js/Scenes/loginScene";

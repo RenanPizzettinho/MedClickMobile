@@ -1,3 +1,4 @@
+//oi
 import React, {Component} from "react";
 import MenuComponent from "../Component/MenuComponent";
 import {Alert, AsyncStorage} from "react-native";
