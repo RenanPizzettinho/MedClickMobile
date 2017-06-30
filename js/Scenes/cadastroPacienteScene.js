@@ -37,7 +37,7 @@ export default class CadastroPacienteScene extends Component {
             })
             .catch(
                 (error) => {
-                    Alert.alert('Erro', JSON.stringify(error));
+                    // Alert.alert('Erro', JSON.stringify(error));
                 }
             );
     }

@@ -10,7 +10,7 @@ export default class CadastroPessoaScene extends Component {
         this.state = {
             nome: '',
             cpf: '',
-            dtNascimento: new Date().toDateString()
+            dtNascimento: ''
         }
     }
 
@@ -31,7 +31,7 @@ export default class CadastroPessoaScene extends Component {
             .then((response) => {
                 let dados = response.data;
                 let nome = response.data.nome;
-                Alert.alert("resp", JSON.stringify(dados));
+                //Alert.alert("resp", JSON.stringify(dados));
 
                 let data = new Date(dados.dtNascimento);
                 this.setState({nome: nome});

@@ -18,7 +18,7 @@ export default class MenuScene extends Component {
             {
                 header: 'Atendimentos',
                 nota: 'Atendimentos em aberto',
-                irPara: 'ListagemMedico',
+                irPara: 'ListagemSolicitacao',
                 icone: require('../Images/AtendimentoLogo3.png'),
                 perfil: null
             },
@@ -69,7 +69,7 @@ export default class MenuScene extends Component {
 
     async getPerfil() {
         this.perfil = await AsyncStorage.getItem('perfil');
-        //Alert.alert("perfil", this.perfil);
+        Alert.alert("perfil", this.perfil);
     }
 
 }

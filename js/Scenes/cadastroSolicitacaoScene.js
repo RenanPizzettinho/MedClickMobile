@@ -20,11 +20,13 @@ export default class CadastroSolicitacaoScene extends Component {
     }
 
     componentWillMount() {
-        this.setState({nomeMedico: CadastroSolicitacaoScene.getNomeMedico()});
+        this.getNomeMedico().done();
     }
 
-    static async getNomeMedico() {
-        return await AsyncStorage.getItem('nomeMedico');
+    async getNomeMedico() {
+        this.nomeMedico = await AsyncStorage.getItem('nomeMedico');
+        this.setState({nomeMedico: this.nomeMedico});
+        Alert.alert("Teste", this.nomeMedico);
     }
 
     async cadastrar() {
