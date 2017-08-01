@@ -25,7 +25,7 @@ export default class SelecaoContextoScene extends Component {
         const userId = await AsyncStorage.getItem('userId');
         UsuarioService.getUsuario(userId)
             .then((response) => {
-                Alert.alert("Usuario", JSON.stringify(response));
+                //Alert.alert("Usuario", JSON.stringify(response));
                 let dados = response.data;
                 this.setState({idMedico: dados.idMedico, idPaciente: dados.idPaciente});
             })

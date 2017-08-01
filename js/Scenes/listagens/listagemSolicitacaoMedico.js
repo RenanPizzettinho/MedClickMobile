@@ -53,7 +53,7 @@ export default class listagemSolicitacaoMedico extends Component {
                         solicitacoes: response.data
                     }
                 });
-                Alert.alert("resp", JSON.stringify(response.data));
+                //Alert.alert("resp", JSON.stringify(response.data));
             })
             .catch(
                 (error) => {

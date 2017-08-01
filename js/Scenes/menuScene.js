@@ -85,9 +85,9 @@ export default class MenuScene extends Component {
         };
 
         this.menus.push(menuAtendimento);
-        Alert.alert("Teste", JSON.stringify(this.menus));
+        //Alert.alert("Teste", JSON.stringify(this.menus));
 
-        Alert.alert("perfil", this.perfil);
+        //Alert.alert("perfil", this.perfil);
     }
 
 }
