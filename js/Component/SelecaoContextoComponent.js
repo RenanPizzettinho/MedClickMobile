@@ -11,15 +11,12 @@ export default class SelecaoContextoComponent extends Component {
         this.entrarMedico = this.props.entrarMedico;
         this.acessar = this.props.acessar;
         this.navigation = this.props.navigation;
-        this.getUsuario = this.props.getUsuario;
     }
 
     componentWillMount() {
-        this.getUsuario().done();
     }
 
     render() {
-        const {navigate} = this.props.navigation;
         return (
             <Container>
                 <Content>

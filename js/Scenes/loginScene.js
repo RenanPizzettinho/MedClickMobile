@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import LoginService from "../Services/loginService";
 import LoginComponent from "../Component/LoginComponent";
 import {Alert, AsyncStorage, ToastAndroid} from "react-native";
-
+import StaticStorageService from '../Services/staticStorageService';
 
 export default class LoginScene extends Component {
     constructor(props) {
@@ -23,7 +23,6 @@ export default class LoginScene extends Component {
                 navigation={this.props.navigation}
             />
         );
-
     }
 
     login() {
@@ -36,22 +35,15 @@ export default class LoginScene extends Component {
             .then((responseJson) => {
                 console.log(responseJson);
                 if (responseJson.status === 403){
-                    ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                    ToastAndroid.showWithGravity('Sem acesso', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
                 }
                 if (responseJson.data._id) {
-                    try {
-                        AsyncStorage.setItem('userId', responseJson.data._id);
-                    } catch (error) {
-                        console.error("Erro ao salvar o id do usuario!");
-                    }
+                    StaticStorageService.usuarioSessao = responseJson.data;
                     navigate('SelecaoContexto');
                 } else {
                     Alert.alert('Erro', responseJson.data);
                 }
 
-            })
-            .catch((error) => {
-                Alert.alert('Erro catch', JSON.stringify(error));
             });
     }
 

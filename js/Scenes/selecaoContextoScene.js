@@ -1,12 +1,16 @@
 import React, {Component} from "react";
 import SelecaoContextoComponent from "../Component/SelecaoContextoComponent";
-import {Alert, AsyncStorage} from "react-native";
-import UsuarioService from "../Services/usuarioService";
+import StaticStorageService from '../Services/staticStorageService';
+import ContextoEnum from '../Enums/ContextoEnum';
+import {Alert} from "react-native";
 
 export default class SelecaoContextoScene extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        usuario = StaticStorageService.usuarioSessao;
+    }
+
+    componentWillMount() {
     }
 
     render() {
@@ -16,42 +20,33 @@ export default class SelecaoContextoScene extends Component {
                 entrarMedico={this.entrarMedico}
                 acessar={this.acessar}
                 navigation={this.props.navigation}
-                getUsuario={this.getUsuario}
             />
         );
     }
 
-    async getUsuario() {
-        const userId = await AsyncStorage.getItem('userId');
-        UsuarioService.getUsuario(userId)
-            .then((response) => {
-                //Alert.alert("Usuario", JSON.stringify(response));
-                let dados = response.data;
-                this.setState({idMedico: dados.idMedico, idPaciente: dados.idPaciente});
-            })
-            .catch(
-                (error) => {
-                    Alert.alert('Erro', JSON.stringify(error));
-                }
-            );
-    }
-
-    async entrarPaciente() {
-        this.acessar('PACIENTE', this.state.idPaciente);
-    }
-
-    async entrarMedico() {
-        this.acessar('MEDICO', this.state.idMedico);
-    }
-
-    async acessar(perfil, idPerfil) {
+    entrarPaciente() {
         const {navigate} = this.props.navigation;
-        try {
-            AsyncStorage.setItem('perfil', perfil);
-            AsyncStorage.setItem('idPerfil', idPerfil);
-        } catch (error) {
-            Alert.alert('Erro', error);
+
+        StaticStorageService.contexto = ContextoEnum.PACIENTE;
+
+        if (usuario.idPaciente === undefined) {
+            Alert.alert('Aviso', 'Olá,\n Este provavelmente é seu primeiro acesso como paciente, para melhorar sua experiencia neste app vamos lhe redirecionar para o cadastro de paciente, onde voce respondera um questionario medico simples.');
+            navigate('CadastroPacienteScene');
+        } else {
+            navigate('MenuScene');
         }
-        navigate('MenuScene');
+    }
+
+    entrarMedico() {
+        const {navigate} = this.props.navigation;
+
+        StaticStorageService.contexto = ContextoEnum.MEDICO;
+
+        if (usuario.idMedico === undefined) {
+            Alert.alert('Aviso', 'Olá,\n Este provavelmente é seu primeiro acesso como médico. Para poder usar a nossa app com perfil medico, primeiro voce precisa preencher suas informacoes no formulario de cadastro medico. Entao lhe redirecionaremos para este formulario.');
+            navigate('CadastroMedicoScene');
+        } else {
+            navigate('MenuScene');
+        }
     }
 }
