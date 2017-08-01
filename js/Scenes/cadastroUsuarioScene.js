@@ -19,7 +19,7 @@ export default class CadastroUsuarioScene extends Component {
         return (<CadastroUsuarioComponent
             salvar={this.salvar}
             states={this.state}
-            disabled={CadastroUsuarioScene.disabled}
+            disabled={this.disabled}
             navigation={this.props.navigation}
         />);
     }
@@ -43,21 +43,20 @@ export default class CadastroUsuarioScene extends Component {
             senha: state.senha
         };
 
-        UsuarioService.cadastrarUsuario(form)
+        UsuarioService.cadastrar(form)
             .then((responseJson) => {
-                console.log(responseJson);
                 if (responseJson.data._id) {
                     ToastAndroid.showWithGravity('Usuário cadastrado', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
                     navigate('Main');
                 }
             })
-            .catch((error) => {
-                Alert.alert('Erro maldito', JSON.stringify(error.data));
+            .catch((erro) => {
+               console.log('ERRO: ',erro)
             });
 
     }
 
-    static disabled(state) {
+    disabled(state) {
         return !state.email || !state.nome || !state.senha || !state.verificarSenha;
     }
 }

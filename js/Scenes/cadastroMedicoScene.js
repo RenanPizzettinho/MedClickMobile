@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 
-import {Alert, AsyncStorage, ToastAndroid} from "react-native";
-import UsuarioService from "../Services/usuarioService";
+import {ToastAndroid} from "react-native";
 import CadastroMedicoComponent from "../Component/CadastroMedicoComponent";
+import StaticStorageService from "../Services/staticStorageService";
+import MedicoService from "../Services/medicoService";
 
 export default class CadastroMedicoScene extends Component {
     constructor(props) {
@@ -29,23 +30,25 @@ export default class CadastroMedicoScene extends Component {
                 states={this.state}
                 salvar={this.salvarMedico}
                 fetchData={this.fetchData}
+                navigation={this.props.navigation}
             />
         );
     }
 
     async fetchData() {
-        const userId = await AsyncStorage.getItem('userId');
-        UsuarioService.getMedico(userId)
+        const userId = StaticStorageService.usuarioSessao._id;
+        MedicoService.get(userId)
             .then((response) => {
                 let dados = response.data[0];
-                //Alert.alert("medico", JSON.stringify(response));
+
+                if (dados === undefined) return;
+
                 this.setState({
                     idMedico: dados._id,
                     crm: dados.crm,
                     atendeEm: dados.atendeEm,
                     especialidade: dados.especialidade
                 });
-                // Alert.alert("crm-=", JSON.stringify(this.state.crm));
 
                 dados.diasAtendimentoDomicilio.forEach((item) => {
                     switch (item) {
@@ -73,12 +76,7 @@ export default class CadastroMedicoScene extends Component {
                     }
                 });
 
-            })
-            .catch(
-                (error) => {
-                    // Alert.alert('Erro', JSON.stringify(error));
-                }
-            );
+            });
     }
 
     async salvarMedico() {
@@ -112,30 +110,23 @@ export default class CadastroMedicoScene extends Component {
         if (this.state.domingo)
             form.diasAtendimentoDomicilio.push('dom');
 
-
-        const userId = await AsyncStorage.getItem('userId');
+        const userId = StaticStorageService.usuarioSessao._id;
 
         form._id = userId;
 
-        // Alert.alert('Cadastro', JSON.stringify(form))
+        const {navigate} = this.props.navigation;
 
         if (!this.state.idMedico) {
-            UsuarioService.salvarMedico(userId, form)
+            MedicoService.salvar(userId, form)
                 .then((response) => {
                     ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    // Alert.alert('Cadastro', JSON.stringify(response))
-                })
-                .catch((error) => {
-                    Alert.alert('Erro', JSON.stringify(error));
+                    navigate('MenuScene');
                 });
         } else {
-            UsuarioService.atualizarMedico(userId, form)
+            MedicoService.atualizar(userId, form)
                 .then((response) => {
                     ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    // Alert.alert('Cadastro', JSON.stringify(response))
-                })
-                .catch((error) => {
-                    Alert.alert('Erro', JSON.stringify(error));
+                    navigate('MenuScene');
                 });
         }
 

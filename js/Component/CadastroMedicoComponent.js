@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card, Container, Content, Form, Item, Text} from "native-base";
+import {Card, Container, Content, Form} from "native-base";
 import CampoTexto from "./CampoTexto";
 import CheckBoxBase from "./CheckBoxBase";
 import SelectBase from "./SelectBase";
@@ -18,6 +18,7 @@ export default class CadastroMedicoComponent extends Component {
     }
 
     render() {
+        const {navigate} = this.props.navigation;
         return (
             <Container>
                 <Content>
@@ -34,13 +35,19 @@ export default class CadastroMedicoComponent extends Component {
                                 label="Area medica de especialidade"
                                 selectedValue={this.state.especialidade}
                                 onValueChange={(especialidade) => this.setState({especialidade})}
-                                itens={[{label:"Cardiologista",value:"CARDIOLOGISTA"},{label:"Clinico geral",value:"CLINICO_GERAL"}]}
+                                itens={[{label: "Cardiologista", value: "CARDIOLOGISTA"}, {
+                                    label: "Clinico geral",
+                                    value: "CLINICO_GERAL"
+                                }]}
                             />
                             <SelectBase
                                 label="Atende em qual cidade?"
                                 selectedValue={this.state.atendeEm}
                                 onValueChange={(atendeEm) => this.setState({atendeEm})}
-                                itens={[{label:"Criciuma",value:"CRICIUMA"},{label:"Içara",value:"ICARA"},{label:"Nova Veneza",value:"NOVA_VENEZA"}]}
+                                itens={[{label: "Criciuma", value: "CRICIUMA"}, {
+                                    label: "Içara",
+                                    value: "ICARA"
+                                }, {label: "Nova Veneza", value: "NOVA_VENEZA"}]}
                             />
                             <CheckBoxBase
                                 label="Atende na segunda-feira?"
