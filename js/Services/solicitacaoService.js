@@ -1,28 +1,27 @@
-import RestService from "./restService";
-
-const URI_REST_SOLICITACAO = RestService.webService + '/atendimentos';
+import RestService from './restHttpMethodService';
+import {atendimentoPath} from './webPathService';
 
 const SolicitacaoService = {
-    getAtendimentos: getAtendimentos,
-    cadastrarSolicitacao: cadastrarSolicitacao,
-    cancelarSolicitacao: cancelarSolicitacao,
-    confirmarSolicitacao: confirmarSolicitacao
+    get: get,
+    cadastrar: cadastrar,
+    cancelar: cancelar,
+    confirmar: confirmar
 };
 
-function getAtendimentos(user) {
-    return RestService.get(URI_REST_SOLICITACAO + "/" + user);
+function get(user) {
+    return RestService.get(`${atendimentoPath}/${user}`);
 }
 
-function cadastrarSolicitacao(body) {
-    return RestService.post(URI_REST_SOLICITACAO, body);
+function cadastrar(body) {
+    return RestService.post(atendimentoPath, body);
 }
 
-function cancelarSolicitacao(id, body) {
-    return RestService.put(URI_REST_SOLICITACAO + "/" + id, body);
+function cancelar(id, body) {
+    return RestService.put(`${atendimentoPath}/${id}`, body);
 }
 
-function confirmarSolicitacao(id, body) {
-    return RestService.put(URI_REST_SOLICITACAO + "/" + id, body);
+function confirmar(id, body) {
+    return RestService.put(`${atendimentoPath}/${id}`, body);
 }
 
 export default SolicitacaoService;

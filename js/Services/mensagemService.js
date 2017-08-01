@@ -1,23 +1,22 @@
-import RestService from "./restService";
+import RestService from "./restHttpMethodService";
+import {mensagemPath} from './webPathService';
 
-const URI_REST_MESSAGGE = RestService.webService + '/mensagens';
-
-const listMessaggesService = {
-    getMensagens: mensagens,
-    getMensagensAtendimento: mensagensAtendimento,
-    respostaMessagge: respostaMensagem
+const MensagemService = {
+    get: get,
+    getMensagensAtendimento: getMensagensAtendimento,
+    resposta: resposta
 };
 
-function mensagens(user) {
-    return RestService.get(URI_REST_MESSAGGE + "/" + user);
+function get(user) {
+    return RestService.get(`${mensagemPath}/${user}`);
 }
 
-function mensagensAtendimento(user, idAtendimento) {
-    return RestService.get(URI_REST_MESSAGGE + "/" + user + "?idAtendimento=" + idAtendimento);
+function getMensagensAtendimento(user, idAtendimento) {
+    return RestService.get(`${mensagemPath}/${user}?idAtendimento=${idAtendimento}`);
 }
 
-function respostaMensagem(body) {
-    return RestService.post(URI_REST_MESSAGGE, body)
+function resposta(body) {
+    return RestService.post(`${mensagemPath}/${user}`, body)
 }
 
-export default listMessaggesService;
+export default MensagemService;

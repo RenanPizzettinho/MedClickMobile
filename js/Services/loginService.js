@@ -1,13 +1,12 @@
-import RestService from './restService';
-
-const URI_REST_LOGIN = RestService.webService + '/login';
+import RestService from './restHttpMethodService';
+import {loginPath} from './webPathService';
 
 const LoginService = {
     login: login
 };
 
 function login(body) {
-    return RestService.post(URI_REST_LOGIN,body);
+    return RestService.post(loginPath,body);
 }
 
 export default LoginService;
