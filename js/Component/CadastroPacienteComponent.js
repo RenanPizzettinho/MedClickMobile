@@ -16,6 +16,7 @@ export default class CadastroPacienteComponent extends Component {
     }
 
     render() {
+        const {navigate} = this.props.navigation;
         return (
             <Container>
                 <Content>

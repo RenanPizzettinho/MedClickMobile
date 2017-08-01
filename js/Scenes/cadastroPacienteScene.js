@@ -1,7 +1,8 @@
 import React, {Component} from "react";
-import {Alert, AsyncStorage, ToastAndroid} from "react-native";
-import UsuarioService from "../Services/usuarioService";
+import {ToastAndroid} from "react-native";
+import PacienteService from "../Services/pacienteService";
 import CadastroPacienteComponent from "../Component/CadastroPacienteComponent";
+import StaticStorageService from "../Services/staticStorageService";
 
 export default class CadastroPacienteScene extends Component {
     constructor(props) {
@@ -19,31 +20,27 @@ export default class CadastroPacienteScene extends Component {
                 salvar={this.salvarPaciente}
                 states={this.state}
                 fetchData={this.fetchData}
+                navigation={this.props.navigation}
             />
         );
     }
 
     async fetchData() {
-        const userId = await AsyncStorage.getItem('userId');
-        UsuarioService.getPaciente(userId)
+        PacienteService.get(StaticStorageService.usuarioSessao._id)
             .then((response) => {
-                //Alert.alert("paciente", JSON.stringify(response));
                 let dados = response.data[0];
+                if (dados === undefined) return;
                 this.setState({
                     idPaciente: dados._id,
                     possuiDiabete: dados.possuiDiabete,
                     possuiPressaoAlta: dados.possuiPressaoAlta
                 });
-            })
-            .catch(
-                (error) => {
-                    // Alert.alert('Erro', JSON.stringify(error));
-                }
-            );
+            });
     }
 
     async salvarPaciente(state) {
-        const userId = await AsyncStorage.getItem('userId');
+        const userId = StaticStorageService.usuarioSessao._id;
+        const {navigate} = this.props.navigation;
 
         let form = {
             _id: userId,
@@ -52,20 +49,16 @@ export default class CadastroPacienteScene extends Component {
         };
 
         if (!this.state.idPaciente) {
-            UsuarioService.salvarPaciente(userId, form)
+            PacienteService.salvar(userId, form)
                 .then((response) => {
                     ToastAndroid.showWithGravity('Informações de paciente cadastradas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                })
-                .catch((error) => {
-                    Alert.alert('Erro', JSON.stringify(error));
+                    navigate('MenuScene');
                 });
         } else {
-            UsuarioService.atualizarPaciente(userId, form)
+            PacienteService.atualizar(userId, form)
                 .then((response) => {
                     ToastAndroid.showWithGravity('Informações de paciente atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                })
-                .catch((error) => {
-                    Alert.alert('Erro', JSON.stringify(error));
+                    navigate('MenuScene');
                 });
         }
 
