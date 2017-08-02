@@ -35,7 +35,7 @@ export default class CadastroMedicoScene extends Component {
         );
     }
 
-    async fetchData() {
+    fetchData() {
         const userId = StaticStorageService.usuarioSessao._id;
         MedicoService.get(userId)
             .then((response) => {
@@ -86,8 +86,6 @@ export default class CadastroMedicoScene extends Component {
             atendeEm: this.state.atendeEm,
             diasAtendimentoDomicilio: []
         };
-
-        //['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom']
 
         if (this.state.segunda)
             form.diasAtendimentoDomicilio.push('seg');
