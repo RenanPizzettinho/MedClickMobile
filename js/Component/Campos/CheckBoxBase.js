@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {CheckBox, ListItem, Text} from "native-base";
-import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
+import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
 
 export default class CheckBoxBase extends Component {
     constructor(props) {

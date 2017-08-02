@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import MenuComponent from "../Component/MenuComponent";
+import MenuComponent from "../Component/Telas/MenuComponent";
 import ContextoEnum from "../Enums/ContextoEnum";
 import StaticStorageService from '../Services/staticStorageService';
 import SceneEnum from '../Enums/SceneEnum';

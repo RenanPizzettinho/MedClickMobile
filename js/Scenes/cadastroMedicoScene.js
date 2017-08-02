@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
 import {ToastAndroid} from "react-native";
-import CadastroMedicoComponent from "../Component/CadastroMedicoComponent";
+import CadastroMedicoComponent from "../Component/Telas/CadastroMedicoComponent";
 import StaticStorageService from "../Services/staticStorageService";
 import MedicoService from "../Services/medicoService";
 import SceneEnum from '../Enums/SceneEnum';

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import LoginService from "../Services/loginService";
-import LoginComponent from "../Component/LoginComponent";
+import LoginComponent from "../Component/Telas/LoginComponent";
 import {Alert, ToastAndroid} from "react-native";
 import StaticStorageService from "../Services/staticStorageService";
 import SceneEnum from '../Enums/SceneEnum';

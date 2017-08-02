@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import styles from "../StyleSheet/mainStyle";
+import styles from "../../StyleSheet/mainStyle";
 import {Button, Image, Text, TextInput, TouchableHighlight, View} from "react-native";
-import SceneEnum from '../Enums/SceneEnum';
+import SceneEnum from '../../Enums/SceneEnum';
 
 export default class LoginComponent extends Component {
     constructor(props) {
@@ -16,7 +16,7 @@ export default class LoginComponent extends Component {
         return (
             <View style={styles.view}>
                 <Image
-                    source={require('../Images/MedClickLogo.png')}
+                    source={require('../../Images/MedClickLogo.png')}
                     style={styles.img}
                 />
                 <Text style={styles.title}>MedClick</Text>

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Body, Card, CardItem, Container, Content, Left, Text, Thumbnail} from "native-base";
 import {Image} from "react-native";
-import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
+import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
 
 export default class SelecaoContextoComponent extends Component {
     constructor(props) {
@@ -24,7 +24,7 @@ export default class SelecaoContextoComponent extends Component {
                         <Card>
                             <CardItem>
                                 <Left>
-                                    <Thumbnail source={require('../Images/UserLogo.png')}/>
+                                    <Thumbnail source={require('../../Images/UserLogo.png')}/>
                                     <Body>
                                     <Text>Paciente</Text>
                                     <Text note>Acessar com perfil de paciente</Text>
@@ -32,7 +32,7 @@ export default class SelecaoContextoComponent extends Component {
                                 </Left>
                             </CardItem>
                             <CardItem cardBody>
-                                <Image source={require('../Images/UserLogo.png')}
+                                <Image source={require('../../Images/UserLogo.png')}
                                        style={{height: 135, width: null, flex: 1}}/>
                             </CardItem>
                         </Card>
@@ -41,7 +41,7 @@ export default class SelecaoContextoComponent extends Component {
                         <Card>
                             <CardItem>
                                 <Left>
-                                    <Thumbnail source={require('../Images/MedicoLogo.png')}/>
+                                    <Thumbnail source={require('../../Images/MedicoLogo.png')}/>
                                     <Body>
                                     <Text>Médico</Text>
                                     <Text note>Acessar com perfil médico</Text>
@@ -49,7 +49,7 @@ export default class SelecaoContextoComponent extends Component {
                                 </Left>
                             </CardItem>
                             <CardItem cardBody>
-                                <Image source={require('../Images/UserLogo.png')}
+                                <Image source={require('../../Images/UserLogo.png')}
                                        style={{height: 135, width: null, flex: 1}}/>
                             </CardItem>
                         </Card>

@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 
 import {Card, Container, Content, Form} from "native-base";
-import CampoTexto from "./CampoTexto";
-import BotaoBase from "./BotaoBase";
-import CampoData from "./CampoData";
+import CampoTexto from "../Campos/CampoTexto";
+import BotaoBase from "../Campos/BotaoBase";
+import CampoData from "../Campos/CampoData";
 
 export default class CadastroPessoaComponent extends Component {
     constructor(props) {

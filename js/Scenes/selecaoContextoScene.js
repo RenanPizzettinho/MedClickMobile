@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import SelecaoContextoComponent from "../Component/SelecaoContextoComponent";
+import SelecaoContextoComponent from "../Component/Telas/SelecaoContextoComponent";
 import StaticStorageService from '../Services/staticStorageService';
 import ContextoEnum from '../Enums/ContextoEnum';
 import {Alert} from "react-native";

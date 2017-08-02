@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Text, View} from "react-native";
 import {Label} from "native-base";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import TouchableItem from "../../node_modules/react-navigation/lib-rn/views/TouchableItem";
+import TouchableItem from "../../../node_modules/react-navigation/lib-rn/views/TouchableItem";
 
 export default class CampoData extends Component {
     constructor(props) {

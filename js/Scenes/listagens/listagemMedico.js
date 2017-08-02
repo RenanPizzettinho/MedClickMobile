@@ -20,7 +20,7 @@ import UsuarioService from "../../Services/usuarioService";
 import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
 import Card from "react-native-material-design/lib/Card/index";
 import {AsyncStorage, Modal} from "react-native";
-import BotaoBase from "../../Component/BotaoBase";
+import BotaoBase from "../../Component/Campos/BotaoBase";
 
 export default class listagemMedico extends Component {
 

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Body, Card, CardItem, Container, Content, Left, Text, Thumbnail} from "native-base";
-import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
+import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
 
 export default class MenuComponent extends Component {
     constructor(props) {

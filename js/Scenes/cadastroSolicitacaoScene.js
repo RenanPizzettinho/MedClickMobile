@@ -3,9 +3,9 @@ import styles from "../StyleSheet/mainStyle";
 import {Card, Container, Content, Form, H1} from "native-base";
 import {Alert, AsyncStorage, Image, ScrollView} from "react-native";
 import SolicitacaoService from "../Services/solicitacaoService";
-import CampoTexto from "../Component/CampoTexto";
-import CampoData from "../Component/CampoData";
-import BotaoBase from "../Component/BotaoBase";
+import CampoTexto from "../Component/Campos/CampoTexto";
+import CampoData from "../Component/Campos/CampoData";
+import BotaoBase from "../Component/Campos/BotaoBase";
 import SceneEnum from '../Enums/SceneEnum';
 
 export default class CadastroSolicitacaoScene extends Component {

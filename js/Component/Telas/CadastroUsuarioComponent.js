@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {Card} from "react-native-material-design";
-import CampoTexto from "./CampoTexto";
-import CampoSenha from "./CampoSenha";
-import BotaoBase from "./BotaoBase";
+import CampoTexto from "../Campos/CampoTexto";
+import CampoSenha from "../Campos/CampoSenha";
+import BotaoBase from "../Campos/BotaoBase";
 import {Container, Content, Form, Item} from "native-base";
 
 

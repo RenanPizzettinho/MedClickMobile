@@ -17,10 +17,10 @@ import {
     Title,
     View
 } from "native-base";
-import CampoTexto from "../../Component/CampoTexto";
+import CampoTexto from "../../Component/Campos/CampoTexto";
 import SolicitacaoService from "../../Services/solicitacaoService";
 import {Alert, AsyncStorage, Image, Modal} from "react-native";
-import BotaoBase from "../../Component/BotaoBase";
+import BotaoBase from "../../Component/Campos/BotaoBase";
 import styles from "../../StyleSheet/mainStyle";
 import MensagemService from "../../Services/mensagemService";
 

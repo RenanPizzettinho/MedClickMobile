@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {ToastAndroid} from "react-native";
 import UsuarioService from "../Services/usuarioService";
-import CadastroPessoaComponent from "../Component/CadastroPessoaComponent";
+import CadastroPessoaComponent from "../Component/Telas/CadastroPessoaComponent";
 import StaticStorageService from "../Services/staticStorageService";
 
 export default class CadastroPessoaScene extends Component {

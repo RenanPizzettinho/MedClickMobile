@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Card, Container, Content, Form} from "native-base";
-import CampoTexto from "./CampoTexto";
-import BotaoBase from "./BotaoBase";
+import CampoTexto from "../Campos/CampoTexto";
+import BotaoBase from "../Campos/BotaoBase";
 
 export default class RecuperarSenhaComponent extends Component {
     constructor(props) {

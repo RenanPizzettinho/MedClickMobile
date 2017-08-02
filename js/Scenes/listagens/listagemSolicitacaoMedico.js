@@ -18,11 +18,11 @@ import {
     View
 } from "native-base";
 import {Alert, AsyncStorage, Image, Modal} from "react-native";
-import BotaoBase from "../../Component/BotaoBase";
+import BotaoBase from "../../Component/Campos/BotaoBase";
 import SolicitacaoService from "../../Services/solicitacaoService";
 import styles from "../../StyleSheet/mainStyle";
 import MensagemService from "../../Services/mensagemService";
-import CampoTexto from "../../Component/CampoTexto";
+import CampoTexto from "../../Component/Campos/CampoTexto";
 
 export default class listagemSolicitacaoMedico extends Component {
 

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Button, Card, CheckBox, Container, Content, Form, ListItem, Text} from "native-base";
-import CheckBoxBase from "./CheckBoxBase";
-import BotaoBase from "./BotaoBase";
+import CheckBoxBase from "../Campos/CheckBoxBase";
+import BotaoBase from "../Campos/BotaoBase";
 
 export default class CadastroPacienteComponent extends Component {
     constructor(props) {

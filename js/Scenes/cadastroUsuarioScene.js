@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Alert, ToastAndroid} from "react-native";
 import UsuarioService from "../Services/usuarioService";
-import CadastroUsuarioComponent from "../Component/CadastroUsuarioComponent";
+import CadastroUsuarioComponent from "../Component/Telas/CadastroUsuarioComponent";
 import SceneEnum from '../Enums/SceneEnum';
 
 

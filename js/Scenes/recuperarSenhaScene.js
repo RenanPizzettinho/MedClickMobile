@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import UsuarioService from "../Services/usuarioService";
-import RecuperarSenhaComponent from "../Component/RecuperarSenhaComponent";
+import RecuperarSenhaComponent from "../Component/Telas/RecuperarSenhaComponent";
 import {Alert} from "react-native";
 import SceneEnum from '../Enums/SceneEnum';
 
