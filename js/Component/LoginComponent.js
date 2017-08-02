@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import styles from "../StyleSheet/mainStyle";
 import {Button, Image, Text, TextInput, TouchableHighlight, View} from "react-native";
+import SceneEnum from '../Enums/SceneEnum';
 
 export default class LoginComponent extends Component {
     constructor(props) {
@@ -46,7 +47,7 @@ export default class LoginComponent extends Component {
                     }}
                 />
                 <TouchableHighlight
-                    onPress={() => navigate('CadastroUsuario')}
+                    onPress={() => navigate(SceneEnum.CADASTRO_USUARIO)}
                     style={styles.linksLogin}
                 >
                     <Text>
@@ -54,7 +55,7 @@ export default class LoginComponent extends Component {
                     </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
-                    onPress={() => navigate('RecuperarSenhaScene')}
+                    onPress={() => navigate(SceneEnum.RECUPERAR_SENHA)}
                 >
                     <Text>
                         Esqueceu a senha?

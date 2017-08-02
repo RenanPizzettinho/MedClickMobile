@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Alert, ToastAndroid} from "react-native";
 import UsuarioService from "../Services/usuarioService";
 import CadastroUsuarioComponent from "../Component/CadastroUsuarioComponent";
+import SceneEnum from '../Enums/SceneEnum';
 
 
 export default class CadastroUsuarioScene extends Component {
@@ -47,7 +48,7 @@ export default class CadastroUsuarioScene extends Component {
             .then((responseJson) => {
                 if (responseJson.data._id) {
                     ToastAndroid.showWithGravity('Usuário cadastrado', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    navigate('Main');
+                    navigate(SceneEnum.LOGIN);
                 }
             })
             .catch((erro) => {

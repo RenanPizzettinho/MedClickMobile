@@ -1,4 +1,6 @@
-export default class ContextoEnum{
-    static PACIENTE = 'PACIENTE';
-    static MEDICO = 'MEDICO';
-}
+const ContextoEnum = {
+    PACIENTE : 'PACIENTE',
+    MEDICO : 'MEDICO',
+};
+
+module.exports = ContextoEnum;

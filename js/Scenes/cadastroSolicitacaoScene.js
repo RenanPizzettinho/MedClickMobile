@@ -6,6 +6,7 @@ import SolicitacaoService from "../Services/solicitacaoService";
 import CampoTexto from "../Component/CampoTexto";
 import CampoData from "../Component/CampoData";
 import BotaoBase from "../Component/BotaoBase";
+import SceneEnum from '../Enums/SceneEnum';
 
 export default class CadastroSolicitacaoScene extends Component {
     constructor(props) {
@@ -46,7 +47,7 @@ export default class CadastroSolicitacaoScene extends Component {
             .then((responseJson) => {
                 Alert.alert("Mensagem", "Solicitação registrada com sucesso.");
                 if (responseJson.data._id) {
-                    navigate('ListaSolicitacoes');
+                    navigate(SceneEnum.LISTAGEM_SOLICITACAO);
                 }
             }).catch((error) => {
             Alert.alert('Erro', 'Erro ao registrar solicitação de atendimento!');

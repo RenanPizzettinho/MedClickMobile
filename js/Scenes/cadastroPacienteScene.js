@@ -3,6 +3,8 @@ import {ToastAndroid} from "react-native";
 import PacienteService from "../Services/pacienteService";
 import CadastroPacienteComponent from "../Component/CadastroPacienteComponent";
 import StaticStorageService from "../Services/staticStorageService";
+import SceneEnum from '../Enums/SceneEnum';
+
 
 export default class CadastroPacienteScene extends Component {
     constructor(props) {
@@ -52,13 +54,13 @@ export default class CadastroPacienteScene extends Component {
             PacienteService.salvar(userId, form)
                 .then((response) => {
                     ToastAndroid.showWithGravity('Informações de paciente cadastradas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    navigate('MenuScene');
+                    navigate(SceneEnum.MENU);
                 });
         } else {
             PacienteService.atualizar(userId, form)
                 .then((response) => {
                     ToastAndroid.showWithGravity('Informações de paciente atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    navigate('MenuScene');
+                    navigate(SceneEnum.MENU);
                 });
         }
 

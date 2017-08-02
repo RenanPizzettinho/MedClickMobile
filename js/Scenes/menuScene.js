@@ -1,7 +1,8 @@
-//oi
 import React, {Component} from "react";
 import MenuComponent from "../Component/MenuComponent";
-import {Alert, AsyncStorage} from "react-native";
+import ContextoEnum from "../Enums/ContextoEnum";
+import StaticStorageService from '../Services/staticStorageService';
+import SceneEnum from '../Enums/SceneEnum';
 
 export default class MenuScene extends Component {
     constructor(props) {
@@ -11,57 +12,57 @@ export default class MenuScene extends Component {
             {
                 header: 'Solicitar atendimento',
                 nota: 'Solicite aqui a sua proxima consulta',
-                irPara: 'ListagemMedico',
+                irPara: SceneEnum.LISTAGEM_MEDICO,
                 icone: require('../Images/AtendimentoLogo2.png'),
-                perfil: 'PACIENTE'
+                perfil: ContextoEnum.PACIENTE
             },
             {
                 header: 'Atendimentos Paciente',
                 nota: 'Atendimentos em aberto',
-                irPara: 'ListagemSolicitacao',
+                irPara: SceneEnum.LISTAGEM_SOLICITACAO,
                 icone: require('../Images/AtendimentoLogo3.png'),
-                perfil: null
+                perfil: ContextoEnum.PACIENTE
             },
             {
                 header: 'Atendimentos Medico',
                 nota: 'Atendimentos em aberto',
-                irPara: 'ListagemSolicitacaoMedico',
+                irPara: SceneEnum.LISTAGEM_SOLICITACAO_MEDICO,
                 icone: require('../Images/AtendimentoLogo3.png'),
-                perfil: null
+                perfil: ContextoEnum.MEDICO
             },
             {
                 header: 'Recados',
                 nota: 'Recados das consultas realizadas',
-                irPara: 'ListagemMensagem',
+                irPara: SceneEnum.LISTAGEM_MENSAGEM,
                 icone: require('../Images/RecadosLogo.png'),
                 perfil: null
             },
             {
                 header: 'Informações pessoais',
                 nota: 'Informações pessoais',
-                irPara: 'CadastroPessoaScene',
+                irPara: SceneEnum.CADASTRO_PESSOA,
                 icone: require('../Images/UserLogo.png'),
                 perfil: null
             },
             {
                 header: 'Perfil de paciente',
                 nota: 'Atualize aqui suas informações de saúde',
-                irPara: 'CadastroPacienteScene',
+                irPara: SceneEnum.CADASTRO_PACIENTE,
                 icone: require('../Images/paciente.png'),
-                perfil: 'PACIENTE'
+                perfil: ContextoEnum.PACIENTE
             },
             {
                 header: 'Perfil de médico',
                 nota: 'Atualize as informações que vao aparecer no seu perfil médico',
-                irPara: 'CadastroMedicoScene',
+                irPara: SceneEnum.CADASTRO_MEDICO,
                 icone: require('../Images/MedicoLogo.png'),
-                perfil: 'MEDICO'
+                perfil: ContextoEnum.MEDICO
             }
         ];
-    }
 
-    componentWillMount() {
-        this.getPerfil().done();
+        this.menus = this.menus.filter((item)=>{
+            return item.perfil === StaticStorageService.contexto || item.perfil === null;
+        });
     }
 
     render() {
@@ -69,25 +70,8 @@ export default class MenuScene extends Component {
             <MenuComponent
                 navigation={this.props.navigation}
                 menus={this.menus}
-                getPerfil={this.getPerfil}
             />
         );
-    }
-
-    async getPerfil() {
-        this.perfil = await AsyncStorage.getItem('perfil');
-        let menuAtendimento = {
-            header: 'Atendimentos',
-            nota: 'Atendimentos em aberto',
-            irPara: (this.perfil === 'PACIENTE' ? 'ListagemSolicitacao' : 'ListagemSolicitacaoMedico'),
-            icone: require('../Images/AtendimentoLogo3.png'),
-            perfil: null
-        };
-
-        this.menus.push(menuAtendimento);
-        //Alert.alert("Teste", JSON.stringify(this.menus));
-
-        //Alert.alert("perfil", this.perfil);
     }
 
 }

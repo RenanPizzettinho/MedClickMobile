@@ -4,6 +4,7 @@ import {ToastAndroid} from "react-native";
 import CadastroMedicoComponent from "../Component/CadastroMedicoComponent";
 import StaticStorageService from "../Services/staticStorageService";
 import MedicoService from "../Services/medicoService";
+import SceneEnum from '../Enums/SceneEnum';
 
 export default class CadastroMedicoScene extends Component {
     constructor(props) {
@@ -118,13 +119,13 @@ export default class CadastroMedicoScene extends Component {
             MedicoService.salvar(userId, form)
                 .then((response) => {
                     ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    navigate('MenuScene');
+                    navigate(SceneEnum.MENU);
                 });
         } else {
             MedicoService.atualizar(userId, form)
                 .then((response) => {
                     ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    navigate('MenuScene');
+                    navigate(SceneEnum.MENU);
                 });
         }
 

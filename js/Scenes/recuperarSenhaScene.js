@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import UsuarioService from "../Services/usuarioService";
 import RecuperarSenhaComponent from "../Component/RecuperarSenhaComponent";
 import {Alert} from "react-native";
+import SceneEnum from '../Enums/SceneEnum';
 
 export default class RecuperarSenhaScene extends Component {
     constructor(props) {
@@ -34,7 +35,7 @@ export default class RecuperarSenhaScene extends Component {
         UsuarioService.recuperarSenha({email: state.email})
             .then((responseJson) => {
                 if (responseJson.status === 200) {
-                    navigate('Main');
+                    navigate(SceneEnum.LOGIN);
                 } else {
                     console.log(responseJson.data);
                 }

@@ -3,6 +3,7 @@ import SelecaoContextoComponent from "../Component/SelecaoContextoComponent";
 import StaticStorageService from '../Services/staticStorageService';
 import ContextoEnum from '../Enums/ContextoEnum';
 import {Alert} from "react-native";
+import SceneEnum from '../Enums/SceneEnum';
 
 export default class SelecaoContextoScene extends Component {
     constructor(props) {
@@ -31,9 +32,9 @@ export default class SelecaoContextoScene extends Component {
 
         if (usuario.idPaciente === undefined) {
             Alert.alert('Aviso', 'Olá,\n Este provavelmente é seu primeiro acesso como paciente, para melhorar sua experiencia neste app vamos lhe redirecionar para o cadastro de paciente, onde voce respondera um questionario medico simples.');
-            navigate('CadastroPacienteScene');
+            navigate(SceneEnum.CADASTRO_PACIENTE);
         } else {
-            navigate('MenuScene');
+            navigate(SceneEnum.MENU);
         }
     }
 
@@ -44,9 +45,9 @@ export default class SelecaoContextoScene extends Component {
 
         if (usuario.idMedico === undefined) {
             Alert.alert('Aviso', 'Olá,\n Este provavelmente é seu primeiro acesso como médico. Para poder usar a nossa app com perfil medico, primeiro voce precisa preencher suas informacoes no formulario de cadastro medico. Entao lhe redirecionaremos para este formulario.');
-            navigate('CadastroMedicoScene');
+            navigate(SceneEnum.CADASTRO_MEDICO);
         } else {
-            navigate('MenuScene');
+            navigate(SceneEnum.MENU);
         }
     }
 }

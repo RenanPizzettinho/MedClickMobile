@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 import LoginService from "../Services/loginService";
 import LoginComponent from "../Component/LoginComponent";
-import {Alert, AsyncStorage, ToastAndroid} from "react-native";
-import StaticStorageService from '../Services/staticStorageService';
+import {Alert, ToastAndroid} from "react-native";
+import StaticStorageService from "../Services/staticStorageService";
+import SceneEnum from '../Enums/SceneEnum';
 
 export default class LoginScene extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ export default class LoginScene extends Component {
     }
 
     render() {
-        return(
+        return (
             <LoginComponent
                 login={this.login}
                 disabled={this.disabled}
@@ -34,12 +35,12 @@ export default class LoginScene extends Component {
         LoginService.login(form)
             .then((responseJson) => {
                 console.log(responseJson);
-                if (responseJson.status === 403){
+                if (responseJson.status === 403) {
                     ToastAndroid.showWithGravity('Sem acesso', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
                 }
                 if (responseJson.data._id) {
                     StaticStorageService.usuarioSessao = responseJson.data;
-                    navigate('SelecaoContexto');
+                    navigate(SceneEnum.SELECAO_CONTEXTO);
                 } else {
                     Alert.alert('Erro', responseJson.data);
                 }
