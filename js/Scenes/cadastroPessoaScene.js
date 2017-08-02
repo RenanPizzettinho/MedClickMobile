@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-
-import {Alert, AsyncStorage, ToastAndroid} from "react-native";
+import {ToastAndroid} from "react-native";
 import UsuarioService from "../Services/usuarioService";
 import CadastroPessoaComponent from "../Component/CadastroPessoaComponent";
+import StaticStorageService from "../Services/staticStorageService";
 
 export default class CadastroPessoaScene extends Component {
     constructor(props) {
@@ -19,36 +19,24 @@ export default class CadastroPessoaScene extends Component {
             <CadastroPessoaComponent
                 salvar={this.salvar}
                 states={this.state}
-                disabled={CadastroPessoaScene.disabled}
+                disabled={this.disabled}
                 fetchData={this.fetchData}
             />
         );
     }
 
-    async fetchData() {
-        const userId = await AsyncStorage.getItem('userId');
-        UsuarioService.getUsuario(userId)
+    fetchData() {
+        const userId = StaticStorageService.usuarioSessao._id;
+        UsuarioService.get(userId)
             .then((response) => {
-                let dados = response.data;
-                let nome = response.data.nome;
-                //Alert.alert("resp", JSON.stringify(dados));
-
-                let data = new Date(dados.dtNascimento);
-                this.setState({nome: nome});
-                this.setState({cpf: dados.cpf});
-                this.setState({dtNascimento: data});
-
-                // Alert.alert(JSON.stringify(this.state));
-            })
-            .catch(
-                (error) => {
-                    // Alert.alert('Erro', JSON.stringify(error));
-                }
-            );
+                this.setState({nome: response.data.nome});
+                this.setState({cpf: response.data.cpf});
+                this.setState({dtNascimento: new Date(response.data.dtNascimento)});
+            });
     }
 
-    async salvar(state) {
-        const userId = await AsyncStorage.getItem('userId');
+    salvar(state) {
+        const userId = StaticStorageService.usuarioSessao._id;
         let form = {
             nome: state.nome,
             cpf: state.cpf,
@@ -58,15 +46,10 @@ export default class CadastroPessoaScene extends Component {
         UsuarioService.salvarInformacoesPessoais(userId, form)
             .then((responseJson) => {
                 ToastAndroid.showWithGravity('Informações de usuário atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                // Alert.alert('Sucesso', JSON.stringify(responseJson));
-
-            })
-            .catch((error) => {
-                Alert.alert('Erro', 'Erro ao atualizar o perfil!');
             });
     }
 
-    static disabled(state) {
+    disabled(state) {
         return !state.nome || !state.cpf || !state.dtNascimento;
     }
 

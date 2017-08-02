@@ -16,7 +16,7 @@ export default class CadastroPessoaComponent extends Component {
     }
 
     componentWillMount() {
-        this.fetchData().done();
+        this.fetchData();
     }
 
     render() {
