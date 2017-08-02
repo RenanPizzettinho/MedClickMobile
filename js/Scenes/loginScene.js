@@ -34,7 +34,6 @@ export default class LoginScene extends Component {
         };
         LoginService.login(form)
             .then((responseJson) => {
-                console.log(responseJson);
                 if (responseJson.status === 403) {
                     ToastAndroid.showWithGravity('Sem acesso', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
                 }

@@ -29,9 +29,10 @@ export default class CadastroPessoaScene extends Component {
         const userId = StaticStorageService.usuarioSessao._id;
         UsuarioService.get(userId)
             .then((response) => {
+                console.log(response);
                 this.setState({nome: response.data.nome});
                 this.setState({cpf: response.data.cpf});
-                this.setState({dtNascimento: new Date(response.data.dtNascimento)});
+                this.setState({dtNascimento: response.data.dtNascimento});
             });
     }
 

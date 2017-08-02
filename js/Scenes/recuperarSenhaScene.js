@@ -36,8 +36,6 @@ export default class RecuperarSenhaScene extends Component {
             .then((responseJson) => {
                 if (responseJson.status === 200) {
                     navigate(SceneEnum.LOGIN);
-                } else {
-                    console.log(responseJson.data);
                 }
             })
             .catch((error) => {

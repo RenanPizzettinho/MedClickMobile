@@ -50,9 +50,6 @@ export default class CadastroUsuarioScene extends Component {
                     ToastAndroid.showWithGravity('Usuário cadastrado', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
                     navigate(SceneEnum.LOGIN);
                 }
-            })
-            .catch((erro) => {
-               console.log('ERRO: ',erro)
             });
 
     }

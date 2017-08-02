@@ -42,7 +42,7 @@ export default class CadastroPessoaComponent extends Component {
                             <CampoData
                                 label="Data de nascimento"
                                 data={this.state.dtNascimento}
-                                setData={(data) => this.setState({dtNascimento: data})}
+                                setData={(data) => this.setState({dtNascimento: data.toString()})}
                             />
                         </Form>
                     </Card>
