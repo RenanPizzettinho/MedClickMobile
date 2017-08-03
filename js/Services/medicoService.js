@@ -1,5 +1,5 @@
 import RestService from './restHttpMethodService';
-import {usuarioPath, medicoPath} from './webPathService';
+import {usuarioPath, medicoPath, pesquisaMedicoPath} from './webPathService';
 
 const MedicoSevice = {
     salvar: salvar,
@@ -21,6 +21,6 @@ function atualizar(user, body) {
 }
 
 function pesquisar(parametro) {
-    return RestService.get(`${usuarioPath}/${medicoPath}?q=${parametro}`);
+    return RestService.get(`${pesquisaMedicoPath}${parametro}`);
 }
 export default MedicoSevice;

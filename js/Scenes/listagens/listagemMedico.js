@@ -10,17 +10,18 @@ import {
     Input,
     Item,
     Left,
-    ListItem,
     Text,
     Thumbnail,
     Title,
     View
 } from "native-base";
-import UsuarioService from "../../Services/usuarioService";
+import MedicoService from "../../Services/medicoService";
 import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
 import Card from "react-native-material-design/lib/Card/index";
-import {AsyncStorage, Modal} from "react-native";
+import {AsyncStorage, Image, Modal} from "react-native";
 import BotaoBase from "../../Component/Campos/BotaoBase";
+import styles from "../../StyleSheet/mainStyle";
+import SceneEnum from "../../Enums/SceneEnum";
 
 export default class listagemMedico extends Component {
 
@@ -32,7 +33,6 @@ export default class listagemMedico extends Component {
             selectedItem: undefined,
             medicos: []
         }
-        // medicos: [{nome: "Abacate", atendeEm: "CRICIUMA", especialidade: "CARDIOLOGISTA"}]
 
     }
 
@@ -46,9 +46,8 @@ export default class listagemMedico extends Component {
         this.setState({
             loading: true
         });
-        UsuarioService.pesquisarMedicos(this.state.search)
+        MedicoService.pesquisar(this.state.search)
             .then((responseJson) => {
-                //Alert.alert("reps", JSON.stringify(responseJson));
                 this.setState({
                     medicos: responseJson.data,
                     loading: false
@@ -93,18 +92,16 @@ export default class listagemMedico extends Component {
                             this.setModalVisible(!this.state.modalVisible, item);
                         }}
                     >
-                        <ListItem>
-                            <Card>
-                                <CardItem>
-                                    <Thumbnail source={require('../../Images/UserLogo.png')}/>
-                                    <View>
-                                        <Text>Nome: {item.nome}</Text>
-                                        <Text note>Especialidade: {item.especialidade}</Text>
-                                        <Text note>Atende em: {item.atendeEm}</Text>
-                                    </View>
-                                </CardItem>
-                            </Card>
-                        </ListItem>
+                        <Card>
+                            <CardItem>
+                                <Thumbnail source={require('../../Images/UserLogo.png')}/>
+                                <View>
+                                    <Text>Nome: {item.nome}</Text>
+                                    <Text note>Especialidade: {item.especialidade}</Text>
+                                    <Text note>Atende em: {item.atendeEm}</Text>
+                                </View>
+                            </CardItem>
+                        </Card>
                     </TouchableItem>
                 </Content>
             ));
@@ -140,20 +137,40 @@ export default class listagemMedico extends Component {
                     </Body>
                 </Header>
                 <Content>
+                    <Card>
+                        <Image
+                            source={require('../../Images/UserLogo.png')}
+                            object={styles.img}
+                            style={{
+                                width: 100,
+                                height: 100,
+                                alignSelf: "center",
+                                marginTop: 10,
+                                marginBottom: 10
+                            }}
+                        />
+                        <View>
+                            <Text>Nome: {item.nome}</Text>
+                            <Text>Especialidade: {item.especialidade}</Text>
+                            <Text>Atende em: {item.atendeEm}</Text>
+                            <Text>Dias em que atende: {item.diasAtendimentoDomicilio}</Text>
+                        </View>
+                    </Card>
                     <BotaoBase
                         text={"Solicitar consulta"}
                         title={"Solicitar consulta"}
                         onPress={() => {
                             this.guardarMedico().done();
                             this.setModalVisible(!this.state.modalVisible, item);
-                            navigate("CadastroSolicitacaoScene");
+                            navigate(SceneEnum.CADASTRO_SOLICITACAO);
                         }}
                     />
                 </Content>
             </Modal>
         );
     }
-    async guardarMedico(){
+
+    async guardarMedico() {
         await AsyncStorage.setItem('nomeMedico', this.state.selectedItem.nome);
         await AsyncStorage.setItem('idMedicoConsulta', this.state.selectedItem._id);
     }
