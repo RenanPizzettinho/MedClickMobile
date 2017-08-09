@@ -22,6 +22,7 @@ import {AsyncStorage, Image, Modal} from "react-native";
 import BotaoBase from "../../Component/Campos/BotaoBase";
 import styles from "../../StyleSheet/mainStyle";
 import SceneEnum from "../../Enums/SceneEnum";
+import StaticStorageService from "../../Services/staticStorageService";
 
 export default class listagemMedico extends Component {
 
@@ -160,7 +161,7 @@ export default class listagemMedico extends Component {
                         text={"Solicitar consulta"}
                         title={"Solicitar consulta"}
                         onPress={() => {
-                            this.guardarMedico().done();
+                            this.guardarMedico(item);
                             this.setModalVisible(!this.state.modalVisible, item);
                             navigate(SceneEnum.CADASTRO_SOLICITACAO);
                         }}
@@ -170,9 +171,8 @@ export default class listagemMedico extends Component {
         );
     }
 
-    async guardarMedico() {
-        await AsyncStorage.setItem('nomeMedico', this.state.selectedItem.nome);
-        await AsyncStorage.setItem('idMedicoConsulta', this.state.selectedItem._id);
+    guardarMedico(item) {
+        StaticStorageService.medicoConsulta = item;
     }
 
 }

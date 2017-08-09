@@ -17,12 +17,13 @@ import {
     Title,
     View
 } from "native-base";
-import {Alert, AsyncStorage, Image, Modal} from "react-native";
+import {Alert, Image, Modal} from "react-native";
 import BotaoBase from "../../Component/Campos/BotaoBase";
 import SolicitacaoService from "../../Services/solicitacaoService";
 import styles from "../../StyleSheet/mainStyle";
 import MensagemService from "../../Services/mensagemService";
 import CampoTexto from "../../Component/Campos/CampoTexto";
+import StaticStorageService from "../../Services/staticStorageService";
 
 export default class listagemSolicitacaoMedico extends Component {
 
@@ -44,16 +45,15 @@ export default class listagemSolicitacaoMedico extends Component {
         });
     }
 
-    async fetchData() {
-        const idPerfil = await AsyncStorage.getItem('idPerfil');
-        SolicitacaoService.getAtendimentos(idPerfil)
+    fetchData() {
+        const idPerfil = StaticStorageService.usuarioSessao._id;
+        SolicitacaoService.get(idPerfil)
             .then((response) => {
                 this.setState({
                     results: {
                         solicitacoes: response.data
                     }
                 });
-                //Alert.alert("resp", JSON.stringify(response.data));
             })
             .catch(
                 (error) => {
@@ -62,12 +62,12 @@ export default class listagemSolicitacaoMedico extends Component {
             );
     }
 
-    static async confirmarAtendimento(solicitacao) {
+    confirmarAtendimento(solicitacao) {
         let confirmacao = {
             "situacao": "CONFIRMADO"
         };
 
-        SolicitacaoService.confirmarSolicitacao(solicitacao._id, confirmacao)
+        SolicitacaoService.confirmar(solicitacao._id, confirmacao)
             .then(() => {
                 Alert.alert('Mensagem', "Atendimento confirmado com sucesso.");
             }).catch(() => {
@@ -77,8 +77,8 @@ export default class listagemSolicitacaoMedico extends Component {
         Alert.alert("teste", "Confirmação realizada.");
     }
 
-    async enviarMensagem(solicitacao) {
-        const idPerfil = await AsyncStorage.getItem('idPerfil');
+    enviarMensagem(solicitacao) {
+        const idPerfil = StaticStorageService.usuarioSessao._id;
         let para = '';
         if (solicitacao.idMedico === idPerfil) {
             para = solicitacao.idPaciente;
@@ -92,12 +92,12 @@ export default class listagemSolicitacaoMedico extends Component {
             "idAtendimento": solicitacao._id,
             "mensagem": this.state.primeiraMensagem
         };
-        MensagemService.respostaMessagge(messagge);
+        MensagemService.resposta(messagge);
         this.setState({"resposta": ""});
     }
 
     componentDidMount() {
-        this.fetchData().done();
+        this.fetchData();
         this.setState({loading: false});
     }
 
@@ -161,7 +161,7 @@ export default class listagemSolicitacaoMedico extends Component {
                                         <BotaoBase
                                             title="Confirmar"
                                             disabled={false}
-                                            onPress={() => listagemSolicitacaoMedico.confirmarAtendimento(this.state.selectedItem).done()}
+                                            onPress={() => this.confirmarAtendimento(this.state.selectedItem)}
                                         />}
                                     {this.state.selectedItem.situacao === "CONFIRMADO" ?
                                         <CampoTexto
@@ -174,7 +174,7 @@ export default class listagemSolicitacaoMedico extends Component {
                                     {this.state.selectedItem.situacao === "CONFIRMADO" ?
                                         <BotaoBase
                                             title="Enviar"
-                                            onPress={() => this.enviarMensagem(this.state.selectedItem).done()}
+                                            onPress={() => this.enviarMensagem(this.state.selectedItem)}
                                         /> :
                                         <View/>}
                                     </Body>

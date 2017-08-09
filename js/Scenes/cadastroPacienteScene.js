@@ -3,7 +3,7 @@ import {ToastAndroid} from "react-native";
 import PacienteService from "../Services/pacienteService";
 import CadastroPacienteComponent from "../Component/Telas/CadastroPacienteComponent";
 import StaticStorageService from "../Services/staticStorageService";
-import SceneEnum from '../Enums/SceneEnum';
+import SceneEnum from "../Enums/SceneEnum";
 
 
 export default class CadastroPacienteScene extends Component {
@@ -27,7 +27,7 @@ export default class CadastroPacienteScene extends Component {
         );
     }
 
-    async fetchData() {
+    fetchData() {
         PacienteService.get(StaticStorageService.usuarioSessao._id)
             .then((response) => {
                 let dados = response.data[0];
@@ -40,7 +40,7 @@ export default class CadastroPacienteScene extends Component {
             });
     }
 
-    async salvarPaciente(state) {
+    salvarPaciente(state) {
         const userId = StaticStorageService.usuarioSessao._id;
         const {navigate} = this.props.navigation;
 
@@ -63,9 +63,5 @@ export default class CadastroPacienteScene extends Component {
                     navigate(SceneEnum.MENU);
                 });
         }
-
-
     }
-
-
 }

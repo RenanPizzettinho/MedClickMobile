@@ -75,5 +75,17 @@ export default StyleSheet.create({
     buttonInline: {
         alignItems: 'flex-end',
         flexDirection: 'row',
+    },
+    container: {
+        ...StyleSheet.absoluteFillObject,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    map: {
+        width: 250,
+        height: 250,
+    },
+    selectBase: {
+        width: 250,
     }
 });

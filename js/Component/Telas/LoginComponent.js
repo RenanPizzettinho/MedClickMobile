@@ -22,7 +22,7 @@ export default class LoginComponent extends Component {
                 <Text style={styles.title}>MedClick</Text>
                 <TextInput
                     placeholder={'Email'}
-                    autoFocus={true}
+                    autoFocus={false}
 
                     style={styles.imput}
                     onChangeText={(email) => {

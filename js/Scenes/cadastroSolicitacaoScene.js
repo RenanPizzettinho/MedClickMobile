@@ -1,12 +1,13 @@
 import React, {Component} from "react";
 import styles from "../StyleSheet/mainStyle";
 import {Card, Container, Content, Form, H1} from "native-base";
-import {Alert, AsyncStorage, Image, ScrollView} from "react-native";
+import {Alert, Image, ScrollView} from "react-native";
 import SolicitacaoService from "../Services/solicitacaoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
 import CampoData from "../Component/Campos/CampoData";
 import BotaoBase from "../Component/Campos/BotaoBase";
-import SceneEnum from '../Enums/SceneEnum';
+import SceneEnum from "../Enums/SceneEnum";
+import StaticStorageService from "../Services/staticStorageService";
 
 export default class CadastroSolicitacaoScene extends Component {
     constructor(props) {
@@ -21,29 +22,27 @@ export default class CadastroSolicitacaoScene extends Component {
     }
 
     componentWillMount() {
-        this.getNomeMedico().done();
+        this.getNomeMedico();
     }
 
-    async getNomeMedico() {
-        this.nomeMedico = await AsyncStorage.getItem('nomeMedico');
-        this.setState({nomeMedico: this.nomeMedico});
-        Alert.alert("Teste", this.nomeMedico);
+    getNomeMedico() {
+        this.setState({nomeMedico: StaticStorageService.medicoConsulta.nome});
     }
 
-    async cadastrar() {
+    cadastrar() {
         const {navigate} = this.props.navigation;
-        let idPerfil = await AsyncStorage.getItem('idPerfil');
-        let idMedicoConsulta = await AsyncStorage.getItem('idMedicoConsulta');
+        let perfil = StaticStorageService.usuarioSessao;
+        let medicoConsulta = StaticStorageService.medicoConsulta;
 
         const form = {
-            idMedico: idMedicoConsulta,
-            idPaciente: idPerfil,
+            idMedico: medicoConsulta._id,
+            idPaciente: perfil,
             descricaoNecessidade: this.state.sintomas,
             dataConsulta: this.state.dataConsulta,
             localConsulta: this.state.localConsulta
         };
 
-        SolicitacaoService.cadastrarSolicitacao(form)
+        SolicitacaoService.cadastrar(form)
             .then((responseJson) => {
                 Alert.alert("Mensagem", "Solicitação registrada com sucesso.");
                 if (responseJson.data._id) {
@@ -96,7 +95,7 @@ export default class CadastroSolicitacaoScene extends Component {
                             </Card>
                             <BotaoBase
                                 title="Registrar"
-                                disabled={CadastroSolicitacaoScene.disabled(this.state)}
+                                disabled={this.disabled(this.state)}
                                 onPress={() => this.cadastrar()}
                             />
                         </ScrollView>
@@ -106,7 +105,7 @@ export default class CadastroSolicitacaoScene extends Component {
         )
     }
 
-    static disabled(state) {
+    disabled(state) {
         return !state.sintomas || !state.localConsulta;
     }
 }

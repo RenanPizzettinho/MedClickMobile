@@ -1,7 +1,8 @@
 import React, {Component} from "react";
-import {Button, Card, CheckBox, Container, Content, Form, ListItem, Text} from "native-base";
+import {Card, Container, Content, Form, Text} from "native-base";
 import CheckBoxBase from "../Campos/CheckBoxBase";
 import BotaoBase from "../Campos/BotaoBase";
+import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
 
 export default class CadastroPacienteComponent extends Component {
     constructor(props) {
@@ -12,7 +13,11 @@ export default class CadastroPacienteComponent extends Component {
     }
 
     componentWillMount() {
-        this.fetchData().done();
+        this.fetchData();
+    }
+
+    getLocation(){
+
     }
 
     render() {
@@ -36,6 +41,13 @@ export default class CadastroPacienteComponent extends Component {
                                     this.setState({possuiPressaoAlta: !this.state.possuiPressaoAlta});
                                 }}
                             />
+                            <TouchableItem onPress={this.getLocation}>
+                                <Text>
+                                    Localização
+                                    Latitude:{this.state.latitude}
+                                    Longitude:{this.state.longitude}
+                                </Text>
+                            </TouchableItem>
                         </Form>
                     </Card>
                     <BotaoBase
