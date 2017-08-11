@@ -23,11 +23,8 @@ import {Alert, AsyncStorage, Image, Modal} from "react-native";
 import BotaoBase from "../../Component/Campos/BotaoBase";
 import styles from "../../StyleSheet/mainStyle";
 import MensagemService from "../../Services/mensagemService";
+import StaticStorageService from "../../Services/staticStorageService";
 
-//Renomear para listagemSolicitacaoPendente
-//Ou
-//Criar segments ou o picker para usar da mesma tela
-//porém trazendo os pendentes, confirmados e encerrados
 export default class ListagemSolicitacao extends Component {
 
     constructor(props) {
@@ -50,21 +47,15 @@ export default class ListagemSolicitacao extends Component {
     }
 
     async fetchData() {
-        const idPerfil = await AsyncStorage.getItem('idPerfil');
-        SolicitacaoService.getAtendimentos(idPerfil)
+        const idPerfil = StaticStorageService.usuarioSessao._id;
+        SolicitacaoService.get(idPerfil)
             .then((response) => {
                 this.setState({
                     results: {
                         solicitacoes: response.data
                     }
                 });
-                // Alert.alert("Mensagem", JSON.stringify(response.data));
-            })
-            .catch(
-                (error) => {
-                    Alert.alert('Erro', JSON.stringify(error));
-                }
-            );
+            });
     }
 
     async cancelarAtendimento(solicitacao) {
@@ -73,7 +64,7 @@ export default class ListagemSolicitacao extends Component {
             "motivoCancelamento": this.state.motivoCancelamento
         };
 
-        SolicitacaoService.cancelarSolicitacao(solicitacao._id, cancelamento);
+        SolicitacaoService.cancelar(solicitacao._id, cancelamento);
         Alert.alert("teste", "Cancelamento efetuado com sucesso.");
     }
 

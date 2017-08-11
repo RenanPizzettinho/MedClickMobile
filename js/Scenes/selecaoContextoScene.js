@@ -8,7 +8,6 @@ import SceneEnum from '../Enums/SceneEnum';
 export default class SelecaoContextoScene extends Component {
     constructor(props) {
         super(props);
-        usuario = StaticStorageService.usuarioSessao;
     }
 
     componentWillMount() {
@@ -27,8 +26,10 @@ export default class SelecaoContextoScene extends Component {
 
     entrarPaciente() {
         const {navigate} = this.props.navigation;
-
+        const usuario = StaticStorageService.usuarioSessao;
         StaticStorageService.contexto = ContextoEnum.PACIENTE;
+
+        Alert.alert("", JSON.stringify(usuario));
 
         if (usuario.idPaciente === undefined) {
             Alert.alert('Aviso', 'Olá,\n Este provavelmente é seu primeiro acesso como paciente, para melhorar sua experiencia neste app vamos lhe redirecionar para o cadastro de paciente, onde voce respondera um questionario medico simples.');
@@ -40,7 +41,7 @@ export default class SelecaoContextoScene extends Component {
 
     entrarMedico() {
         const {navigate} = this.props.navigation;
-
+        const usuario = StaticStorageService.usuarioSessao;
         StaticStorageService.contexto = ContextoEnum.MEDICO;
 
         if (usuario.idMedico === undefined) {

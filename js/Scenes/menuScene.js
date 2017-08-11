@@ -53,11 +53,25 @@ export default class MenuScene extends Component {
             },
             {
                 header: 'Perfil de médico',
-                nota: 'Atualize as informações que vao aparecer no seu perfil médico',
+                nota: 'Atualize as informações que vão aparecer no seu perfil médico',
                 irPara: SceneEnum.CADASTRO_MEDICO,
                 icone: require('../Images/MedicoLogo.png'),
                 perfil: ContextoEnum.MEDICO
-            }
+            },
+            {
+                header: 'Informações de localização',
+                nota: 'Atualize as suas informações de localização',
+                irPara: SceneEnum.CADASTRO_LOCALIZACAO,
+                icone: require('../Images/MedClickLogo.png'),
+                perfil: null
+            },
+            {
+                header: 'Integrar com outras App`s',
+                nota: 'Traga dados dos seus aplicativos de treino favoritos',
+                irPara: SceneEnum.INTEGRAR_APP,
+                icone: require('../Images/MedClickLogo.png'),
+                perfil: ContextoEnum.PACIENTE
+            },
         ];
 
         this.menus = this.menus.filter((item)=>{

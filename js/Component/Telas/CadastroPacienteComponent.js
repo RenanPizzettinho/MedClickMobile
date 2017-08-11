@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import {Card, Container, Content, Form, Text} from "native-base";
+import {Card, Container, Content, Form, Header, Text} from "native-base";
 import CheckBoxBase from "../Campos/CheckBoxBase";
 import BotaoBase from "../Campos/BotaoBase";
 import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
+import Body from "react-native-material-design/lib/Card/Body";
 
 export default class CadastroPacienteComponent extends Component {
     constructor(props) {
@@ -16,7 +17,7 @@ export default class CadastroPacienteComponent extends Component {
         this.fetchData();
     }
 
-    getLocation(){
+    getLocation() {
 
     }
 
@@ -41,13 +42,7 @@ export default class CadastroPacienteComponent extends Component {
                                     this.setState({possuiPressaoAlta: !this.state.possuiPressaoAlta});
                                 }}
                             />
-                            <TouchableItem onPress={this.getLocation}>
-                                <Text>
-                                    Localização
-                                    Latitude:{this.state.latitude}
-                                    Longitude:{this.state.longitude}
-                                </Text>
-                            </TouchableItem>
+
                         </Form>
                     </Card>
                     <BotaoBase
@@ -56,6 +51,16 @@ export default class CadastroPacienteComponent extends Component {
                             this.salvar(this.state);
                         }}
                     />
+                    <Card>
+                        <Text>Informaçoes do app ABC</Text>
+                        <Body>
+                        <Text>
+                            AAA
+                            BBB
+                            CCC
+                        </Text>
+                        </Body>
+                    </Card>
                 </Content>
             </Container>
         );

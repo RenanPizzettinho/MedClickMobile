@@ -1,5 +1,6 @@
 const SceneEnum = {
     LOGIN : 'Main',
+    SELECAO_CONTEXTO : 'SelecaoContexto',
     MENU : 'MenuScene',
     CADASTRO_USUARIO : 'CadastroUsuario',
     CADASTRO_SOLICITACAO : 'CadastroSolicitacaoScene',
@@ -7,11 +8,12 @@ const SceneEnum = {
     CADASTRO_PACIENTE : 'CadastroPacienteScene',
     CADASTRO_MEDICO : 'CadastroMedicoScene',
     CADASTRO_PESSOA : 'CadastroPessoaScene',
+    CADASTRO_LOCALIZACAO : 'CadastroLocalizacaoScene',
     LISTAGEM_MEDICO : 'ListagemMedico',
-    SELECAO_CONTEXTO : 'SelecaoContexto',
     LISTAGEM_SOLICITACAO : 'ListagemSolicitacao',
     LISTAGEM_SOLICITACAO_MEDICO : 'ListagemSolicitacaoMedico',
     LISTAGEM_MENSAGEM : 'ListagemMensagem',
+    INTEGRAR_APP : 'IntegrarApp',
 };
 
 module.exports = SceneEnum;

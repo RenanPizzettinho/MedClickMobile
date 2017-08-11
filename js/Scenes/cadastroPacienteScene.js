@@ -45,7 +45,6 @@ export default class CadastroPacienteScene extends Component {
         const {navigate} = this.props.navigation;
 
         let form = {
-            _id: userId,
             possuiDiabete: state.possuiDiabete,
             possuiPressaoAlta: state.possuiPressaoAlta
         };

@@ -111,8 +111,6 @@ export default class CadastroMedicoScene extends Component {
 
         const userId = StaticStorageService.usuarioSessao._id;
 
-        form._id = userId;
-
         const {navigate} = this.props.navigation;
 
         if (!this.state.idMedico) {

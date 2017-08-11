@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import styles from "../StyleSheet/mainStyle";
 import {Card, Container, Content, Form, H1} from "native-base";
-import {Alert, Image, ScrollView} from "react-native";
+import {Image, ScrollView, ToastAndroid} from "react-native";
 import SolicitacaoService from "../Services/solicitacaoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
 import CampoData from "../Component/Campos/CampoData";
@@ -36,7 +36,7 @@ export default class CadastroSolicitacaoScene extends Component {
 
         const form = {
             idMedico: medicoConsulta._id,
-            idPaciente: perfil,
+            idPaciente: perfil.idPaciente,
             descricaoNecessidade: this.state.sintomas,
             dataConsulta: this.state.dataConsulta,
             localConsulta: this.state.localConsulta
@@ -44,13 +44,11 @@ export default class CadastroSolicitacaoScene extends Component {
 
         SolicitacaoService.cadastrar(form)
             .then((responseJson) => {
-                Alert.alert("Mensagem", "Solicitação registrada com sucesso.");
+                ToastAndroid.showWithGravity('"Solicitação registrada', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
                 if (responseJson.data._id) {
                     navigate(SceneEnum.LISTAGEM_SOLICITACAO);
                 }
-            }).catch((error) => {
-            Alert.alert('Erro', 'Erro ao registrar solicitação de atendimento!');
-        });
+            });
     }
 
     render() {
