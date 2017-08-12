@@ -68,7 +68,7 @@ export default class MenuScene extends Component {
             {
                 header: 'Integrar com outras App`s',
                 nota: 'Traga dados dos seus aplicativos de treino favoritos',
-                irPara: SceneEnum.INTEGRAR_APP,
+                irPara: SceneEnum.INTEGRAR_APP_MENU,
                 icone: require('../Images/MedClickLogo.png'),
                 perfil: ContextoEnum.PACIENTE
             },

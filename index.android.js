@@ -14,7 +14,9 @@ import ListagemSolicitacao from "./js/Scenes/listagens/listagemSolicitacao";
 import ListagemSolicitacaoMedico from "./js/Scenes/listagens/listagemSolicitacaoMedico";
 import ListagemMensagem from "./js/Scenes/listagens/listagemMensagem";
 import CadastroLocalizacaoScene from "./js/Scenes/cadastroLocalizacaoScene";
-import IntegrarApp from "./js/Scenes/integrarApp";
+import IntegrarApp from "./js/Scenes/integrarAppMenuScene";
+import IntegrarAzumio from "./js/Scenes/integrarAzumio";
+import WebViewMaps from "./js/Scenes/webViewMaps";
 
 const App = StackNavigator({
     Main: {screen: LoginScene},
@@ -31,7 +33,9 @@ const App = StackNavigator({
     ListagemSolicitacaoMedico: {screen: ListagemSolicitacaoMedico},
     ListagemMensagem: {screen: ListagemMensagem},
     CadastroLocalizacaoScene: {screen: CadastroLocalizacaoScene},
-    IntegrarApp: {screen: IntegrarApp},
+    integrarAppMenuScene: {screen: IntegrarApp},
+    IntegrarAzumio: {screen: IntegrarAzumio},
+    WebViewMaps: {screen: WebViewMaps},
 });
 
 AppRegistry.registerComponent('MedClickMobile', () => App);

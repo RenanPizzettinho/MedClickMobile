@@ -13,7 +13,9 @@ const SceneEnum = {
     LISTAGEM_SOLICITACAO : 'ListagemSolicitacao',
     LISTAGEM_SOLICITACAO_MEDICO : 'ListagemSolicitacaoMedico',
     LISTAGEM_MENSAGEM : 'ListagemMensagem',
-    INTEGRAR_APP : 'IntegrarApp',
+    INTEGRAR_APP_MENU : 'integrarAppMenuScene',
+    INTEGRAR_AZUMIO: 'IntegrarAzumio',
+    WEBVIEW_MAPS: 'WebViewMaps',
 };
 
 module.exports = SceneEnum;

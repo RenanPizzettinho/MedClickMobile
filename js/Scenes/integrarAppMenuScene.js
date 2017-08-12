@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import MenuComponent from "../Component/Telas/MenuComponent";
+import SceneEnum from "../Enums/SceneEnum";
 
-export default class IntegrarApp extends Component {
+export default class integrarAppMenuScene extends Component {
     constructor(props) {
         super(props);
         this.state = {}
@@ -11,7 +12,7 @@ export default class IntegrarApp extends Component {
         return [{
             header: 'AplicacaoExemplo',
             nota: 'Traga dados de AplicativoExemplo',
-            irPara: null,
+            irPara: SceneEnum.INTEGRAR_AZUMIO,
             icone: require('../Images/MedClickLogo.png'),
         }];
     }

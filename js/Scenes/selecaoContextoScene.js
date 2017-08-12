@@ -29,8 +29,6 @@ export default class SelecaoContextoScene extends Component {
         const usuario = StaticStorageService.usuarioSessao;
         StaticStorageService.contexto = ContextoEnum.PACIENTE;
 
-        Alert.alert("", JSON.stringify(usuario));
-
         if (usuario.idPaciente === undefined) {
             Alert.alert('Aviso', 'Olá,\n Este provavelmente é seu primeiro acesso como paciente, para melhorar sua experiencia neste app vamos lhe redirecionar para o cadastro de paciente, onde voce respondera um questionario medico simples.');
             navigate(SceneEnum.CADASTRO_PACIENTE);

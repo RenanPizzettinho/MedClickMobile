@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import {Container, Content, Text} from "native-base";
-import StaticStorageService from "../Services/staticStorageService";
-import ContextoEnum from "../Enums/ContextoEnum";
-import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
+import BotaoBase from "../Component/Campos/BotaoBase";
+import SceneEnum from "../Enums/SceneEnum";
 
 export default class CadastroLocalizacaoScene extends Component {
     constructor(props) {
@@ -14,7 +13,28 @@ export default class CadastroLocalizacaoScene extends Component {
         };
     }
 
-    componentDidMount() {
+    render() {
+        const {navigate} = this.props.navigation;
+        return (
+            <Container>
+                <Content>
+                    <Text>
+                        Localização
+                        Latitude:{this.state.latitude}
+                        Longitude:{this.state.longitude}
+                    </Text>
+                    {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
+                    <BotaoBase
+                        text="Atualizar localização"
+                        title="Atualizar localização"
+                        onPress={() => navigate(SceneEnum.WEBVIEW_MAPS)}
+                    />
+                </Content>
+            </Container>
+        );
+    }
+
+    /*getLocalizacao() {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
@@ -26,20 +46,7 @@ export default class CadastroLocalizacaoScene extends Component {
             (error) => this.setState({error: error.message}),
             {enableHighAccuracy: false, timeout: 200000, maximumAge: 1000},
         );
-    }
+    }*/
 
-    render() {
-        return (
-            <Container>
-                <Content>
-                    <Text>
-                        Localização
-                        Latitude:{this.state.latitude}
-                        Longitude:{this.state.longitude}
-                    </Text>
-                    {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
-                </Content>
-            </Container>
-        );
-    }
+
 }

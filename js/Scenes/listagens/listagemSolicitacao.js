@@ -69,7 +69,7 @@ export default class ListagemSolicitacao extends Component {
     }
 
     async enviarMensagem(solicitacao) {
-        const idPerfil = await AsyncStorage.getItem('idPerfil');
+        const idPerfil = StaticStorageService.usuarioSessao._id;
         let para = '';
         if (solicitacao.idMedico === idPerfil) {
             para = solicitacao.idPaciente;
@@ -86,15 +86,6 @@ export default class ListagemSolicitacao extends Component {
         MensagemService.respostaMessagge(messagge);
         this.setState({"resposta": ""});
     }
-
-    // async verificarExisteMensagem(idAtendimento) {
-    //     //passa o idAtendimento por param
-    //     MensagemService.getMensagensAtendimento('59500200c16f0b2260b2b682', idAtendimento)
-    //         .then((response) => {
-    //             Alert.alert("Resp", "teste " + !response.data);
-    //             return !response.data;
-    //         });
-    // }
 
     componentWillMount() {
         this.fetchData().done();
