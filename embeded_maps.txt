@@ -9,3 +9,11 @@ https://www.google.com/maps/embed/v1/MODE?key=AIzaSyCS-WWPdgWA4HMXh2rfUoEuWJbZoO
 
 
 {MODE} é uma das seguintes opções: place, directions, search, view ou streetview.
+
+<iframe
+  width="600"
+  height="450"
+  frameborder="0" style="border:0"
+  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCS-WWPdgWA4HMXh2rfUoEuWJbZoONbgUY
+    &q=Space+Needle,Seattle+WA" allowfullscreen>
+</iframe>
