@@ -62,7 +62,7 @@ export default class MenuScene extends Component {
                 header: 'Informações de localização',
                 nota: 'Atualize as suas informações de localização',
                 irPara: SceneEnum.CADASTRO_LOCALIZACAO,
-                icone: require('../Images/MedClickLogo.png'),
+                icone: require('../Images/compass.png'),
                 perfil: null
             },
             {

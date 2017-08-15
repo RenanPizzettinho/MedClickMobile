@@ -87,5 +87,9 @@ export default StyleSheet.create({
     },
     selectBase: {
         width: 250,
-    }
+    },
+    webView: {
+        backgroundColor: 'white',
+        height: 350,
+    },
 });
