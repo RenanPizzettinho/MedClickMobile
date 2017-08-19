@@ -9,13 +9,15 @@ const SceneEnum = {
     CADASTRO_MEDICO : 'CadastroMedicoScene',
     CADASTRO_PESSOA : 'CadastroPessoaScene',
     CADASTRO_LOCALIZACAO : 'CadastroLocalizacaoScene',
-    LISTAGEM_MEDICO : 'ListagemMedico',
+    PESQUISA_MEDICO : 'PesquisaMedico',
     LISTAGEM_SOLICITACAO : 'ListagemSolicitacao',
     LISTAGEM_SOLICITACAO_MEDICO : 'ListagemSolicitacaoMedico',
     LISTAGEM_MENSAGEM : 'ListagemMensagem',
     INTEGRAR_APP_MENU : 'integrarAppMenuScene',
     INTEGRAR_AZUMIO: 'IntegrarAzumio',
     WEBVIEW_MAPS: 'WebViewMaps',
+    SOLICITACAO: 'SolicitacaoScene',
+    MODO_PESQUISA: 'ModoPesquisaScene',
 };
 
 module.exports = SceneEnum;

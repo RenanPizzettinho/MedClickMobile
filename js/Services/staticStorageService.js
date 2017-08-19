@@ -2,5 +2,6 @@ export default class StaticStorageService{
 
     static usuarioSessao: {};
     static contexto: null;
-    static medicoConsulta: {}
+    static medicoConsulta: {};
+    static solicitacao: {};
 }

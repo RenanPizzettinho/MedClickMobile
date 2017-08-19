@@ -8,7 +8,7 @@ import MenuScene from "./js/Scenes/menuScene";
 import CadastroPacienteScene from "./js/Scenes/cadastroPacienteScene";
 import CadastroMedicoScene from "./js/Scenes/cadastroMedicoScene";
 import CadastroPessoaScene from "./js/Scenes/cadastroPessoaScene";
-import listagemMedico from "./js/Scenes/listagens/listagemMedico";
+import PesquisaMedico from "./js/Scenes/listagens/pesquisaMedico";
 import SelecaoContextoScene from "./js/Scenes/selecaoContextoScene";
 import ListagemSolicitacao from "./js/Scenes/listagens/listagemSolicitacao";
 import ListagemSolicitacaoMedico from "./js/Scenes/listagens/listagemSolicitacaoMedico";
@@ -17,6 +17,8 @@ import CadastroLocalizacaoScene from "./js/Scenes/cadastroLocalizacaoScene";
 import IntegrarApp from "./js/Scenes/integrarAppMenuScene";
 import IntegrarAzumio from "./js/Scenes/integrarAzumio";
 import WebViewMaps from "./js/Scenes/webViewMaps";
+import SolicitacaoScene from "./js/Scenes/SolicitacaoScene";
+import ModoPesquisaScene from "./js/Scenes/ModoPesquisaScene";
 
 const App = StackNavigator({
     Main: {screen: LoginScene},
@@ -27,7 +29,7 @@ const App = StackNavigator({
     CadastroPacienteScene: {screen: CadastroPacienteScene},
     CadastroMedicoScene: {screen: CadastroMedicoScene},
     CadastroPessoaScene: {screen: CadastroPessoaScene},
-    ListagemMedico: {screen: listagemMedico},
+    PesquisaMedico: {screen: PesquisaMedico},
     SelecaoContexto: {screen: SelecaoContextoScene},
     ListagemSolicitacao: {screen: ListagemSolicitacao},
     ListagemSolicitacaoMedico: {screen: ListagemSolicitacaoMedico},
@@ -36,6 +38,8 @@ const App = StackNavigator({
     integrarAppMenuScene: {screen: IntegrarApp},
     IntegrarAzumio: {screen: IntegrarAzumio},
     WebViewMaps: {screen: WebViewMaps},
+    SolicitacaoScene: {screen: SolicitacaoScene},
+    ModoPesquisaScene: {screen: ModoPesquisaScene},
 });
 
 AppRegistry.registerComponent('MedClickMobile', () => App);

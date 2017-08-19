@@ -12,7 +12,7 @@ export default class MenuScene extends Component {
             {
                 header: 'Solicitar atendimento',
                 nota: 'Solicite aqui a sua proxima consulta',
-                irPara: SceneEnum.LISTAGEM_MEDICO,
+                irPara: SceneEnum.MODO_PESQUISA,
                 icone: require('../Images/AtendimentoLogo2.png'),
                 perfil: ContextoEnum.PACIENTE
             },
