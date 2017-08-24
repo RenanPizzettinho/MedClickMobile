@@ -7,6 +7,10 @@ import TouchableItem from "../../../node_modules/react-navigation/lib/views/Touc
 
 export default class ListagemSolicitacao extends Component {
 
+    static navigationOptions = {
+        title: 'Minhas solicitações',
+    };
+
     constructor(props) {
         super(props);
         this.navigate = this.props.navigation;

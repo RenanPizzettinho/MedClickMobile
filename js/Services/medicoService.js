@@ -6,6 +6,7 @@ const MedicoSevice = {
     get: get,
     atualizar: atualizar,
     pesquisar: pesquisar,
+    validarCrm: validarCrm,
 };
 
 function salvar(user, body) {
@@ -22,5 +23,10 @@ function atualizar(user, body) {
 
 function pesquisar(parametro) {
     return RestService.get(`${pesquisaMedicoPath}${parametro}`);
+}
+
+function validarCrm(uf,crm) {
+    return RestService.getXml(`https://www.consultacrm.com.br/api/index.php?tipo=crm&uf=${uf}&q=${crm}&chave=lulucrate455566`)
+    // return RestService.getXml(`https://www.consultacrm.com.br/api/index.php?tipo=crm&uf=SC&q=666&chave=lulucrate455566`)
 }
 export default MedicoSevice;

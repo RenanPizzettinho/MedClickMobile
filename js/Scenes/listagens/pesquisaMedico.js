@@ -24,7 +24,7 @@ import styles from "../../StyleSheet/mainStyle";
 import SceneEnum from "../../Enums/SceneEnum";
 import StaticStorageService from "../../Services/staticStorageService";
 
-    export default class PesquisaMedico extends Component {
+export default class PesquisaMedico extends Component {
 
     static navigationOptions = {
         title: 'Pesquisar médico',

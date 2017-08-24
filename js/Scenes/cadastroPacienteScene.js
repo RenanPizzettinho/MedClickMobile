@@ -7,6 +7,11 @@ import SceneEnum from "../Enums/SceneEnum";
 
 
 export default class CadastroPacienteScene extends Component {
+
+    static navigationOptions = {
+        title: 'Perfil de paciente',
+    };
+
     constructor(props) {
         super(props);
 

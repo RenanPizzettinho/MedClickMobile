@@ -2,6 +2,11 @@ import React, {Component} from "react";
 import {WebView} from "react-native";
 
 export default class IntegrarAzumio extends Component {
+
+    static navigationOptions = {
+        title: 'Integrar com Azumio',
+    };
+
     constructor(props) {
         super(props);
         this.state = {}

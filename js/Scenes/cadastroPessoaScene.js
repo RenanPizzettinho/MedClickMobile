@@ -5,6 +5,11 @@ import CadastroPessoaComponent from "../Component/Telas/CadastroPessoaComponent"
 import StaticStorageService from "../Services/staticStorageService";
 
 export default class CadastroPessoaScene extends Component {
+
+    static navigationOptions = {
+        title: 'Informações pessoais',
+    };
+
     constructor(props) {
         super(props);
         this.state = {

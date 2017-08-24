@@ -3,7 +3,6 @@ import React, {Component} from "react";
 import {Card, Container, Content, Form} from "native-base";
 import CampoTexto from "../Campos/CampoTexto";
 import BotaoBase from "../Campos/BotaoBase";
-import CampoData from "../Campos/CampoData";
 
 export default class CadastroPessoaComponent extends Component {
     constructor(props) {
@@ -39,11 +38,11 @@ export default class CadastroPessoaComponent extends Component {
                                     this.setState({cpf});
                                 }}
                             />
-                            <CampoData
-                                label="Data de nascimento"
-                                data={this.state.dtNascimento}
-                                setData={(data) => this.setState({dtNascimento: data.toString()})}
-                            />
+                            {/*<CampoData*/}
+                                {/*label="Data de nascimento"*/}
+                                {/*data={this.state.dtNascimento}*/}
+                                {/*setData={(data) => this.setState({dtNascimento: data.toString()})}*/}
+                            {/*/>*/}
                         </Form>
                     </Card>
                     <BotaoBase

@@ -5,6 +5,9 @@ import StaticStorageService from '../Services/staticStorageService';
 import SceneEnum from '../Enums/SceneEnum';
 
 export default class MenuScene extends Component {
+    static navigationOptions = {
+        title: 'Menu',
+    };
     constructor(props) {
         super(props);
         this.state = {};

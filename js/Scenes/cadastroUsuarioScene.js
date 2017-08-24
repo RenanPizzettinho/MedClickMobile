@@ -6,6 +6,11 @@ import SceneEnum from '../Enums/SceneEnum';
 
 
 export default class CadastroUsuarioScene extends Component {
+
+    static navigationOptions = {
+        title: 'Cadastro de usuários',
+    };
+
     constructor(props) {
         super(props);
         this.state = {

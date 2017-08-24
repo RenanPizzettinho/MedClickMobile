@@ -4,7 +4,8 @@ const RestService = {
     get: get,
     post: post,
     patch: patch,
-    put: put
+    put: put,
+    getXml: getXml
 };
 
 const headers = {
@@ -14,6 +15,12 @@ const headers = {
 
 function get(uri) {
     return fetch(uri).then((response) => response.json());
+}
+
+function getXml(uri) {
+    return fetch(uri).then(response =>
+        response.text()
+    );
 }
 
 function post(uri, body) {

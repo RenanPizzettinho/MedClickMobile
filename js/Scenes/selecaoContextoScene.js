@@ -4,8 +4,16 @@ import StaticStorageService from '../Services/staticStorageService';
 import ContextoEnum from '../Enums/ContextoEnum';
 import {Alert} from "react-native";
 import SceneEnum from '../Enums/SceneEnum';
+import Sair from "../Component/Sair";
+import {NavigationActions} from "react-navigation";
 
 export default class SelecaoContextoScene extends Component {
+
+    static navigationOptions = {
+        title: 'Seleção de contexto',
+        headerRight: <Sair/>
+    };
+
     constructor(props) {
         super(props);
     }

@@ -4,6 +4,11 @@ import BotaoBase from "../Component/Campos/BotaoBase";
 import SceneEnum from "../Enums/SceneEnum";
 
 export default class CadastroLocalizacaoScene extends Component {
+
+    static navigationOptions = {
+        title: 'Informações de localização',
+    };
+
     constructor(props) {
         super(props);
         this.state = {

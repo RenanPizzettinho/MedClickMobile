@@ -10,6 +10,11 @@ import SceneEnum from "../Enums/SceneEnum";
 import StaticStorageService from "../Services/staticStorageService";
 
 export default class CadastroSolicitacaoScene extends Component {
+
+    static navigationOptions = {
+        title: 'Solicitar atendimento',
+    };
+
     constructor(props) {
         super(props);
 
