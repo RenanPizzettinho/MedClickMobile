@@ -45,6 +45,7 @@ export default class LoginScene extends Component {
                     ToastAndroid.showWithGravity('Sem acesso', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
                 }
                 if (responseJson.data._id) {
+                    console.log('RESPONSE: ', responseJson);
                     StaticStorageService.usuarioSessao = responseJson.data;
                     navigate(SceneEnum.SELECAO_CONTEXTO);
                 } else {

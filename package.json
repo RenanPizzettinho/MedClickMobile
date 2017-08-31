@@ -7,16 +7,18 @@
     "test": "jest"
   },
   "dependencies": {
+    "moment": "^2.18.1",
     "native-base": "^2.1.4",
     "react": "16.0.0-alpha.6",
+    "react-moment": "^0.6.4",
     "react-native": "0.44.0",
     "react-native-maps": "^0.15.3",
     "react-native-material-design": "^0.3.7",
     "react-native-material-kit": "^0.4.1",
     "react-native-modal-datetime-picker": "^4.7.0",
     "react-native-sidebar": "^0.3.0",
-    "react-navigation": "^1.0.0-beta.11",
-    "react-native-xml2js": "latest"
+    "react-native-xml2js": "latest",
+    "react-navigation": "^1.0.0-beta.11"
   },
   "devDependencies": {
     "babel-jest": "20.0.3",

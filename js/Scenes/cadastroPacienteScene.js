@@ -24,6 +24,7 @@ export default class CadastroPacienteScene extends Component {
             possuiPressaoAlta: false,
             integracoes: {
                 azumio: {
+                    token: null,
                     atualizadoEm: null,
                     dados: [
                         {
@@ -67,12 +68,18 @@ export default class CadastroPacienteScene extends Component {
             PacienteService.salvar(userId, form)
                 .then((response) => {
                     ToastAndroid.showWithGravity('Informações de paciente cadastradas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                    console.log('RESPONSE: ',response);
+                    StaticStorageService.usuarioSessao.idPaciente = response.data._id;
+                    console.log('USUARIO: ', StaticStorageService.usuarioSessao);
                     navigate(SceneEnum.MENU);
                 });
         } else {
             PacienteService.atualizar(userId, form)
                 .then((response) => {
                     ToastAndroid.showWithGravity('Informações de paciente atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                    console.log('RESPONSE: ',response);
+                    StaticStorageService.usuarioSessao.idPaciente = response.data._id;
+                    console.log('USUARIO: ', StaticStorageService.usuarioSessao);
                     navigate(SceneEnum.MENU);
                 });
         }
@@ -81,9 +88,10 @@ export default class CadastroPacienteScene extends Component {
     atualizarDadosAzumio() {
         PacienteService.atualizarAzumio(this.state.idPaciente)
             .then((resp) => {
+                console.log(resp);
                 this.setState({
                     integracoes: {
-                        azumio: resp.data
+                        azumio: resp.integracoes.azumio
                     }
                 });
                 ToastAndroid.showWithGravity('Informações da Azumio atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
@@ -103,11 +111,12 @@ export default class CadastroPacienteScene extends Component {
                     {this.state.integracoes.azumio.dados.map((item, index) =>
                         <View key={index}>
                             <Text style={{textAlign: "left"}}>Batimentos: {item.batimentos}</Text>
-                            <Text>Data marcação: {item.dataLeitura}</Text>
+                            {/*<Text>Data marcação: {new Date(item.dataLeitura).toLocaleDateString().split('-').reverse().join('/')}</Text>*/}
+                            <Text>Data marcação: {new Date(item.dataLeitura).toDateString()}</Text>
                             <Divider/>
                         </View>
                     )}
-                    <Text>Atualizado em: {this.state.integracoes.azumio.atualizadoEm}</Text>
+                    <Text>Atualizado em: {new Date(this.state.integracoes.azumio.atualizadoEm).toDateString()}</Text>
                     </Body>
                 </Card>
                 <BotaoBase
@@ -153,7 +162,7 @@ export default class CadastroPacienteScene extends Component {
                             this.salvarPaciente(this.state);
                         }}
                     />
-                    {this.integracoesAzumio()}
+                    {(this.state.integracoes.azumio.token) ? this.integracoesAzumio() : null}
                 </Content>
             </Container>
         );

@@ -131,6 +131,9 @@ export default class CadastroMedicoScene extends Component {
                     console.log(response);
                     this.atualizarNome();
                     ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                    console.log('RESPONSE: ',response);
+                    StaticStorageService.usuarioSessao.idMedico = response.data._id;
+                    console.log('USUARIO: ', StaticStorageService.usuarioSessao);
                     navigate(SceneEnum.MENU);
                 })
                 .catch((err) => console.log(err));
@@ -139,6 +142,9 @@ export default class CadastroMedicoScene extends Component {
                 .then((response) => {
                     this.atualizarNome();
                     ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                    console.log('RESPONSE: ',response);
+                    StaticStorageService.usuarioSessao.idMedico = response.data._id;
+                    console.log('USUARIO: ', StaticStorageService.usuarioSessao);
                     navigate(SceneEnum.MENU);
                 });
         }

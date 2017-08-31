@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {WebView} from "react-native";
-import {Content, View} from "native-base";
-import BotaoBase from "../Component/Campos/BotaoBase";
+import {azumio} from "../Services/webPathService";
+import StaticStorageService from "../Services/staticStorageService";
 
 export default class IntegrarAzumio extends Component {
 
@@ -15,10 +15,12 @@ export default class IntegrarAzumio extends Component {
     }
 
     render() {
+        const uri = `${azumio}/${StaticStorageService.usuarioSessao.idPaciente}`;
+        console.log(uri);
         return (
             <WebView
                 ref="webview"
-                source={{uri: 'https://api.azumio.com/api2/authorize?redirect_uri=http://www.example.com&client_id=org.organization.example'}}
+                source={{uri: uri}}
                 onNavigationStateChange={this._onNavigationStateChange.bind(this)}
                 startInLoadingState={true}
                 style={{height: 900}}
@@ -28,5 +30,6 @@ export default class IntegrarAzumio extends Component {
 
     _onNavigationStateChange(webViewState) {
         console.log(webViewState.url);
+
     }
 }
