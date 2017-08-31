@@ -23,7 +23,7 @@ export default class CadastroMedicoScene extends Component {
         this.state = {
             crm: '',
             estado: '',
-            nome: '',
+            nome: null,
             valido: false,
             especialidade: '',
             atendeEm: '',
@@ -144,7 +144,7 @@ export default class CadastroMedicoScene extends Component {
         }
     }
 
-    atualizarNome(){
+    atualizarNome() {
         const userId = StaticStorageService.usuarioSessao._id;
         const body = {nome: this.state.nome};
         UsuarioService.salvarInformacoesPessoais(userId, body)
@@ -161,7 +161,9 @@ export default class CadastroMedicoScene extends Component {
                 parseString(response, function callback(err, result) {
                     console.log(result.rss.channel[0]);
                     total = result.rss.channel[0].total[0];
-                    nome = result.rss.channel[0].item[0].nome[0];
+                    if (total > 0) {
+                        nome = result.rss.channel[0].item[0].nome[0];
+                    }
                 });
                 console.log('Validado', total);
                 if (total > 0) {
@@ -269,11 +271,15 @@ export default class CadastroMedicoScene extends Component {
                 <Content>
                     <Card>
                         <Form>
-                            <CampoTexto
-                                label={'Nome'}
-                                value={this.state.nome}
-                                disabled={true}
-                            />
+                            {
+                                (this.state.nome === null)? null :
+                                <CampoTexto
+                                    label={'Nome'}
+                                    value={this.state.nome}
+                                    disabled={true}
+                                />
+                            }
+
                             <CampoTexto
                                 label="CRM"
                                 value={this.state.crm}

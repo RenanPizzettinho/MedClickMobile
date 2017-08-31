@@ -24,7 +24,7 @@ export default class CadastroPacienteScene extends Component {
             possuiPressaoAlta: false,
             integracoes: {
                 azumio: {
-                    ultimaAtualizacao: null,
+                    atualizadoEm: null,
                     dados: [
                         {
                             batimentos: null,
@@ -107,7 +107,7 @@ export default class CadastroPacienteScene extends Component {
                             <Divider/>
                         </View>
                     )}
-                    <Text>Atualizado em: {this.state.integracoes.azumio.ultimaAtualizacao}</Text>
+                    <Text>Atualizado em: {this.state.integracoes.azumio.atualizadoEm}</Text>
                     </Body>
                 </Card>
                 <BotaoBase

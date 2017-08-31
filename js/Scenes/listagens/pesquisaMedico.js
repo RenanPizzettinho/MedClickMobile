@@ -18,7 +18,7 @@ import {
 import MedicoService from "../../Services/medicoService";
 import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
 import Card from "react-native-material-design/lib/Card/index";
-import {AsyncStorage, Image, Modal} from "react-native";
+import {ActivityIndicator, AsyncStorage, Image, Modal} from "react-native";
 import BotaoBase from "../../Component/Campos/BotaoBase";
 import styles from "../../StyleSheet/mainStyle";
 import SceneEnum from "../../Enums/SceneEnum";
@@ -34,7 +34,7 @@ export default class PesquisaMedico extends Component {
         super(props);
         this.state = {
             modalVisible: false,
-            search: 'Native',
+            search: null,
             selectedItem: undefined,
             medicos: []
         }
@@ -81,6 +81,14 @@ export default class PesquisaMedico extends Component {
                     </Item>
                 </Header>
                 <Content>
+                    {(this.state.medicos.length === 0 || this.state.medicos === null)?
+                        <ActivityIndicator
+                            animating={true}
+                            style={{height: 80}}
+                            size="large"
+                        />
+                        : null
+                    }
                     {this.medicos()}
                     {this.modal()}
                 </Content>

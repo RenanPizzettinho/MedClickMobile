@@ -4,6 +4,7 @@ import SolicitacaoService from "../../Services/solicitacaoService";
 import StaticStorageService from "../../Services/staticStorageService";
 import SceneEnum from "../../Enums/SceneEnum";
 import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
+import {ActivityIndicator} from "react-native";
 
 export default class ListagemSolicitacao extends Component {
 
@@ -40,14 +41,18 @@ export default class ListagemSolicitacao extends Component {
         this.setState({loading: false});
     }
 
-    selecionarAtendimento(solicitacao) {
-
-    }
-
     render() {
         return (
             <Container>
                 <Content>
+                    {(this.state.solicitacoes.length === 0 || this.state.solicitacoes === null)?
+                        <ActivityIndicator
+                            animating={true}
+                            style={{height: 80}}
+                            size="large"
+                        />
+                        : null
+                    }
                     {this.item()}
                 </Content>
             </Container >
