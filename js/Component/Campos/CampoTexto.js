@@ -13,6 +13,7 @@ export default class CampoTexto extends Component {
                 label={this.props.label}
                 value={this.props.value}
                 onChange={this.props.onChange}
+                disabled={this.props.disabled}
             />
         );
     }

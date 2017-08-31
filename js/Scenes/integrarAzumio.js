@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import {WebView} from "react-native";
+import {Content, View} from "native-base";
+import BotaoBase from "../Component/Campos/BotaoBase";
 
 export default class IntegrarAzumio extends Component {
 
@@ -13,17 +15,18 @@ export default class IntegrarAzumio extends Component {
     }
 
     render() {
-        return(
+        return (
             <WebView
                 ref="webview"
                 source={{uri: 'https://api.azumio.com/api2/authorize?redirect_uri=http://www.example.com&client_id=org.organization.example'}}
                 onNavigationStateChange={this._onNavigationStateChange.bind(this)}
                 startInLoadingState={true}
+                style={{height: 900}}
             />
         );
     }
 
-    _onNavigationStateChange(webViewState){
+    _onNavigationStateChange(webViewState) {
         console.log(webViewState.url);
     }
 }

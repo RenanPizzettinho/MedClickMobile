@@ -15,6 +15,7 @@ export default class CampoBase extends Component {
                     value={this.props.value}
                     onChangeText={this.props.onChange}
                     secureTextEntry={this.props.secureTextEntry || false}
+                    disabled={this.props.disabled}
                 />
             </Item>
         );

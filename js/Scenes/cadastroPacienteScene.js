@@ -1,9 +1,12 @@
 import React, {Component} from "react";
 import {ToastAndroid} from "react-native";
 import PacienteService from "../Services/pacienteService";
-import CadastroPacienteComponent from "../Component/Telas/CadastroPacienteComponent";
 import StaticStorageService from "../Services/staticStorageService";
 import SceneEnum from "../Enums/SceneEnum";
+import {Body, Card, Container, Content, Form, H3, Text, View} from "native-base";
+import CheckBoxBase from "../Component/Campos/CheckBoxBase";
+import BotaoBase from "../Component/Campos/BotaoBase";
+import Divider from "react-native-material-design/lib/Divider";
 
 
 export default class CadastroPacienteScene extends Component {
@@ -16,20 +19,25 @@ export default class CadastroPacienteScene extends Component {
         super(props);
 
         this.state = {
+            idPaciente: null,
             possuiDiabete: false,
-            possuiPressaoAlta: false
+            possuiPressaoAlta: false,
+            integracoes: {
+                azumio: {
+                    ultimaAtualizacao: null,
+                    dados: [
+                        {
+                            batimentos: null,
+                            dataLeitura: null,
+                        },
+                    ]
+                }
+            }
         };
     }
 
-    render() {
-        return (
-            <CadastroPacienteComponent
-                salvar={this.salvarPaciente}
-                states={this.state}
-                fetchData={this.fetchData}
-                navigation={this.props.navigation}
-            />
-        );
+    componentWillMount() {
+        this.fetchData();
     }
 
     fetchData() {
@@ -40,7 +48,8 @@ export default class CadastroPacienteScene extends Component {
                 this.setState({
                     idPaciente: dados._id,
                     possuiDiabete: dados.possuiDiabete,
-                    possuiPressaoAlta: dados.possuiPressaoAlta
+                    possuiPressaoAlta: dados.possuiPressaoAlta,
+                    integracoes: dados.integracoes
                 });
             });
     }
@@ -68,4 +77,87 @@ export default class CadastroPacienteScene extends Component {
                 });
         }
     }
+
+    atualizarDadosAzumio() {
+        PacienteService.atualizarAzumio(this.state.idPaciente)
+            .then((resp) => {
+                this.setState({
+                    integracoes: {
+                        azumio: resp.data
+                    }
+                });
+                ToastAndroid.showWithGravity('Informações da Azumio atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+            })
+            .catch((err) => console.log(err));
+    }
+
+    integracoesAzumio() {
+        console.log(this.state.integracoes.azumio.dados);
+        return (
+
+            <View>
+                <Card>
+                    <H3 style={{textAlign: "center"}}>Azumio</H3>
+                    <Divider/>
+                    <Body>
+                    {this.state.integracoes.azumio.dados.map((item, index) =>
+                        <View key={index}>
+                            <Text style={{textAlign: "left"}}>Batimentos: {item.batimentos}</Text>
+                            <Text>Data marcação: {item.dataLeitura}</Text>
+                            <Divider/>
+                        </View>
+                    )}
+                    <Text>Atualizado em: {this.state.integracoes.azumio.ultimaAtualizacao}</Text>
+                    </Body>
+                </Card>
+                <BotaoBase
+                    text={'Atualizar dados'}
+                    title={'Atualizar dados'}
+                    disabled={false}
+                    onPress={() => this.atualizarDadosAzumio()}
+                />
+            </View>
+
+        );
+    }
+
+    render() {
+        const {navigate} = this.props.navigation;
+        return (
+            <Container>
+                <Content>
+                    <Card>
+                        <H3 style={{textAlign: "center"}}>Dados médicos</H3>
+                        <Divider/>
+                        <Form>
+                            <CheckBoxBase
+                                label="Possui diabetes?"
+                                checked={this.state.possuiDiabete}
+                                onPress={() => {
+                                    this.setState({possuiDiabete: !this.state.possuiDiabete});
+                                }}
+                            />
+                            <CheckBoxBase
+                                label="Possui pressão alta?"
+                                checked={this.state.possuiPressaoAlta}
+                                onPress={() => {
+                                    this.setState({possuiPressaoAlta: !this.state.possuiPressaoAlta});
+                                }}
+                            />
+
+                        </Form>
+                    </Card>
+                    <BotaoBase
+                        title="Salvar"
+                        onPress={() => {
+                            this.salvarPaciente(this.state);
+                        }}
+                    />
+                    {this.integracoesAzumio()}
+                </Content>
+            </Container>
+        );
+    }
+
+
 }

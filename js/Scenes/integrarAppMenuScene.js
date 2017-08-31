@@ -15,8 +15,8 @@ export default class integrarAppMenuScene extends Component {
 
     aplicativos(){
         return [{
-            header: 'AplicacaoExemplo',
-            nota: 'Traga dados de AplicativoExemplo',
+            header: 'Azumio',
+            nota: 'Traga dados de batimento cardiaco',
             irPara: SceneEnum.INTEGRAR_AZUMIO,
             icone: require('../Images/MedClickLogo.png'),
         }];

@@ -12,3 +12,5 @@ export const pacientePath = 'perfil-paciente';
 export const atendimentoPath = `${webService}atendimentos`;
 export const mensagemPath = 'mensagens';
 export const resetPassword = `${webService}reset-password`;
+export const integracao = `${webService}integracao`;
+export const azumio = `${integracao}/azumio/paciente`;
