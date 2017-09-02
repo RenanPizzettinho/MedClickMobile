@@ -51,7 +51,8 @@ export default class PesquisaMedico extends Component {
         this.setState({
             loading: true
         });
-        MedicoService.pesquisar(this.state.search)
+        const { params } = this.props.navigation.state;
+        MedicoService.pesquisar(`${params.filtro}${this.state.search}`)
             .then((responseJson) => {
                 this.setState({
                     medicos: responseJson.data,
@@ -67,6 +68,7 @@ export default class PesquisaMedico extends Component {
     }
 
     render() {
+        const { params } = this.props.navigation.state;
         return (
             <Container>
                 <Header searchBar rounded>
@@ -81,6 +83,7 @@ export default class PesquisaMedico extends Component {
                     </Item>
                 </Header>
                 <Content>
+                    <Text>{`${params.filtro}${this.state.search}`}</Text>
                     {(this.state.medicos.length === 0 || this.state.medicos === null)?
                         <ActivityIndicator
                             animating={true}
@@ -112,6 +115,7 @@ export default class PesquisaMedico extends Component {
                                     <Text>Nome: {item.nome}</Text>
                                     <Text note>Especialidade: {item.especialidade}</Text>
                                     <Text note>Atende em: {item.atendeEm}</Text>
+                                    <Text note>Esta a: 10 km</Text>
                                 </View>
                             </CardItem>
                         </Card>

@@ -49,7 +49,7 @@ export default class listagemSolicitacaoMedico extends Component {
                     key={index}
                     onPress={() => {
                         StaticStorageService.solicitacao = solicitacao;
-                        navigate(SceneEnum.SOLICITACAO);
+                        navigate(SceneEnum.SOLICITACAO_MEDICO);
                     }}
                 >
                     <Card>
@@ -57,7 +57,7 @@ export default class listagemSolicitacaoMedico extends Component {
                             <Left>
                                 <Thumbnail square source={require("./../../Images/UserLogo.png")}/>
                                 <Body>
-                                <Text>{`Médico: ${solicitacao.nomeMedico}`}</Text>
+                                <Text>{`Paciente: ${solicitacao.nomePaciente}`}</Text>
                                 <Text note>{`Data: ${solicitacao.dataConsulta}`}</Text>
                                 <Text note>{`Situação: ${solicitacao.situacao}`}</Text>
                                 </Body>

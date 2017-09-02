@@ -17,7 +17,9 @@ const SceneEnum = {
     INTEGRAR_AZUMIO: 'IntegrarAzumio',
     WEBVIEW_MAPS: 'WebViewMaps',
     SOLICITACAO: 'SolicitacaoScene',
+    SOLICITACAO_MEDICO: 'SolicitacaoMedicoScene',
     MODO_PESQUISA: 'ModoPesquisaScene',
+
 };
 
 module.exports = SceneEnum;

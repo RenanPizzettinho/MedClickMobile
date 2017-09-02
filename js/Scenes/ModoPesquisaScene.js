@@ -30,15 +30,15 @@ export default class ModoPesquisaScene extends Component {
     modoPesquisa() {
         const {navigate} = this.props.navigation;
         const modos = [
-            {text: 'Pesquisar por localização'},
-            {text: 'Pesquisar por nome'},
-            {text: 'Pesquisar por especialidade'},
-            {text: 'Pesquisar por cidade'},
+            {text: 'Pesquisar por localização', filtro: '?geo='},
+            {text: 'Pesquisar por nome', filtro: '?nome='},
+            {text: 'Pesquisar por especialidade', filtro: '?especialidade='},
+            {text: 'Pesquisar por cidade', filtro: '?atendeEm='},
         ];
         return (
             modos.map((item, index) =>
                 <ListItem key={index}>
-                    <TouchableItem onPress={() => navigate(SceneEnum.PESQUISA_MEDICO)}>
+                    <TouchableItem onPress={() => navigate(SceneEnum.PESQUISA_MEDICO, {filtro: item.filtro})}>
                         <Content>
                             <Text>{item.text}</Text>
                         </Content>

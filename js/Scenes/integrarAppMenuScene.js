@@ -15,10 +15,10 @@ export default class integrarAppMenuScene extends Component {
 
     aplicativos(){
         return [{
-            header: 'Azumio',
+            header: 'INSTANT HEART RATE',
             nota: 'Traga dados de batimento cardiaco',
             irPara: SceneEnum.INTEGRAR_AZUMIO,
-            icone: require('../Images/MedClickLogo.png'),
+            icone: require('../Images/ihrLogo.png'),
         }];
     }
 

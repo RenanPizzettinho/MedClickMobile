@@ -7,7 +7,7 @@ const webService = 'http://192.168.99.1:3000/api/v1/';
 export const loginPath = `${webService}login`;
 export const usuarioPath = `${webService}usuarios`;
 export const medicoPath = 'perfil-medico';
-export const pesquisaMedicoPath = `${webService}medicos?q=`;
+export const pesquisaMedicoPath = `${webService}medicos`;
 export const pacientePath = 'perfil-paciente';
 export const atendimentoPath = `${webService}atendimentos`;
 export const mensagemPath = 'mensagens';

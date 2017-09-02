@@ -16,7 +16,7 @@ export default class SelectBase extends Component {
                 <Picker
                     supportedOrientations={this.props.supportedOrientations || ['portrait', 'landscape']}
                     headerComponent={this.header}
-                    mode={this.props.mode || "dropdown"}
+                    prompt={this.props.title}
                     selectedValue={this.props.selectedValue || {}}
                     onValueChange={this.props.onValueChange}
                 >

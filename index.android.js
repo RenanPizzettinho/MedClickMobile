@@ -19,6 +19,7 @@ import IntegrarAzumio from "./js/Scenes/integrarAzumio";
 import WebViewMaps from "./js/Scenes/webViewMaps";
 import SolicitacaoScene from "./js/Scenes/SolicitacaoScene";
 import ModoPesquisaScene from "./js/Scenes/ModoPesquisaScene";
+import SolicitacaoMedicoScene from "./js/Scenes/SolicitacaoMedicoScene";
 
 const App = StackNavigator({
     Main: {screen: LoginScene},
@@ -40,6 +41,7 @@ const App = StackNavigator({
     WebViewMaps: {screen: WebViewMaps},
     SolicitacaoScene: {screen: SolicitacaoScene},
     ModoPesquisaScene: {screen: ModoPesquisaScene},
+    SolicitacaoMedicoScene: {screen: SolicitacaoMedicoScene},
 });
 
 AppRegistry.registerComponent('MedClickMobile', () => App);

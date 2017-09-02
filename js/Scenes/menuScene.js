@@ -34,6 +34,13 @@ export default class MenuScene extends Component {
                 perfil: ContextoEnum.MEDICO
             },
             {
+                header: 'Recados',
+                nota: 'Recados das consultas realizadas',
+                irPara: SceneEnum.LISTAGEM_MENSAGEM,
+                icone: require('../Images/RecadosLogo.png'),
+                perfil: null
+            },
+            {
                 header: 'Informações pessoais',
                 nota: 'Informações pessoais',
                 irPara: SceneEnum.CADASTRO_PESSOA,
@@ -65,7 +72,7 @@ export default class MenuScene extends Component {
                 header: 'Integrar com outras App`s',
                 nota: 'Traga dados dos seus aplicativos de treino favoritos',
                 irPara: SceneEnum.INTEGRAR_APP_MENU,
-                icone: require('../Images/MedClickLogo.png'),
+                icone: require('../Images/integracao.png'),
                 perfil: ContextoEnum.PACIENTE
             },
         ];

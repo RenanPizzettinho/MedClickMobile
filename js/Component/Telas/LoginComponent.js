@@ -54,13 +54,6 @@ export default class LoginComponent extends Component {
                         Não possui conta?
                     </Text>
                 </TouchableHighlight>
-                <TouchableHighlight
-                    onPress={() => navigate(SceneEnum.RECUPERAR_SENHA)}
-                >
-                    <Text>
-                        Esqueceu a senha?
-                    </Text>
-                </TouchableHighlight>
             </View>
         )
     }

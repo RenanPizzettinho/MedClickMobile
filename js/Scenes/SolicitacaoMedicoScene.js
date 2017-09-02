@@ -5,11 +5,10 @@ import BotaoBase from "../Component/Campos/BotaoBase";
 import Divider from "react-native-material-design/lib/Divider";
 import {Image, ToastAndroid} from "react-native";
 import StatusSolicitacaoEnum from "../Enums/StatusSolicitacaoEnum";
-import SceneEnum from "../Enums/SceneEnum";
 import SolicitacaoService from "../Services/solicitacaoService";
+import SceneEnum from "../Enums/SceneEnum";
 
-
-export default class SolicitacaoScene extends Component {
+export default class SolicitacaoMedicoScene extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,7 +22,49 @@ export default class SolicitacaoScene extends Component {
     }
 
     acoes() {
-        if (this.state.solicitacao.situacao !== StatusSolicitacaoEnum.CANCELADO.KEY) {
+        return (
+            <Content>
+                {this.botaoAtender()}
+                {this.botaoConfirmar()}
+                {this.botaoCancelar()}
+            </Content>
+        );
+    }
+
+    botaoAtender() {
+        const situacao = this.state.solicitacao.situacao;
+        if (situacao !== StatusSolicitacaoEnum.CANCELADO.KEY &&
+            situacao !== StatusSolicitacaoEnum.CONFIRMADO.KEY &&
+            StatusSolicitacaoEnum.ENCERRADO.KEY) {
+            return (
+                <BotaoBase
+                    text={'Atender'}
+                    title={'Atender'}
+                    disabled={false}
+                    onPress={() => this.atender()}
+                />
+            );
+        }
+    }
+
+    botaoConfirmar() {
+        const situacao = this.state.solicitacao.situacao;
+        if (situacao !== StatusSolicitacaoEnum.CANCELADO.KEY &&
+            situacao !== StatusSolicitacaoEnum.CONFIRMADO.KEY) {
+            return (
+                <BotaoBase
+                    text={'Confirmar'}
+                    title={'Confirmar'}
+                    disabled={false}
+                    onPress={() => this.confirmar()}
+                />
+            );
+        }
+    }
+
+    botaoCancelar() {
+        const situacao = this.state.solicitacao.situacao;
+        if (situacao !== StatusSolicitacaoEnum.CANCELADO.KEY) {
             return (
                 <BotaoBase
                     text={'Cancelar'}
@@ -35,13 +76,25 @@ export default class SolicitacaoScene extends Component {
         }
     }
 
+    atender() {
+        this.movimentarSolicitacao(StatusSolicitacaoEnum.ENCERRADO.KEY, 'Solicitação atendida');
+    }
+
+    confirmar() {
+        this.movimentarSolicitacao(StatusSolicitacaoEnum.CONFIRMADO.KEY, 'Solicitação confirmada');
+    }
+
     cancelar() {
+        this.movimentarSolicitacao(StatusSolicitacaoEnum.CANCELADO.KEY, 'Solicitação cancelada');
+    }
+
+    movimentarSolicitacao(status, mensagem) {
         const {navigate} = this.props.navigation;
-        SolicitacaoService.movimentarSolicitacao(this.state.solicitacao._id, {situacao: StatusSolicitacaoEnum.CANCELADO.KEY})
+        SolicitacaoService.movimentar(this.state.solicitacao._id, {situacao: status})
             .then((resp) => {
                 console.log(resp);
-                navigate(SceneEnum.LISTAGEM_SOLICITACAO);
-                ToastAndroid.showWithGravity(`Solicitação cancelada`, ToastAndroid.SHORT, ToastAndroid.BOTTOM)
+                navigate(SceneEnum.LISTAGEM_SOLICITACAO_MEDICO);
+                ToastAndroid.showWithGravity(mensagem, ToastAndroid.SHORT, ToastAndroid.BOTTOM)
             })
             .catch((err) => console.log(err));
     }

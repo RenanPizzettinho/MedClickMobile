@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {ToastAndroid} from "react-native";
+import {Slider, ToastAndroid} from "react-native";
 import StaticStorageService from "../Services/staticStorageService";
 import MedicoService from "../Services/medicoService";
 import SceneEnum from "../Enums/SceneEnum";
-import {Card, Container, Content, Form} from "native-base";
+import {Card, Container, Content, Form, Text} from "native-base";
 import CampoTexto from "../Component/Campos/CampoTexto";
 import SelectBase from "../Component/Campos/SelectBase";
 import CheckBoxBase from "../Component/Campos/CheckBoxBase";
@@ -27,6 +27,7 @@ export default class CadastroMedicoScene extends Component {
             valido: false,
             especialidade: '',
             atendeEm: '',
+            distancia: 50,
             segunda: false,
             terca: false,
             quarta: false,
@@ -131,7 +132,7 @@ export default class CadastroMedicoScene extends Component {
                     console.log(response);
                     this.atualizarNome();
                     ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    console.log('RESPONSE: ',response);
+                    console.log('RESPONSE: ', response);
                     StaticStorageService.usuarioSessao.idMedico = response.data._id;
                     console.log('USUARIO: ', StaticStorageService.usuarioSessao);
                     navigate(SceneEnum.MENU);
@@ -142,7 +143,7 @@ export default class CadastroMedicoScene extends Component {
                 .then((response) => {
                     this.atualizarNome();
                     ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    console.log('RESPONSE: ',response);
+                    console.log('RESPONSE: ', response);
                     StaticStorageService.usuarioSessao.idMedico = response.data._id;
                     console.log('USUARIO: ', StaticStorageService.usuarioSessao);
                     navigate(SceneEnum.MENU);
@@ -160,6 +161,7 @@ export default class CadastroMedicoScene extends Component {
 
     validarCrm() {
         console.log('Validando');
+        ToastAndroid.showWithGravity('Validando', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
         let nome = '';
         let total = 0;
         MedicoService.validarCrm(this.state.estado, this.state.crm)
@@ -172,13 +174,13 @@ export default class CadastroMedicoScene extends Component {
                     }
                 });
                 console.log('Validado', total);
-                if (total > 0) {
+                if (total > 0 && nome === this.state.nome) {
                     this.setState({
                         valido: true,
                         nome: nome
                     });
                 } else {
-                    ToastAndroid.showWithGravity('CRM informado não existe', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                    ToastAndroid.showWithGravity('Informações invalidas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
                     this.setState({valido: false});
                 }
             }).catch((err) => {
@@ -192,7 +194,8 @@ export default class CadastroMedicoScene extends Component {
                 <Card>
                     <Form>
                         <SelectBase
-                            label="Area medica de especialidade"
+                            label='Area medica de especialidade'
+                            title='Area medica de especialidade'
                             selectedValue={this.state.especialidade}
                             onValueChange={(especialidade) => this.setState({especialidade})}
                             itens={[{label: "Cardiologista", value: "CARDIOLOGISTA"}, {
@@ -201,7 +204,8 @@ export default class CadastroMedicoScene extends Component {
                             }]}
                         />
                         <SelectBase
-                            label="Atende em qual cidade?"
+                            label='Atende em qual cidade?'
+                            title='Atende em qual cidade?'
                             selectedValue={this.state.atendeEm}
                             onValueChange={(atendeEm) => this.setState({atendeEm})}
                             itens={[{label: "Criciuma", value: "CRICIUMA"}, {
@@ -209,6 +213,14 @@ export default class CadastroMedicoScene extends Component {
                                 value: "ICARA"
                             }, {label: "Nova Veneza", value: "NOVA_VENEZA"}]}
                         />
+                        <Text style={{textAlign: 'center'}}>Distância máxima de atendimento: {this.state.distancia} kml</Text>
+                        <Slider
+                            minimumValue={1}
+                            maximumValue={100}
+                            step={1}
+                            value={this.state.distancia}
+                            onValueChange={(distancia) => this.setState({distancia})} />
+
                         <CheckBoxBase
                             label="Atende na segunda-feira?"
                             checked={this.state.segunda}
@@ -277,15 +289,14 @@ export default class CadastroMedicoScene extends Component {
                 <Content>
                     <Card>
                         <Form>
-                            {
-                                (this.state.nome === null)? null :
-                                <CampoTexto
-                                    label={'Nome'}
-                                    value={this.state.nome}
-                                    disabled={true}
-                                />
-                            }
-
+                            <CampoTexto
+                                label={'Nome'}
+                                value={this.state.nome}
+                                onChange={(nome) => {
+                                    this.setState({nome});
+                                    this.setState({valido: false});
+                                }}
+                            />
                             <CampoTexto
                                 label="CRM"
                                 value={this.state.crm}
@@ -295,7 +306,8 @@ export default class CadastroMedicoScene extends Component {
                                 }}
                             />
                             <SelectBase
-                                label="Estado"
+                                label='Estado do registro'
+                                title='Estado do registro'
                                 selectedValue={this.state.estado}
                                 onValueChange={(estado) => {
                                     this.setState({estado});

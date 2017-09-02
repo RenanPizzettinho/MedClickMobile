@@ -4,8 +4,7 @@ import {atendimentoPath} from './webPathService';
 const SolicitacaoService = {
     get: get,
     cadastrar: cadastrar,
-    cancelar: cancelar,
-    confirmar: confirmar
+    movimentar: movimentar,
 };
 
 function get(user) {
@@ -16,11 +15,7 @@ function cadastrar(body) {
     return RestService.post(atendimentoPath, body);
 }
 
-function cancelar(id, body) {
-    return RestService.put(`${atendimentoPath}/${id}`, body);
-}
-
-function confirmar(id, body) {
+function movimentar(id, body) {
     return RestService.put(`${atendimentoPath}/${id}`, body);
 }
 
