@@ -32,7 +32,7 @@ export default class SelecaoContextoComponent extends Component {
                                 </Left>
                             </CardItem>
                             <CardItem cardBody>
-                                <Image source={require('../../Images/UserLogo.png')}
+                                <Image source={require('../../Images/SelecaoContextoPaciente.jpg')}
                                        style={{height: 135, width: null, flex: 1}}/>
                             </CardItem>
                         </Card>
