@@ -1,11 +1,10 @@
 import React, {Component} from "react";
 import {Body, Card, CardItem, Container, Content, Left, Text, Thumbnail} from "native-base";
-import {Alert} from "react-native";
 import SolicitacaoService from "../../Services/solicitacaoService";
-import MensagemService from "../../Services/mensagemService";
 import StaticStorageService from "../../Services/staticStorageService";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
 import SceneEnum from "../../Enums/SceneEnum";
+import StatusSolicitacaoEnum from "../../Enums/StatusSolicitacaoEnum";
 
 export default class listagemSolicitacaoMedico extends Component {
 
@@ -25,13 +24,12 @@ export default class listagemSolicitacaoMedico extends Component {
     }
 
     fetchData() {
-        const idPerfil = StaticStorageService.usuarioSessao._id;
+        const idPerfil = StaticStorageService.usuarioSessao.idMedico;
         SolicitacaoService.get(idPerfil)
             .then((response) => {
+                console.log('RESPONSE: ', response);
                 this.setState({
-                    results: {
-                        solicitacoes: response.data
-                    }
+                    solicitacoes: response.data
                 });
             })
             .catch((error) => console.log(error));
@@ -59,7 +57,7 @@ export default class listagemSolicitacaoMedico extends Component {
                                 <Body>
                                 <Text>{`Paciente: ${solicitacao.nomePaciente}`}</Text>
                                 <Text note>{`Data: ${solicitacao.dataConsulta}`}</Text>
-                                <Text note>{`Situação: ${solicitacao.situacao}`}</Text>
+                                <Text note>{`Situação: ${StatusSolicitacaoEnum.toDesc(solicitacao.situacao)}`}</Text>
                                 </Body>
                             </Left>
                         </CardItem>
@@ -72,12 +70,13 @@ export default class listagemSolicitacaoMedico extends Component {
         return (
             <Container>
                 <Content>
-                    {(this.state.solicitacoes.length === 0 || this.state.solicitacoes === null)?
+                    {(this.state.solicitacoes.length === 0 || this.state.solicitacoes === null) ?
                         <Text>Sem dados para exibir</Text>
                         : null
                     }
+                    {this.item()}
                 </Content>
-            </Container >
+            </Container>
         )
     }
 }

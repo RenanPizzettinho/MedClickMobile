@@ -20,25 +20,18 @@ export default class MenuScene extends Component {
                 perfil: ContextoEnum.PACIENTE
             },
             {
-                header: 'Atendimentos Paciente',
+                header: 'Atendimentos',
                 nota: 'Atendimentos em aberto',
                 irPara: SceneEnum.LISTAGEM_SOLICITACAO,
                 icone: require('../Images/AtendimentoLogo3.png'),
                 perfil: ContextoEnum.PACIENTE
             },
             {
-                header: 'Atendimentos Medico',
+                header: 'Atendimentos',
                 nota: 'Atendimentos em aberto',
                 irPara: SceneEnum.LISTAGEM_SOLICITACAO_MEDICO,
                 icone: require('../Images/AtendimentoLogo3.png'),
                 perfil: ContextoEnum.MEDICO
-            },
-            {
-                header: 'Recados',
-                nota: 'Recados das consultas realizadas',
-                irPara: SceneEnum.LISTAGEM_MENSAGEM,
-                icone: require('../Images/RecadosLogo.png'),
-                perfil: null
             },
             {
                 header: 'Informações pessoais',

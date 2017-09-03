@@ -5,6 +5,7 @@ import StaticStorageService from "../../Services/staticStorageService";
 import SceneEnum from "../../Enums/SceneEnum";
 import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
 import {ActivityIndicator} from "react-native";
+import StatusSolicitacaoEnum from "../../Enums/StatusSolicitacaoEnum";
 
 export default class ListagemSolicitacao extends Component {
 
@@ -77,7 +78,7 @@ export default class ListagemSolicitacao extends Component {
                                 <Body>
                                 <Text>{`Médico: ${solicitacao.nomeMedico}`}</Text>
                                 <Text note>{`Data: ${solicitacao.dataConsulta}`}</Text>
-                                <Text note>{`Situação: ${solicitacao.situacao}`}</Text>
+                                <Text note>{`Situação: ${StatusSolicitacaoEnum.toDesc(solicitacao.situacao)}`}</Text>
                                 </Body>
                             </Left>
                         </CardItem>
