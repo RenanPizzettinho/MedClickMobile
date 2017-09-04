@@ -23,7 +23,10 @@ export default class SolicitacaoScene extends Component {
     }
 
     acoes() {
-        if (this.state.solicitacao.situacao !== StatusSolicitacaoEnum.CANCELADO.KEY) {
+        let situacao = this.state.solicitacao.situacao;
+        if (situacao !== StatusSolicitacaoEnum.CANCELADO.KEY &&
+            situacao !== StatusSolicitacaoEnum.ENCERRADO.KEY
+        ) {
             return (
                 <BotaoBase
                     text={'Cancelar'}

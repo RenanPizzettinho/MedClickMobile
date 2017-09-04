@@ -1,6 +1,9 @@
 import React, {Component} from "react";
 import styles from "../StyleSheet/mainStyle";
-import {Card, Container, Content, Form, H1} from "native-base";
+import {
+    Body, Card, Container, Content, Form, H1, H2, H3, Icon, Left, List, ListItem, Right, Switch,
+    Text
+} from "native-base";
 import {Image, ScrollView, ToastAndroid} from "react-native";
 import SolicitacaoService from "../Services/solicitacaoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
@@ -22,7 +25,8 @@ export default class CadastroSolicitacaoScene extends Component {
             sintomas: "",
             dataConsulta: new Date(),
             localConsulta: "",
-            nomeMedico: "Médico"
+            nomeMedico: "Médico",
+            enderecoCadastro: true,
         };
     }
 
@@ -64,7 +68,7 @@ export default class CadastroSolicitacaoScene extends Component {
                         <ScrollView>
                             <Card>
                                 <Form>
-                                    <H1>{this.state.nomeMedico}</H1>
+                                    <H3>{this.state.nomeMedico}</H3>
                                     <Image
                                         source={require('../Images/UserLogo.png')}
                                         object={styles.img}
@@ -77,7 +81,7 @@ export default class CadastroSolicitacaoScene extends Component {
                                         }}
                                     />
                                     <CampoTexto
-                                        label="Sintomas"
+                                        label="Necessidade"
                                         onChange={(sintomas) =>
                                             this.setState({sintomas})
                                         }
@@ -95,6 +99,29 @@ export default class CadastroSolicitacaoScene extends Component {
                                         style={{marginLeft: 10}}
                                     />
                                 </Form>
+                            </Card>
+                            <Card>
+                                <H3 style={{textAlign: 'center'}}>Endereço</H3>
+                                <List>
+                                    <ListItem iconLeft>
+                                        <Left><Icon name='map'/></Left>
+                                        <Body>
+                                        <Text>Endereço do cadatro</Text>
+                                        </Body>
+                                        <Right>
+                                            <Switch value={this.state.enderecoCadastro} onValueChange={(enderecoCadastro) => this.setState({enderecoCadastro})}/>
+                                        </Right>
+                                    </ListItem>
+                                    <ListItem icon>
+                                        <Left><Icon name='globe'/></Left>
+                                        <Body>
+                                        <Text>Outro endereço</Text>
+                                        </Body>
+                                        <Right>
+                                            <Icon name="arrow-forward" />
+                                        </Right>
+                                    </ListItem>
+                                </List>
                             </Card>
                             <BotaoBase
                                 title="Registrar"

@@ -1,7 +1,14 @@
 import React, {Component} from "react";
-import {Container, Content, Text} from "native-base";
+import {Container, H3, Text} from "native-base";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import SceneEnum from "../Enums/SceneEnum";
+import PacienteService from "../Services/pacienteService";
+import StaticStorageService from "../Services/staticStorageService";
+import {Content} from "native-base/src/basic/Content";
+import {Container} from "native-base/src/basic/Container";
+import {Card} from "native-base/src/basic/Card";
+import {H3} from "native-base/src/basic/H3";
+import {Text} from "native-base/src/basic/Text";
 
 export default class CadastroLocalizacaoScene extends Component {
 
@@ -12,10 +19,26 @@ export default class CadastroLocalizacaoScene extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            latitude: null,
-            longitude: null,
+            localizacao: {
+                latitude: null,
+                longitude: null,
+                endereco: null,
+            },
             error: null,
         };
+    }
+
+    componentWillMount(){
+        this.fetchData();
+    }
+
+    fetchData() {
+        PacienteService.get(StaticStorageService.usuarioSessao._id)
+            .then((response) => {
+                let dados = response.data[0];
+                if (dados === undefined) return;
+                this.setState({localizacao: dados.localizacao});
+            });
     }
 
     render() {
@@ -23,11 +46,12 @@ export default class CadastroLocalizacaoScene extends Component {
         return (
             <Container>
                 <Content>
-                    <Text>
-                        Localização
-                        Latitude:{this.state.latitude}
-                        Longitude:{this.state.longitude}
-                    </Text>
+                    <Card>
+                        <H3 style={{textAlign: 'center'}}>Localização</H3>
+                        <Text>Latitude: {this.state.latitude}</Text>
+                        <Text>Longitude: {this.state.longitude}</Text>
+                        <Text>Endereço: {this.state.endereco}</Text>
+                    </Card>
                     {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
                     <BotaoBase
                         text="Atualizar localização"
