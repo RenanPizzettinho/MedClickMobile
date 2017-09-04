@@ -1,14 +1,9 @@
 import React, {Component} from "react";
-import {Container, H3, Text} from "native-base";
+import {Card, Container, Content, H3, Text} from "native-base";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import SceneEnum from "../Enums/SceneEnum";
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
-import {Content} from "native-base/src/basic/Content";
-import {Container} from "native-base/src/basic/Container";
-import {Card} from "native-base/src/basic/Card";
-import {H3} from "native-base/src/basic/H3";
-import {Text} from "native-base/src/basic/Text";
 
 export default class CadastroLocalizacaoScene extends Component {
 
