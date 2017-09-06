@@ -34,8 +34,8 @@ export default class MenuScene extends Component {
                 perfil: ContextoEnum.MEDICO
             },
             {
-                header: 'Informações pessoais',
-                nota: 'Informações pessoais',
+                header: 'Informações de usuário',
+                nota: 'Informações de usuário',
                 irPara: SceneEnum.CADASTRO_PESSOA,
                 icone: require('../Images/UserLogo.png'),
                 perfil: null
