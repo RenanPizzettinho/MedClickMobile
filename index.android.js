@@ -11,7 +11,6 @@ import CadastroPessoaScene from "./js/Scenes/cadastroPessoaScene";
 import PesquisaMedico from "./js/Scenes/listagens/pesquisaMedico";
 import SelecaoContextoScene from "./js/Scenes/selecaoContextoScene";
 import ListagemSolicitacao from "./js/Scenes/listagens/listagemSolicitacao";
-import ListagemSolicitacaoMedico from "./js/Scenes/listagens/listagemSolicitacaoMedico";
 import ListagemMensagem from "./js/Scenes/listagens/listagemMensagem";
 import CadastroLocalizacaoScene from "./js/Scenes/cadastroLocalizacaoScene";
 import IntegrarApp from "./js/Scenes/integrarAppMenuScene";
@@ -33,7 +32,6 @@ const App = StackNavigator({
     PesquisaMedico: {screen: PesquisaMedico},
     SelecaoContexto: {screen: SelecaoContextoScene},
     ListagemSolicitacao: {screen: ListagemSolicitacao},
-    ListagemSolicitacaoMedico: {screen: ListagemSolicitacaoMedico},
     ListagemMensagem: {screen: ListagemMensagem},
     CadastroLocalizacaoScene: {screen: CadastroLocalizacaoScene},
     integrarAppMenuScene: {screen: IntegrarApp},

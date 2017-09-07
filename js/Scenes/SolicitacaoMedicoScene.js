@@ -24,7 +24,7 @@ export default class SolicitacaoMedicoScene extends Component {
 
     componentWillMount() {
         this.setState({solicitacao: StaticStorageService.solicitacao});
-        //TODO: resource  para pegar paciente por id
+        //TODO: resource  para pegar paciente e medico por id
         // this.fetchData();
     }
 

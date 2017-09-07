@@ -20,6 +20,7 @@ export default class SolicitacaoScene extends Component {
 
     componentWillMount() {
         this.setState({solicitacao: StaticStorageService.solicitacao});
+        //TODO: resource  para pegar paciente e medico por id
     }
 
     acoes() {
@@ -64,6 +65,7 @@ export default class SolicitacaoScene extends Component {
     }
 
     render() {
+        //TODO: Colocar crm e estado aqui
         return (
             <Container>
                 <Content>

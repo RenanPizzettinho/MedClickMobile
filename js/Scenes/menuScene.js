@@ -29,7 +29,7 @@ export default class MenuScene extends Component {
             {
                 header: 'Atendimentos',
                 nota: 'Atendimentos em aberto',
-                irPara: SceneEnum.LISTAGEM_SOLICITACAO_MEDICO,
+                irPara: SceneEnum.LISTAGEM_SOLICITACAO,
                 icone: require('../Images/AtendimentoLogo3.png'),
                 perfil: ContextoEnum.MEDICO
             },
