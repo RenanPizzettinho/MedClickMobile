@@ -1,5 +1,19 @@
 import React, {Component} from "react";
-import {Body, Card, CardItem, Container, Content, Left, Text, Thumbnail} from "native-base";
+import {
+    Body,
+    Card,
+    CardItem,
+    Container,
+    Content,
+    Icon,
+    Left,
+    List,
+    ListItem,
+    Right,
+    Text,
+    Thumbnail,
+    View
+} from "native-base";
 import SolicitacaoService from "../../Services/solicitacaoService";
 import StaticStorageService from "../../Services/staticStorageService";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
@@ -20,7 +34,11 @@ export default class listagemSolicitacaoMedico extends Component {
             loading: true,
             selectedItem: undefined,
             modalVisible: false,
-            primeiraMensagem: ""
+            primeiraMensagem: "",
+            emAberto: false,
+            confirmados: false,
+            atendidos: false,
+            cancelados: false,
         }
     }
 
@@ -40,10 +58,10 @@ export default class listagemSolicitacaoMedico extends Component {
         this.fetchData();
     }
 
-    item() {
+    item(solicitacoes) {
         const {navigate} = this.props.navigation;
         return (
-            this.state.solicitacoes.map((solicitacao, index) =>
+            solicitacoes.map((solicitacao, index) =>
                 <TouchableItem
                     key={index}
                     onPress={() => {
@@ -71,10 +89,69 @@ export default class listagemSolicitacaoMedico extends Component {
         return (
             <Container>
                 <Content>
-                    {(this.state.solicitacoes.length === 0 || this.state.solicitacoes === null) ? <Loader/> : null}
-                    {this.item()}
+                    <Card>
+                        <List>
+                            {this.listaAgrupada(
+                                this.separarPorSituacao(StatusSolicitacaoEnum.EM_ABERTO.KEY),
+                                'ios-list',
+                                'Em aberto',
+                                () => this.setState({emAberto: !this.state.emAberto}),
+                                this.state.emAberto)}
+
+                            {this.listaAgrupada(
+                                this.separarPorSituacao(StatusSolicitacaoEnum.CONFIRMADO.KEY),
+                                'ios-heart-outline',
+                                'Confirmados',
+                                () => this.setState({confirmados: !this.state.confirmados}),
+                                this.state.confirmados)}
+
+                            {this.listaAgrupada(
+                                this.separarPorSituacao(StatusSolicitacaoEnum.ENCERRADO.KEY),
+                                'ios-checkmark-circle-outline',
+                                'Atendidos',
+                                () => this.setState({atendidos: !this.state.atendidos}),
+                                this.state.atendidos)}
+
+                            {this.listaAgrupada(
+                                this.separarPorSituacao(StatusSolicitacaoEnum.CANCELADO.KEY),
+                                'ios-close-circle-outline',
+                                'Cancelados',
+                                () => this.setState({cancelados: !this.state.cancelados}),
+                                this.state.cancelados)}
+                        </List>
+                    </Card>
                 </Content>
             </Container>
         )
+    }
+
+    separarPorSituacao(situacao) {
+        let retorno = [];
+        this.state.solicitacoes.forEach((item) => {
+            if (item.situacao === situacao) {
+                console.log('ITEM: ', item);
+                retorno.push(item);
+            }
+        });
+        return retorno;
+    }
+
+    listaAgrupada(itens, icon, label, press, indicador) {
+        return (
+            <View>
+                <ListItem icon>
+                    <Left><Icon name={icon}/></Left>
+                    <Body>
+                    <TouchableItem onPress={press}>
+                        <Text>{label} ({itens.length})</Text>
+                    </TouchableItem>
+                    </Body>
+                    <Right>
+                        {(indicador) ? <Icon name='ios-arrow-dropleft'/> : <Icon name='ios-arrow-dropdown'/>}
+                    </Right>
+                </ListItem>
+                {(indicador) ? this.item(itens) : null}
+            </View>
+        );
     }
 }
