@@ -10,15 +10,12 @@ export default class Sair extends Component {
     }
 
     render() {
+        const {navigate} = this.props.navigation;
         return (
-            <TouchableItem onPress={this.sair}>
+            <TouchableItem onPress={() => navigate(SceneEnum.LOGIN)}>
                 <Icon name='ios-exit-outline'/>
             </TouchableItem>
         );
     }
 
-    sair(){
-        const {navigate} = this.props.navigation;
-        navigate(SceneEnum.LOGIN);
-    }
 }

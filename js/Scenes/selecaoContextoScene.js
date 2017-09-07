@@ -1,17 +1,15 @@
 import React, {Component} from "react";
-import SelecaoContextoComponent from "../Component/Telas/SelecaoContextoComponent";
 import StaticStorageService from '../Services/staticStorageService';
 import ContextoEnum from '../Enums/ContextoEnum';
-import {Alert} from "react-native";
+import {Alert, Image} from "react-native";
 import SceneEnum from '../Enums/SceneEnum';
-import Sair from "../Component/Sair";
-import {NavigationActions} from "react-navigation";
+import {Body, Card, CardItem, Container, Content, Left, Text, Thumbnail} from "native-base";
+import TouchableItem from "react-navigation/src/views/TouchableItem";
 
 export default class SelecaoContextoScene extends Component {
 
     static navigationOptions = {
         title: 'Seleção de contexto',
-        headerRight: <Sair/>
     };
 
     constructor(props) {
@@ -23,12 +21,44 @@ export default class SelecaoContextoScene extends Component {
 
     render() {
         return (
-            <SelecaoContextoComponent
-                entrarPaciente={this.entrarPaciente}
-                entrarMedico={this.entrarMedico}
-                acessar={this.acessar}
-                navigation={this.props.navigation}
-            />
+            <Container>
+                <Content>
+                    <TouchableItem onPress={() => this.entrarPaciente()}>
+                        <Card>
+                            <CardItem>
+                                <Left>
+                                    <Thumbnail source={require('../Images/UserLogo.png')}/>
+                                    <Body>
+                                    <Text>Paciente</Text>
+                                    <Text note>Acessar com perfil de paciente</Text>
+                                    </Body>
+                                </Left>
+                            </CardItem>
+                            <CardItem cardBody>
+                                <Image source={require('../Images/SelecaoContextoPaciente.jpg')}
+                                       style={{height: 135, width: null, flex: 1}}/>
+                            </CardItem>
+                        </Card>
+                    </TouchableItem>
+                    <TouchableItem onPress={() => this.entrarMedico() }>
+                        <Card>
+                            <CardItem>
+                                <Left>
+                                    <Thumbnail source={require('../Images/MedicoLogo.png')}/>
+                                    <Body>
+                                    <Text>Médico</Text>
+                                    <Text note>Acessar com perfil médico</Text>
+                                    </Body>
+                                </Left>
+                            </CardItem>
+                            <CardItem cardBody>
+                                <Image source={require('../Images/contexto_medico.jpg')}
+                                       style={{height: 135, width: null, flex: 1}}/>
+                            </CardItem>
+                        </Card>
+                    </TouchableItem>
+                </Content>
+            </Container>
         );
     }
 
