@@ -1,9 +1,6 @@
 import React, {Component} from "react";
 import styles from "../StyleSheet/mainStyle";
-import {
-    Body, Card, Container, Content, Form, H1, H2, H3, Icon, Left, List, ListItem, Right, Switch,
-    Text
-} from "native-base";
+import {Body, Card, Container, Content, Form, H3, Icon, Left, List, ListItem, Right, Switch, Text} from "native-base";
 import {Image, ScrollView, ToastAndroid} from "react-native";
 import SolicitacaoService from "../Services/solicitacaoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
@@ -92,24 +89,26 @@ export default class CadastroSolicitacaoScene extends Component {
                                             this.setState({localConsulta})
                                         }
                                     />
-                                    <CampoData
-                                        label="Data "
-                                        data={this.state.dataConsulta}
-                                        setData={(data) => this.setState({dataConsulta: data})}
-                                        style={{marginLeft: 10}}
-                                    />
+                                    {/*<CampoData*/}
+                                        {/*label="Data "*/}
+                                        {/*data={this.state.dataConsulta}*/}
+                                        {/*setData={(data) => this.setState({dataConsulta: data})}*/}
+                                        {/*style={{marginLeft: 10}}*/}
+                                    {/*/>*/}
                                 </Form>
                             </Card>
                             <Card>
                                 <H3 style={{textAlign: 'center'}}>Endereço</H3>
                                 <List>
-                                    <ListItem iconLeft>
+                                    <ListItem icon>
                                         <Left><Icon name='map'/></Left>
                                         <Body>
                                         <Text>Endereço do cadatro</Text>
                                         </Body>
                                         <Right>
-                                            <Switch value={this.state.enderecoCadastro} onValueChange={(enderecoCadastro) => this.setState({enderecoCadastro})}/>
+                                            <Switch value={this.state.enderecoCadastro}
+                                                    onValueChange={(enderecoCadastro) => this.setState({enderecoCadastro})}
+                                            />
                                         </Right>
                                     </ListItem>
                                     <ListItem icon>
@@ -118,7 +117,7 @@ export default class CadastroSolicitacaoScene extends Component {
                                         <Text>Outro endereço</Text>
                                         </Body>
                                         <Right>
-                                            <Icon name="arrow-forward" />
+                                            <Icon name="arrow-forward"/>
                                         </Right>
                                     </ListItem>
                                 </List>

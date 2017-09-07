@@ -23,6 +23,8 @@ import BotaoBase from "../../Component/Campos/BotaoBase";
 import styles from "../../StyleSheet/mainStyle";
 import SceneEnum from "../../Enums/SceneEnum";
 import StaticStorageService from "../../Services/staticStorageService";
+import SelectBase from "../../Component/Campos/SelectBase";
+import PacienteService from "../../Services/pacienteService";
 
 export default class PesquisaMedico extends Component {
 
@@ -36,7 +38,7 @@ export default class PesquisaMedico extends Component {
             modalVisible: false,
             search: null,
             selectedItem: undefined,
-            medicos: []
+            medicos: null
         }
 
     }
@@ -51,8 +53,8 @@ export default class PesquisaMedico extends Component {
         this.setState({
             loading: true
         });
-        const { params } = this.props.navigation.state;
-        MedicoService.pesquisar(`${params.filtro}${this.state.search}`)
+        const {params} = this.props.navigation.state;
+        MedicoService.pesquisar(`${params.filtro}${this.state.search}&longitude=${params.localizacao[0]}&latitude=${params.localizacao[1]}`)
             .then((responseJson) => {
                 this.setState({
                     medicos: responseJson.data,
@@ -67,8 +69,19 @@ export default class PesquisaMedico extends Component {
             });
     }
 
+    loader(){
+        return(
+            <ActivityIndicator
+                animating={true}
+                style={{height: 80}}
+                size="large"
+            />
+        );
+    }
+
+
     render() {
-        const { params } = this.props.navigation.state;
+        const {params} = this.props.navigation.state;
         return (
             <Container>
                 <Header searchBar rounded>
@@ -83,16 +96,8 @@ export default class PesquisaMedico extends Component {
                     </Item>
                 </Header>
                 <Content>
-                    <Text>{`${params.filtro}${this.state.search}`}</Text>
-                    {(this.state.medicos.length === 0 || this.state.medicos === null)?
-                        <ActivityIndicator
-                            animating={true}
-                            style={{height: 80}}
-                            size="large"
-                        />
-                        : null
-                    }
-                    {this.medicos()}
+                    <Text>{`${params.filtro}${this.state.search}&longitude=${params.localizacao[0]}&latitude=${params.localizacao[1]}`}</Text>
+                    {(this.state.medicos) ? this.medicos() : (this.state.loading) ? this.loader(): null}
                     {this.modal()}
                 </Content>
             </Container>

@@ -6,6 +6,7 @@ import {Card, Container, Content, Form} from "native-base";
 import CampoTexto from "../Component/Campos/CampoTexto";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import CheckBoxBase from "../Component/Campos/CheckBoxBase";
+import {DatePicker} from "react-native-datepicker";
 
 export default class CadastroPessoaScene extends Component {
 
@@ -18,7 +19,7 @@ export default class CadastroPessoaScene extends Component {
         this.state = {
             nome: null,
             cpf: null,
-            dtNascimento: null,
+            dtNascimento: new Date(),
             email: null,
             senha: '',
             confirmarSenha: '',
@@ -47,7 +48,7 @@ export default class CadastroPessoaScene extends Component {
 
     salvar() {
         let verificarSenha = true;
-        if (this.state.alterarSenha){
+        if (this.state.alterarSenha) {
             verificarSenha = this.verificarSenha();
         }
 
@@ -120,11 +121,30 @@ export default class CadastroPessoaScene extends Component {
                                 }}
                             />
                             {(this.state.alterarSenha) ? this.alterarSenha() : null}
-                            {/*<CampoData*/}
-                            {/*label="Data de nascimento"*/}
-                            {/*data={this.state.dtNascimento}*/}
-                            {/*setData={(data) => this.setState({dtNascimento: data.toString()})}*/}
-                            {/*/>*/}
+                            <DatePicker
+                                style={{width: 200}}
+                                date={this.state.date}
+                                mode="date"
+                                placeholder="select date"
+                                format="YYYY-MM-DD"
+                                minDate="2016-05-01"
+                                maxDate="2016-06-01"
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                customStyles={{
+                                    dateIcon: {
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: 4,
+                                        marginLeft: 0
+                                    },
+                                    dateInput: {
+                                        marginLeft: 36
+                                    }
+                                    // ... You can check the source to find the other keys.
+                                }}
+                                onDateChange={(date) => {this.setState({date: date})}}
+                            />
                         </Form>
                     </Card>
                     <BotaoBase

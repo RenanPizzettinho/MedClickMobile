@@ -8,10 +8,12 @@
   },
   "dependencies": {
     "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
     "native-base": "2.1.4",
     "react": "16.0.0-alpha.6",
-    "react-moment": "^0.6.4",
+    "react-moment": "^0.6.5",
     "react-native": "0.44.0",
+    "react-native-datepicker": "^1.6.0",
     "react-native-material-design": "^0.3.7",
     "react-native-material-kit": "^0.4.1",
     "react-native-modal-datetime-picker": "^4.7.0",

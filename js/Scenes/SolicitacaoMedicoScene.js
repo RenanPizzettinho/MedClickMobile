@@ -3,7 +3,7 @@ import {Body, Card, Container, Content, H3, Text, View} from "native-base";
 import StaticStorageService from "../Services/staticStorageService";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import Divider from "react-native-material-design/lib/Divider";
-import {Image, ToastAndroid} from "react-native";
+import {Image, ToastAndroid, Linking} from "react-native";
 import StatusSolicitacaoEnum from "../Enums/StatusSolicitacaoEnum";
 import SolicitacaoService from "../Services/solicitacaoService";
 import SceneEnum from "../Enums/SceneEnum";
@@ -45,11 +45,21 @@ export default class SolicitacaoMedicoScene extends Component {
                         text={'Localizar'}
                         title={'Localizar'}
                         disabled={false}
-                        onPress={() => null}
+                        onPress={() => this.startNavigation()}
                     />
                 </Card>
             );
         }
+    }
+
+    startNavigation(url) {
+        Linking.canOpenURL('whatsapp://app').then(supported => {
+            if (supported) {
+                Linking.openURL(url);
+            } else {
+                console.log('Don\'t know how to open URI: ' + url);
+            }
+        });
     }
 
     botaoAtender() {

@@ -27,7 +27,7 @@ export default class CadastroMedicoScene extends Component {
             valido: false,
             especialidade: '',
             atendeEm: '',
-            distancia: 50,
+            distanciaMaxima: 50,
             segunda: false,
             terca: false,
             quarta: false,
@@ -53,11 +53,13 @@ export default class CadastroMedicoScene extends Component {
                 if (dados === undefined) return;
 
                 this.setState({
+                    nome: StaticStorageService.usuarioSessao.nome,
                     idMedico: dados._id,
                     crm: dados.crm,
                     estado: dados.estado,
                     atendeEm: dados.atendeEm,
                     especialidade: dados.especialidade,
+                    distanciaMaxima: dados.distanciaMaxima,
                     valido: true
                 });
 
@@ -92,11 +94,13 @@ export default class CadastroMedicoScene extends Component {
 
     salvarMedico() {
         let form = {
+            idUsuario: StaticStorageService.usuarioSessao._id,
             crm: this.state.crm,
             estado: this.state.estado,
             especialidade: this.state.especialidade,
             atendeEm: this.state.atendeEm,
-            diasAtendimentoDomicilio: []
+            diasAtendimentoDomicilio: [],
+            distanciaMaxima: this.state.distanciaMaxima
         };
 
         if (this.state.segunda)
@@ -213,13 +217,14 @@ export default class CadastroMedicoScene extends Component {
                                 value: "ICARA"
                             }, {label: "Nova Veneza", value: "NOVA_VENEZA"}]}
                         />
-                        <Text style={{textAlign: 'center'}}>Distância máxima de atendimento: {this.state.distancia} kml</Text>
+                        <Text style={{textAlign: 'center'}}>Distância máxima de
+                            atendimento: {this.state.distanciaMaxima} metros</Text>
                         <Slider
-                            minimumValue={1}
-                            maximumValue={100}
-                            step={1}
-                            value={this.state.distancia}
-                            onValueChange={(distancia) => this.setState({distancia})} />
+                            minimumValue={1000}
+                            maximumValue={100000}
+                            step={1000}
+                            value={this.state.distanciaMaxima}
+                            onValueChange={(distanciaMaxima) => this.setState({distanciaMaxima})}/>
 
                         <CheckBoxBase
                             label="Atende na segunda-feira?"
@@ -326,10 +331,14 @@ export default class CadastroMedicoScene extends Component {
                                 ]}
                             />
                         </Form>
-                        <BotaoBase
-                            title="Validar Crm"
-                            onPress={() => this.validarCrm()}
-                        />
+                        {(!this.state.valido) ?
+                            <BotaoBase
+                                title="Validar Crm"
+                                onPress={() => this.validarCrm()}
+                            />
+                            : null
+                        }
+
                     </Card>
                     {this.dadosMedico()}
 
