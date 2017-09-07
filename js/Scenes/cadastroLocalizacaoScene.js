@@ -77,20 +77,4 @@ export default class CadastroLocalizacaoScene extends Component {
             </Container>
         );
     }
-
-    /*getLocalizacao() {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                this.setState({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                    error: null,
-                });
-            },
-            (error) => this.setState({error: error.message}),
-            {enableHighAccuracy: false, timeout: 200000, maximumAge: 1000},
-        );
-    }*/
-
-
 }
