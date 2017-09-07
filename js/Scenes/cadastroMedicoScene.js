@@ -133,26 +133,24 @@ export default class CadastroMedicoScene extends Component {
         if (!this.state.idMedico) {
             MedicoService.salvar(userId, form)
                 .then((response) => {
-                    console.log(response);
-                    this.atualizarNome();
-                    ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    console.log('RESPONSE: ', response);
-                    StaticStorageService.usuarioSessao.idMedico = response.data._id;
-                    console.log('USUARIO: ', StaticStorageService.usuarioSessao);
-                    navigate(SceneEnum.MENU);
+                    this.posSave(response, navigate);
                 })
                 .catch((err) => console.log(err));
         } else {
             MedicoService.atualizar(userId, form)
                 .then((response) => {
-                    this.atualizarNome();
-                    ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    console.log('RESPONSE: ', response);
-                    StaticStorageService.usuarioSessao.idMedico = response.data._id;
-                    console.log('USUARIO: ', StaticStorageService.usuarioSessao);
-                    navigate(SceneEnum.MENU);
+                    this.posSave(response, navigate);
                 });
         }
+    }
+
+    posSave(response, navigate) {
+        this.atualizarNome();
+        ToastAndroid.showWithGravity('Informações de médico atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+        console.log('RESPONSE: ', response);
+        StaticStorageService.usuarioSessao.idMedico = response.data._id;
+        console.log('USUARIO: ', StaticStorageService.usuarioSessao);
+        navigate(SceneEnum.MENU);
     }
 
     atualizarNome() {
@@ -333,7 +331,6 @@ export default class CadastroMedicoScene extends Component {
                             />
                             : null
                         }
-
                     </Card>
                     {this.dadosMedico()}
 

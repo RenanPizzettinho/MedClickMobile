@@ -24,6 +24,7 @@ import styles from "../../StyleSheet/mainStyle";
 import SceneEnum from "../../Enums/SceneEnum";
 import StaticStorageService from "../../Services/staticStorageService";
 import Loader from "../../Component/Loader";
+import DiasSemana from "../../Enums/DiasSemanaEnum";
 
 export default class PesquisaMedico extends Component {
 
@@ -58,6 +59,7 @@ export default class PesquisaMedico extends Component {
 
         MedicoService.pesquisar(parametro, header)
             .then((responseJson) => {
+                console.log('RESPONSE: ', responseJson);
                 this.setState({
                     medicos: responseJson.data,
                     loading: false
@@ -87,7 +89,6 @@ export default class PesquisaMedico extends Component {
                     </Item>
                 </Header>
                 <Content>
-                    <Text>{`${params.filtro}${this.state.search}&longitude=${params.localizacao[0]}&latitude=${params.localizacao[1]}`}</Text>
                     {(this.state.medicos) ? this.medicos() : (this.state.loading) ? <Loader/> : null}
                     {this.modal()}
                 </Content>
@@ -110,8 +111,8 @@ export default class PesquisaMedico extends Component {
                                 <View>
                                     <Text>Nome: {item.nome}</Text>
                                     <Text note>Especialidade: {item.especialidade}</Text>
-                                    <Text note>Atende em: {item.atendeEm}</Text>
-                                    <Text note>Esta a: 10 km</Text>
+                                    <Text note>Atende em {item.atendeEm}</Text>
+                                    <Text note>Esta a {item.distancia} metros</Text>
                                 </View>
                             </CardItem>
                         </Card>
@@ -166,7 +167,9 @@ export default class PesquisaMedico extends Component {
                             <Text>Nome: {item.nome}</Text>
                             <Text>Especialidade: {item.especialidade}</Text>
                             <Text>Atende em: {item.atendeEm}</Text>
-                            <Text>Dias em que atende: {item.diasAtendimentoDomicilio}</Text>
+                            <Text>Esta a {item.distancia} metros de você</Text>
+                            <Text>Dias em que
+                                atende: {(item.diasAtendimentoDomicilio) ? this.diasSemana(item.diasAtendimentoDomicilio) : null}</Text>
                         </View>
                     </Card>
                     <BotaoBase
@@ -181,6 +184,14 @@ export default class PesquisaMedico extends Component {
                 </Content>
             </Modal>
         );
+    }
+
+    diasSemana(dias) {
+        let retorno = [];
+        dias.forEach((item) => {
+            retorno.push(DiasSemana.toDesc(item));
+        });
+        return retorno.join(' - ');
     }
 
     guardarMedico(item) {
