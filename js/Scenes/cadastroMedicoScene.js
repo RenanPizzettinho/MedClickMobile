@@ -202,20 +202,21 @@ export default class CadastroMedicoScene extends Component {
                             title='Area medica de especialidade'
                             selectedValue={this.state.especialidade}
                             onValueChange={(especialidade) => this.setState({especialidade})}
-                            itens={[{label: "Cardiologista", value: "CARDIOLOGISTA"}, {
-                                label: "Clinico geral",
-                                value: "CLINICO_GERAL"
-                            }]}
+                            itens={[
+                                {value: "Cardiologista"},
+                                {value: "Clinico geral"}
+                            ]}
                         />
                         <SelectBase
                             label='Atende em qual cidade?'
                             title='Atende em qual cidade?'
                             selectedValue={this.state.atendeEm}
                             onValueChange={(atendeEm) => this.setState({atendeEm})}
-                            itens={[{label: "Criciuma", value: "CRICIUMA"}, {
-                                label: "Içara",
-                                value: "ICARA"
-                            }, {label: "Nova Veneza", value: "NOVA_VENEZA"}]}
+                            itens={[
+                                {value: "Criciuma"},
+                                {value: "Içara"},
+                                {value: "Nova Veneza"}
+                            ]}
                         />
                         <Text style={{textAlign: 'center'}}>Distância máxima de
                             atendimento: {this.state.distanciaMaxima} metros</Text>
@@ -319,15 +320,9 @@ export default class CadastroMedicoScene extends Component {
                                     this.setState({valido: false});
                                 }}
                                 itens={[
-                                    {
-                                        label: "Santa Catarina", value: "SC"
-                                    },
-                                    {
-                                        label: "Parana", value: "PR"
-                                    },
-                                    {
-                                        label: "Rio Grande do Sul", value: "RS"
-                                    }
+                                    {value: "SC"},
+                                    {value: "PR"},
+                                    {value: "RS"}
                                 ]}
                             />
                         </Form>

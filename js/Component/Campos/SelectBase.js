@@ -8,11 +8,10 @@ export default class SelectBase extends Component {
         this.state = this.props.states;
     }
 
-    //TODO: Verificar label piker
     render() {
         return (
             <View>
-                <Label>{this.props.label}</Label>
+                <Label>{this.props.title}</Label>
                 <Picker
                     supportedOrientations={this.props.supportedOrientations || ['portrait', 'landscape']}
                     headerComponent={this.header}
@@ -31,7 +30,7 @@ export default class SelectBase extends Component {
                 (item, index) =>
                     <Item
                         key={index}
-                        label={item.label}
+                        label={item.value}
                         value={item.value}
                     />
             )
