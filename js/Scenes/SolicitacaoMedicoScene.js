@@ -3,17 +3,19 @@ import {Body, Card, Container, Content, H3, Text, View} from "native-base";
 import StaticStorageService from "../Services/staticStorageService";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import Divider from "react-native-material-design/lib/Divider";
-import {Image, ToastAndroid, Linking} from "react-native";
+import {Image, Linking, ToastAndroid} from "react-native";
 import StatusSolicitacaoEnum from "../Enums/StatusSolicitacaoEnum";
 import SolicitacaoService from "../Services/solicitacaoService";
 import SceneEnum from "../Enums/SceneEnum";
 import CampoTexto from "../Component/Campos/CampoTexto";
+import PacienteService from "../Services/pacienteService";
 
 export default class SolicitacaoMedicoScene extends Component {
     constructor(props) {
         super(props);
         this.state = {
             solicitacao: {},
+            paciente: {},
             medico: {},
             cancelar: false,
             motivo: '',
@@ -22,6 +24,17 @@ export default class SolicitacaoMedicoScene extends Component {
 
     componentWillMount() {
         this.setState({solicitacao: StaticStorageService.solicitacao});
+        //TODO: resource  para pegar paciente por id
+        // this.fetchData();
+    }
+
+    fetchData() {
+        PacienteService.get(this.state.solicitacao.idPaciente)
+            .then((response) => {
+                console.log('RESPONSE: ', response);
+                this.setState({paciente: response.data})
+            })
+            .catch((error) => console.log('ERRO: ', error));
     }
 
     acoes() {
@@ -163,6 +176,7 @@ export default class SolicitacaoMedicoScene extends Component {
     }
 
     render() {
+        //TODO: colocar informacoes sobre medicoes de batimento
         return (
             <Container>
                 <Content>
@@ -173,6 +187,8 @@ export default class SolicitacaoMedicoScene extends Component {
                                source={require("./../Images/UserLogo.png")}/>
                         <Body>
                         <Text>{`Paciente: ${this.state.solicitacao.nomePaciente}`}</Text>
+                        {(this.state.paciente.possuiDiabete) ? <Text> Possui diabetes</Text> : null}
+                        {(this.state.paciente.possuiPressaoAlta) ? <Text> Possui pressao alta</Text> : null}
                         </Body>
                     </Card>
                     <Card>
