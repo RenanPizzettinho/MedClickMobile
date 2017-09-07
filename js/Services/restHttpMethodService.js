@@ -13,8 +13,11 @@ const headers = {
     'Content-Type': 'application/json'
 };
 
-function get(uri) {
-    return fetch(uri).then((response) => response.json());
+function get(uri, header) {
+    return fetch(uri, {
+        method: 'GET',
+        headers: header || headers,
+    }).then((response) => response.json());
 }
 
 function getXml(uri) {

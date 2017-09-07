@@ -86,6 +86,7 @@ export default class CadastroPacienteScene extends Component {
     }
 
     atualizarDadosAzumio() {
+        ToastAndroid.showWithGravity('Atualizando', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
         PacienteService.atualizarAzumio(this.state.idPaciente)
             .then((resp) => {
                 console.log(resp);

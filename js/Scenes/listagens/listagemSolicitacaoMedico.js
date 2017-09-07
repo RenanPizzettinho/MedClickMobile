@@ -5,6 +5,7 @@ import StaticStorageService from "../../Services/staticStorageService";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
 import SceneEnum from "../../Enums/SceneEnum";
 import StatusSolicitacaoEnum from "../../Enums/StatusSolicitacaoEnum";
+import Loader from "../../Component/Loader";
 
 export default class listagemSolicitacaoMedico extends Component {
 
@@ -70,10 +71,7 @@ export default class listagemSolicitacaoMedico extends Component {
         return (
             <Container>
                 <Content>
-                    {(this.state.solicitacoes.length === 0 || this.state.solicitacoes === null) ?
-                        <Text>Sem dados para exibir</Text>
-                        : null
-                    }
+                    {(this.state.solicitacoes.length === 0 || this.state.solicitacoes === null) ? <Loader/> : null}
                     {this.item()}
                 </Content>
             </Container>

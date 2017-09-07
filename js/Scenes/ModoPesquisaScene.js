@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card, Container, Content, Icon, List, ListItem, Text} from "native-base";
+import {Card, Container, Content, List, ListItem, Text} from "native-base";
 import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
 import SceneEnum from '../Enums/SceneEnum';
 import PacienteService from "../Services/pacienteService";
@@ -32,7 +32,7 @@ export default class ModoPesquisaScene extends Component {
     }
 
     hasLocalizacao() {
-        return false;
+        return (this.state.localizacao !== null);
     }
 
     modoPesquisa() {
@@ -45,7 +45,6 @@ export default class ModoPesquisaScene extends Component {
             modos.map((item, index) =>
                 <ListItem key={index}>
                     <TouchableItem
-                        disabled={this.hasLocalizacao()}
                         onPress={() => navigate(SceneEnum.PESQUISA_MEDICO, {
                             filtro: item.filtro,
                             localizacao: this.state.localizacao
@@ -58,13 +57,28 @@ export default class ModoPesquisaScene extends Component {
             ));
     }
 
+    cadastrarLocalizacao() {
+        const {navigate} = this.props.navigation;
+        return (
+            <ListItem>
+                <TouchableItem
+                    onPress={() => navigate(SceneEnum.CADASTRO_LOCALIZACAO)}>
+                    <Content>
+                        <Text>Você ainda não possui localizacao cadastrada</Text>
+                        <Text note>Clique aqui para cadastrar</Text>
+                    </Content>
+                </TouchableItem>
+            </ListItem>
+        );
+    }
+
     render() {
         return (
             <Container>
                 <Content>
                     <Card>
                         <List primaryText="Teste">
-                            {this.modoPesquisa()}
+                            {(this.hasLocalizacao()) ? this.modoPesquisa() : this.cadastrarLocalizacao()}
                         </List>
                     </Card>
                 </Content>

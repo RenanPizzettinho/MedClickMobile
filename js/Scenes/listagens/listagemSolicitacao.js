@@ -1,11 +1,11 @@
 import React, {Component} from "react";
-import {Body, Card, CardItem, Container, Content, Left, List, ListItem, Spinner, Text, Thumbnail} from "native-base";
+import {Body, Card, CardItem, Container, Content, Left, Text, Thumbnail} from "native-base";
 import SolicitacaoService from "../../Services/solicitacaoService";
 import StaticStorageService from "../../Services/staticStorageService";
 import SceneEnum from "../../Enums/SceneEnum";
 import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
-import {ActivityIndicator} from "react-native";
 import StatusSolicitacaoEnum from "../../Enums/StatusSolicitacaoEnum";
+import Loader from "../../Component/Loader";
 
 export default class ListagemSolicitacao extends Component {
 
@@ -46,17 +46,10 @@ export default class ListagemSolicitacao extends Component {
         return (
             <Container>
                 <Content>
-                    {(this.state.solicitacoes.length === 0 || this.state.solicitacoes === null)?
-                        <ActivityIndicator
-                            animating={true}
-                            style={{height: 80}}
-                            size="large"
-                        />
-                        : null
-                    }
+                    {(this.state.solicitacoes.length === 0 || this.state.solicitacoes === null) ? <Loader/> : null}
                     {this.item()}
                 </Content>
-            </Container >
+            </Container>
         )
     }
 

@@ -13,8 +13,8 @@ function salvar(user, body) {
     return RestService.post(`${usuarioPath}/${user}/${medicoPath}`, body);
 }
 
-function get(user) {
-    return RestService.get(`${usuarioPath}/${user}/${medicoPath}`);
+function get(user, header) {
+    return RestService.get(`${usuarioPath}/${user}/${medicoPath}`, header);
 }
 
 function atualizar(user, body) {
@@ -25,8 +25,8 @@ function pesquisar(parametro) {
     return RestService.get(`${pesquisaMedicoPath}${parametro}`);
 }
 
-function validarCrm(uf,crm) {
+function validarCrm(uf, crm) {
     return RestService.getXml(`https://www.consultacrm.com.br/api/index.php?tipo=crm&uf=${uf}&q=${crm}&chave=lulucrate455566`)
-    // return RestService.getXml(`https://www.consultacrm.com.br/api/index.php?tipo=crm&uf=SC&q=666&chave=lulucrate455566`)
 }
+
 export default MedicoSevice;

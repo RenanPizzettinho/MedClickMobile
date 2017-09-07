@@ -43,15 +43,15 @@ export default class CadastroLocalizacaoScene extends Component {
     }
 
     setLocalizacao(response) {
-        console.log('RESPONSE: ', response.localizacao);
-        let dados = response.data[0];
+        console.log('RESPONSE: ', response.data.localizacao);
+        let dados = response.data;
         if (dados.localizacao === undefined) {
             return;
         }
         this.setState({
             localizacao: {
-                longitude: dados.localizacao[0],
-                latitude: dados.localizacao[1]
+                longitude: dados.localizacao.longitude,
+                latitude: dados.localizacao.latitude
             }
         });
     }
