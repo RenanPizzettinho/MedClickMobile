@@ -38,7 +38,7 @@ export default class PesquisaMedico extends Component {
             modalVisible: false,
             search: null,
             selectedItem: undefined,
-            medicos: null
+            medicos: null,
         }
 
     }
@@ -54,7 +54,7 @@ export default class PesquisaMedico extends Component {
             loading: true
         });
         const {params} = this.props.navigation.state;
-        let parametro = `${params.filtro}${this.state.search}&longitude=${params.localizacao[0]}&latitude=${params.localizacao[1]}`;
+        let parametro = `${params.filtro}${this.state.search}&longitude=${params.localizacao.longitude}&latitude=${params.localizacao.latitude}`;
         let header = {'idMedico': StaticStorageService.usuarioSessao.idMedico};
 
         MedicoService.pesquisar(parametro, header)
@@ -89,6 +89,7 @@ export default class PesquisaMedico extends Component {
                     </Item>
                 </Header>
                 <Content>
+                    <Text>{`${params.filtro}${this.state.search}&longitude=${params.localizacao.longitude}&latitude=${params.localizacao.latitude}`}</Text>
                     {(this.state.medicos) ? this.medicos() : (this.state.loading) ? <Loader/> : null}
                     {this.modal()}
                 </Content>
@@ -112,7 +113,7 @@ export default class PesquisaMedico extends Component {
                                     <Text>Nome: {item.nome}</Text>
                                     <Text note>Especialidade: {item.especialidade}</Text>
                                     <Text note>Atende em {item.atendeEm}</Text>
-                                    <Text note>Esta a {item.distancia} metros</Text>
+                                    <Text note>Está a {Math.round(item.distancia)} metros</Text>
                                 </View>
                             </CardItem>
                         </Card>
@@ -167,7 +168,7 @@ export default class PesquisaMedico extends Component {
                             <Text>Nome: {item.nome}</Text>
                             <Text>Especialidade: {item.especialidade}</Text>
                             <Text>Atende em: {item.atendeEm}</Text>
-                            <Text>Esta a {item.distancia} metros de você</Text>
+                            <Text>Está a {Math.round(item.distancia)} metros de você</Text>
                             <Text>Dias em que
                                 atende: {(item.diasAtendimentoDomicilio) ? this.diasSemana(item.diasAtendimentoDomicilio) : null}</Text>
                         </View>

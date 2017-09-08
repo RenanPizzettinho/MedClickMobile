@@ -26,7 +26,7 @@ export default class ModoPesquisaScene extends Component {
         PacienteService.get(id)
             .then((response) => {
                 console.log(response);
-                this.setState({localizacao: response.data[0].localizacao});
+                this.setState({localizacao: response.data.localizacao});
             })
             .catch((erro) => console.log('ERRO: ', erro));
     }

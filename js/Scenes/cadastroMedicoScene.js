@@ -48,7 +48,7 @@ export default class CadastroMedicoScene extends Component {
         const userId = StaticStorageService.usuarioSessao._id;
         MedicoService.get(userId)
             .then((response) => {
-                let dados = response.data[0];
+                let dados = response.data;
 
                 if (dados === undefined) return;
 
