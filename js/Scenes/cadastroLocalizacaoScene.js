@@ -71,14 +71,7 @@ export default class CadastroLocalizacaoScene extends Component {
         LocalizacaoService.getEndereco(this.state.coordinate.latitude, this.state.coordinate.longitude)
             .then((response) => {
                 console.log('ENDERECO: ', response.results[0].address_components[0].short_name);
-                let endereco = {
-                    rua: response.results[0].address_components[1].short_name,
-                    bairro: response.results[0].address_components[2].short_name,
-                    // cidade: response.results[0].address_components[3].short_name,
-                    // estado: response.results[0].address_components[5].short_name,
-                    // pais: response.results[0].address_components[6].short_name,
-                    // cep: response.results[0].address_components[7].short_name,
-                };
+                let endereco = this.getEndereco(response);
                 this.setState({endereco});
             })
             .catch((error) => console.log('ERRO: ', error));
@@ -105,15 +98,47 @@ export default class CadastroLocalizacaoScene extends Component {
         }
     }
 
+    getEndereco(response) {
+        let addressComponents = response.results[0].address_components;
+        let endereco = {};
+        addressComponents.forEach((componente) => {
+            componente.types.some((type) => {
+                switch (type) {
+                    case 'route':
+                        endereco.rua = componente.short_name;
+                        break;
+                    case 'sublocality':
+                        endereco.bairro = componente.short_name;
+                        break;
+                    case 'administrative_area_level_2':
+                        endereco.cidade = componente.short_name;
+                        break;
+                    case 'administrative_area_level_1':
+                        endereco.estado = componente.short_name;
+                        break;
+                    case 'country':
+                        endereco.pais = componente.short_name;
+                        break;
+                    case 'postal_code':
+                        endereco.cep = (componente.short_name.length === 5) ? componente.short_name + '-000' : componente.short_name;
+                        break;
+                }
+                return true;
+            })
+        });
+        console.log('ENDERECO: ', endereco);
+        return endereco;
+    }
+
     render() {
         return (
             <View style={{
-                flex:1,
+                flex: 1,
                 //     ...StyleSheet.absoluteFillObject,
                 //     justifyContent: 'flex-end',
                 //     alignItems: 'center',
 
-                }}>
+            }}>
                 <MapView
                     style={styles.map}
                     provider='google'
@@ -137,10 +162,10 @@ export default class CadastroLocalizacaoScene extends Component {
                 </MapView>
                 <View>
                     <BotaoBase
-                        style={{flexDirection:'row'}}
+                        style={{flexDirection: 'row'}}
                         title={'Salvar'}
                         text={'Salvar'}
-                        onPress={() => null}
+                        onPress={() => this.save()}
                     />
                 </View>
             </View>

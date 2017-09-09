@@ -89,7 +89,6 @@ export default class PesquisaMedico extends Component {
                     </Item>
                 </Header>
                 <Content>
-                    <Text>{`${params.filtro}${this.state.search}&longitude=${params.localizacao.longitude}&latitude=${params.localizacao.latitude}`}</Text>
                     {(this.state.medicos) ? this.medicos() : (this.state.loading) ? <Loader/> : null}
                     {this.modal()}
                 </Content>
@@ -98,6 +97,7 @@ export default class PesquisaMedico extends Component {
     }
 
     medicos() {
+        //TODO: Retirar imagem.
         return (
             this.state.medicos.map((item, index) =>
                 <Content key={index}>

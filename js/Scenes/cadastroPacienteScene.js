@@ -101,9 +101,9 @@ export default class CadastroPacienteScene extends Component {
     }
 
     integracoesAzumio() {
+        //TODO: remover informacoes de batimentos, mover pro card do paciente na solicitacao
         console.log(this.state.integracoes.azumio.dados);
         return (
-
             <View>
                 <Card>
                     <H3 style={{textAlign: "center"}}>Azumio</H3>

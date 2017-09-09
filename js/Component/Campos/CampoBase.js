@@ -13,6 +13,7 @@ export default class CampoBase extends Component {
                 <Label>{this.props.label}</Label>
                 <Input
                     value={this.props.value}
+                    multiline={this.props.multiline || false}
                     onChangeText={this.props.onChange}
                     secureTextEntry={this.props.secureTextEntry || false}
                     disabled={this.props.disabled}

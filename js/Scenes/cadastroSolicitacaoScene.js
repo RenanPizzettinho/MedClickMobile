@@ -58,6 +58,10 @@ export default class CadastroSolicitacaoScene extends Component {
     }
 
     render() {
+        //TODO: Desabilitar Outro endereco
+        //TODO: mostrar em small endereco do cadastro
+        //TODO: Fixar botoes no bottom
+        //TODO: Multiple line no imput necessidade
         return (
             <Container>
                 <Content>
