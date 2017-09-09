@@ -24,15 +24,16 @@ export default class SolicitacaoMedicoScene extends Component {
 
     componentWillMount() {
         this.setState({solicitacao: StaticStorageService.solicitacao});
-        //TODO: resource  para pegar paciente e medico por id
-        // this.fetchData();
+        this.fetchData();
     }
 
     fetchData() {
-        PacienteService.get(this.state.solicitacao.idPaciente)
+        const {params} = this.props.navigation.state;
+        PacienteService.byId(params.idPaciente)
             .then((response) => {
                 console.log('RESPONSE: ', response);
-                this.setState({paciente: response.data})
+                this.setState({paciente: response.data});
+                console.log('PACIENTE: ', this.state.paciente);
             })
             .catch((error) => console.log('ERRO: ', error));
     }
@@ -58,7 +59,7 @@ export default class SolicitacaoMedicoScene extends Component {
                         text={'Localizar'}
                         title={'Localizar'}
                         disabled={false}
-                        onPress={() => this.startNavigation()}
+                        onPress={() => this.startNavigation(`geo:${this.state.paciente.localizacao.latitude},${this.state.paciente.localizacao.longitude}?q=${this.state.paciente.localizacao.latitude},${this.state.paciente.localizacao.longitude}`)}
                     />
                 </Card>
             );
@@ -66,7 +67,7 @@ export default class SolicitacaoMedicoScene extends Component {
     }
 
     startNavigation(url) {
-        Linking.canOpenURL('whatsapp://app').then(supported => {
+        Linking.canOpenURL(url).then(supported => {
             if (supported) {
                 Linking.openURL(url);
             } else {

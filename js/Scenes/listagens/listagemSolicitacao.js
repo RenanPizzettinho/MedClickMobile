@@ -73,7 +73,7 @@ export default class listagemSolicitacaoMedico extends Component {
                     onPress={() => {
                         StaticStorageService.solicitacao = solicitacao;
                         (StaticStorageService.contexto === ContextoEnum.PACIENTE) ? navigate(SceneEnum.SOLICITACAO)
-                            : navigate(SceneEnum.SOLICITACAO_MEDICO);
+                            : navigate(SceneEnum.SOLICITACAO_MEDICO,{idPaciente: solicitacao.idPaciente});
                     }}
                 >
                     <Card>
