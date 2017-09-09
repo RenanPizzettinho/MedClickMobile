@@ -14,6 +14,7 @@ export default class BotaoBase extends Component {
                 title={this.props.title || ''}
                 disabled={this.props.disabled || false}
                 onPress={this.props.onPress}
+                style={this.props.style||{flex:1, flexDirection: 'row'}}
             />
         );
     }

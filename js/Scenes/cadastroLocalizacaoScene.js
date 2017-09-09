@@ -7,6 +7,7 @@ import MedicoSevice from "../Services/medicoService";
 import ContextoEnum from "../Enums/ContextoEnum";
 import MapView from "react-native-maps";
 import LocalizacaoService from "../Services/localizacaoService";
+import BotaoBase from "../Component/Campos/BotaoBase";
 
 export default class CadastroLocalizacaoScene extends Component {
 
@@ -58,6 +59,10 @@ export default class CadastroLocalizacaoScene extends Component {
             localizacao: {
                 longitude: dados.localizacao.longitude,
                 latitude: dados.localizacao.latitude
+            },
+            coordinate: {
+                longitude: dados.localizacao.longitude,
+                latitude: dados.localizacao.latitude
             }
         });
     }
@@ -87,7 +92,14 @@ export default class CadastroLocalizacaoScene extends Component {
                 .then((response) => console.log('RESPONSE: ', response))
                 .catch((error => console.log('ERRO', error)));
         } else {
-            MedicoSevice.atualizar(StaticStorageService.usuarioSessao._id, {localizacao: this.state.coordinate})
+            let body = {
+                localizacao: {
+                    latitude: this.state.coordinate.latitude,
+                    longitude: this.state.coordinate.longitude
+                }
+            };
+            console.log('BODY: ', body);
+            MedicoSevice.atualizar(StaticStorageService.usuarioSessao._id, body)
                 .then((response) => console.log('RESPONSE: ', response))
                 .catch((error => console.log('ERRO', error)));
         }
@@ -95,13 +107,13 @@ export default class CadastroLocalizacaoScene extends Component {
 
     render() {
         return (
-            <View style={
-                {
-                    ...StyleSheet.absoluteFillObject,
-                    justifyContent: 'flex-end',
-                    alignItems: 'center'
-                }
-            }>
+            <View style={{
+                flex:1,
+                //     ...StyleSheet.absoluteFillObject,
+                //     justifyContent: 'flex-end',
+                //     alignItems: 'center',
+
+                }}>
                 <MapView
                     style={styles.map}
                     provider='google'
@@ -119,17 +131,17 @@ export default class CadastroLocalizacaoScene extends Component {
                 >
                     <MapView.Marker
                         coordinate={this.state.coordinate}
-                        title={'Minha localizacao'}
+                        title={(StaticStorageService.contexto === ContextoEnum.PACIENTE) ? 'Onde quero ser atendido' : 'A partir de onde atendo'}
                     />
 
                 </MapView>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                        onPress={() => this.save()}
-                        style={styles.bubble}
-                    >
-                        <Text>Tap to create a marker of random color</Text>
-                    </TouchableOpacity>
+                <View>
+                    <BotaoBase
+                        style={{flexDirection:'row'}}
+                        title={'Salvar'}
+                        text={'Salvar'}
+                        onPress={() => null}
+                    />
                 </View>
             </View>
         );
@@ -138,14 +150,15 @@ export default class CadastroLocalizacaoScene extends Component {
 
 const styles = StyleSheet.create({
     map: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
+        flex: 1,
+        // position: 'absolute',
+        // top: 0,
+        // left: 0,
+        // right: 0,
+        // bottom: 0,
+        // marginBottom: 0,
     },
     buttonContainer: {
-
         flexDirection: 'row',
         marginVertical: 20,
         backgroundColor: 'transparent',
@@ -155,5 +168,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 18,
         paddingVertical: 12,
         borderRadius: 20,
+        backgroundColor: 'red',
+        flexDirection: 'row'
     },
 });

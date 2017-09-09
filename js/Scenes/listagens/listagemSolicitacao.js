@@ -73,7 +73,7 @@ export default class listagemSolicitacaoMedico extends Component {
                     onPress={() => {
                         StaticStorageService.solicitacao = solicitacao;
                         (StaticStorageService.contexto === ContextoEnum.PACIENTE) ? navigate(SceneEnum.SOLICITACAO)
-                            : navigate(SceneEnum.SOLICITACAO_MEDICO,{idPaciente: solicitacao.idPaciente});
+                            : navigate(SceneEnum.SOLICITACAO_MEDICO, {idPaciente: solicitacao.idPaciente});
                     }}
                 >
                     <Card>
@@ -150,18 +150,20 @@ export default class listagemSolicitacaoMedico extends Component {
 
     listaAgrupada(itens, icon, label, press, indicador) {
         return (
-            <View>
-                <ListItem icon>
-                    <Left><Icon name={icon}/></Left>
-                    <Body>
-                    <TouchableItem onPress={press}>
-                        <Text>{label} ({itens.length})</Text>
-                    </TouchableItem>
-                    </Body>
-                    <Right>
-                        {(indicador) ? <Icon name='ios-arrow-dropleft'/> : <Icon name='ios-arrow-dropdown'/>}
-                    </Right>
-                </ListItem>
+            <View style={{flex: 1}}>
+                <View  style={(indicador) ? {backgroundColor: '#0064A3'} : {}}>
+                    <ListItem icon >
+                        <Left><Icon name={icon} style={(indicador) ? {color: '#ffffff'} : {}}/></Left>
+                        <Body>
+                        <TouchableItem onPress={press}>
+                            <Text style={(indicador) ? {color: '#ffffff'} : {}}>{label} ({itens.length})</Text>
+                        </TouchableItem>
+                        </Body>
+                        <Right>
+                            {(indicador) ? <Icon name='ios-arrow-dropleft'/> : <Icon name='ios-arrow-dropdown'/>}
+                        </Right>
+                    </ListItem>
+                </View>
                 {(indicador) ? this.item(itens) : null}
             </View>
         );
