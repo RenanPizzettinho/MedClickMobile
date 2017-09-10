@@ -4,10 +4,11 @@ import {Body, Card, Container, Content, Form, H3, Icon, Left, List, ListItem, Ri
 import {Image, ScrollView, ToastAndroid} from "react-native";
 import SolicitacaoService from "../Services/solicitacaoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
-import CampoData from "../Component/Campos/CampoData";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import SceneEnum from "../Enums/SceneEnum";
 import StaticStorageService from "../Services/staticStorageService";
+import PacienteService from "../Services/pacienteService";
+import LocalizacaoService from "../Services/localizacaoService";
 
 export default class CadastroSolicitacaoScene extends Component {
 
@@ -19,16 +20,30 @@ export default class CadastroSolicitacaoScene extends Component {
         super(props);
 
         this.state = {
+            paciente: {},
             sintomas: "",
             dataConsulta: new Date(),
             localConsulta: "",
             nomeMedico: "Médico",
             enderecoCadastro: true,
+            endereco: {},
         };
     }
 
     componentWillMount() {
         this.getNomeMedico();
+        this.getPaciente();
+    }
+
+    getPaciente() {
+        PacienteService.byId(StaticStorageService.usuarioSessao.idPaciente)
+            .then((response) => {
+                console.log('PACIENTE: ', response);
+                this.setState({
+                    paciente: response.data,
+                    endereco: response.data.paciente.endereco,
+                });
+            })
     }
 
     getNomeMedico() {
@@ -45,7 +60,8 @@ export default class CadastroSolicitacaoScene extends Component {
             idPaciente: perfil.idPaciente,
             descricaoNecessidade: this.state.sintomas,
             dataConsulta: this.state.dataConsulta,
-            localConsulta: this.state.localConsulta
+            localConsulta: this.state.localConsulta,
+            endereco: this.state.endereco,
         };
 
         SolicitacaoService.cadastrar(form)
@@ -58,10 +74,11 @@ export default class CadastroSolicitacaoScene extends Component {
     }
 
     render() {
+        //TODO: Repensar endereco da solicitacao
         //TODO: Desabilitar Outro endereco
         //TODO: mostrar em small endereco do cadastro
         //TODO: Fixar botoes no bottom
-        //TODO: Multiple line no imput necessidade
+        //TODO: Verificar pq endereco nao esta vindo.
         return (
             <Container>
                 <Content>
@@ -83,6 +100,7 @@ export default class CadastroSolicitacaoScene extends Component {
                                     />
                                     <CampoTexto
                                         label="Necessidade"
+                                        multiline={true}
                                         onChange={(sintomas) =>
                                             this.setState({sintomas})
                                         }
@@ -94,10 +112,10 @@ export default class CadastroSolicitacaoScene extends Component {
                                         }
                                     />
                                     {/*<CampoData*/}
-                                        {/*label="Data "*/}
-                                        {/*data={this.state.dataConsulta}*/}
-                                        {/*setData={(data) => this.setState({dataConsulta: data})}*/}
-                                        {/*style={{marginLeft: 10}}*/}
+                                    {/*label="Data "*/}
+                                    {/*data={this.state.dataConsulta}*/}
+                                    {/*setData={(data) => this.setState({dataConsulta: data})}*/}
+                                    {/*style={{marginLeft: 10}}*/}
                                     {/*/>*/}
                                 </Form>
                             </Card>
@@ -108,6 +126,8 @@ export default class CadastroSolicitacaoScene extends Component {
                                         <Left><Icon name='map'/></Left>
                                         <Body>
                                         <Text>Endereço do cadatro</Text>
+                                        {(this.state.paciente.endereco) ? <Text
+                                            note>{LocalizacaoService.formatarEndereco(this.state.paciente.endereco)}</Text> : null}
                                         </Body>
                                         <Right>
                                             <Switch value={this.state.enderecoCadastro}

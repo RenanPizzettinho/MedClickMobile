@@ -11,6 +11,7 @@ export default class CampoTexto extends Component {
         return (
             <CampoBase
                 label={this.props.label}
+                multiline={this.props.multiline || false}
                 value={this.props.value}
                 onChange={this.props.onChange}
                 disabled={this.props.disabled}

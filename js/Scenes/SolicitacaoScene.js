@@ -75,7 +75,6 @@ export default class SolicitacaoScene extends Component {
     }
 
     render() {
-        //TODO: Colocar crm e estado aqui
         return (
             <Container>
                 <Content>

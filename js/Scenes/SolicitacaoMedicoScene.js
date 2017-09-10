@@ -188,8 +188,8 @@ export default class SolicitacaoMedicoScene extends Component {
                                source={require("./../Images/UserLogo.png")}/>
                         <Body>
                         <Text>{`Paciente: ${this.state.solicitacao.nomePaciente}`}</Text>
-                        {(this.state.paciente.possuiDiabete) ? <Text> Possui diabetes</Text> : null}
-                        {(this.state.paciente.possuiPressaoAlta) ? <Text> Possui pressao alta</Text> : null}
+                        {(this.state.paciente.possuiDiabete) ? <Text note> Possui diabetes</Text> : null}
+                        {(this.state.paciente.possuiPressaoAlta) ? <Text note> Possui pressao alta</Text> : null}
                         </Body>
                     </Card>
                     <Card>
