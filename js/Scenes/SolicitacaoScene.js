@@ -7,7 +7,7 @@ import {Image, ToastAndroid} from "react-native";
 import StatusSolicitacaoEnum from "../Enums/StatusSolicitacaoEnum";
 import SceneEnum from "../Enums/SceneEnum";
 import SolicitacaoService from "../Services/solicitacaoService";
-
+import MedicoService from "../Services/medicoService";
 
 export default class SolicitacaoScene extends Component {
     constructor(props) {
@@ -21,6 +21,16 @@ export default class SolicitacaoScene extends Component {
     componentWillMount() {
         this.setState({solicitacao: StaticStorageService.solicitacao});
         //TODO: resource  para pegar paciente e medico por id
+        this.fetchData();
+    }
+
+    fetchData() {
+        MedicoService.byId(StaticStorageService.solicitacao.idMedico)
+            .then((response) => {
+                console.log('RESPONSE: ', response);
+                this.setState({medico: response.data})
+            })
+            .catch((error) => console.log('ERROR: ', error));
     }
 
     acoes() {
@@ -75,7 +85,9 @@ export default class SolicitacaoScene extends Component {
                         <Image style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}
                                source={require("./../Images/UserLogo.png")}/>
                         <Body>
-                        <Text>{`Médico: ${this.state.solicitacao.nomeMedico}`}</Text>
+                        <Text>{`Nome: ${this.state.solicitacao.nomeMedico}`}</Text>
+                        <Text note>{`CRM: ${this.state.medico.crm} - ${this.state.medico.estado}`}</Text>
+                        <Text note>{`Especialidade: ${this.state.medico.especialidade}`}</Text>
                         </Body>
                     </Card>
                     <Card>
@@ -92,7 +104,7 @@ export default class SolicitacaoScene extends Component {
                     {this.isCancelada()}
 
                 </Content>
-            </Container >
+            </Container>
         );
     }
 }

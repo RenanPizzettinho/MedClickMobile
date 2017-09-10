@@ -1,5 +1,5 @@
 import RestService from './restHttpMethodService';
-import {usuarioPath, medicoPath, pesquisaMedicoPath} from './webPathService';
+import {usuarioPath, perfilMedico, pesquisaMedicoPath, medicoPath} from './webPathService';
 
 const MedicoSevice = {
     salvar: salvar,
@@ -7,18 +7,19 @@ const MedicoSevice = {
     atualizar: atualizar,
     pesquisar: pesquisar,
     validarCrm: validarCrm,
+    byId: byId,
 };
 
 function salvar(user, body) {
-    return RestService.post(`${usuarioPath}/${user}/${medicoPath}`, body);
+    return RestService.post(`${usuarioPath}/${user}/${perfilMedico}`, body);
 }
 
 function get(user, header) {
-    return RestService.get(`${usuarioPath}/${user}/${medicoPath}`, header);
+    return RestService.get(`${usuarioPath}/${user}/${perfilMedico}`, header);
 }
 
 function atualizar(user, body) {
-    return RestService.put(`${usuarioPath}/${user}/${medicoPath}`, body);
+    return RestService.put(`${usuarioPath}/${user}/${perfilMedico}`, body);
 }
 
 function pesquisar(parametro) {
@@ -27,6 +28,10 @@ function pesquisar(parametro) {
 
 function validarCrm(uf, crm) {
     return RestService.getXml(`https://www.consultacrm.com.br/api/index.php?tipo=crm&uf=${uf}&q=${crm}&chave=lulucrate455566`)
+}
+
+function byId(id) {
+    return RestService.get(`${medicoPath}/${id}`);
 }
 
 export default MedicoSevice;
