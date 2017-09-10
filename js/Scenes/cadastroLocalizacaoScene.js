@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import {Text, View} from "native-base";
-import {StyleSheet, TouchableOpacity} from "react-native";
+import {View} from "native-base";
+import {StyleSheet} from "react-native";
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 import MedicoSevice from "../Services/medicoService";
@@ -76,22 +76,20 @@ export default class CadastroLocalizacaoScene extends Component {
             })
             .catch((error) => console.log('ERRO: ', error));
 
+        let body = {
+            localizacao: {
+                latitude: this.state.coordinate.latitude,
+                longitude: this.state.coordinate.longitude
+            },
+            endereco: this.state.endereco
+        };
+        console.log('BODY: ', body);
 
         if (StaticStorageService.contexto === ContextoEnum.PACIENTE) {
-            PacienteService.atualizar(StaticStorageService.usuarioSessao._id, {
-                localizacao: this.state.coordinate,
-                endereco: this.state.getEndereco
-            })
+            PacienteService.atualizar(StaticStorageService.usuarioSessao._id, body)
                 .then((response) => console.log('RESPONSE: ', response))
                 .catch((error => console.log('ERRO', error)));
         } else {
-            let body = {
-                localizacao: {
-                    latitude: this.state.coordinate.latitude,
-                    longitude: this.state.coordinate.longitude
-                }
-            };
-            console.log('BODY: ', body);
             MedicoSevice.atualizar(StaticStorageService.usuarioSessao._id, body)
                 .then((response) => console.log('RESPONSE: ', response))
                 .catch((error => console.log('ERRO', error)));
@@ -193,7 +191,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 18,
         paddingVertical: 12,
         borderRadius: 20,
-        backgroundColor: 'red',
         flexDirection: 'row'
     },
 });
