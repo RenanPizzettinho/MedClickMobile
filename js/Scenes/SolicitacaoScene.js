@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Body, Card, Container, Content, H3, Text} from "native-base";
+import {Body, Card, Container, Content, H3, Text, View} from "native-base";
 import StaticStorageService from "../Services/staticStorageService";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import Divider from "react-native-material-design/lib/Divider";
@@ -8,6 +8,7 @@ import StatusSolicitacaoEnum from "../Enums/StatusSolicitacaoEnum";
 import SceneEnum from "../Enums/SceneEnum";
 import SolicitacaoService from "../Services/solicitacaoService";
 import MedicoService from "../Services/medicoService";
+import CampoTexto from "../Component/Campos/CampoTexto";
 
 export default class SolicitacaoScene extends Component {
     constructor(props) {
@@ -15,6 +16,8 @@ export default class SolicitacaoScene extends Component {
         this.state = {
             solicitacao: {},
             medico: {},
+            cancelar: false,
+            motivo: ''
         }
     }
 
@@ -34,6 +37,14 @@ export default class SolicitacaoScene extends Component {
     }
 
     acoes() {
+        return (
+            <View>
+                {(!this.state.cancelar) ? this.botaoCancelar() : null}
+                {(this.state.cancelar) ? this.motivoCancelamento() : null}
+            </View>)
+    }
+
+    botaoCancelar() {
         let situacao = this.state.solicitacao.situacao;
         if (situacao !== StatusSolicitacaoEnum.CANCELADO.KEY &&
             situacao !== StatusSolicitacaoEnum.ENCERRADO.KEY
@@ -43,10 +54,37 @@ export default class SolicitacaoScene extends Component {
                     text={'Cancelar'}
                     title={'Cancelar'}
                     disabled={false}
-                    onPress={() => this.cancelar()}
+                    onPress={() => this.setState({cancelar: true})}
                 />
             );
         }
+    }
+
+    motivoCancelamento() {
+        return (
+            <Card>
+                <BotaoBase
+                    text={'Desfazer'}
+                    title={'Desfazer'}
+                    onPress={() => this.setState({
+                        cancelar: false,
+                        motivo: '',
+                    })}
+                />
+                <CampoTexto
+                    label="Motivo"
+                    onChange={(motivo) => {
+                        this.setState({motivo});
+                    }}
+                />
+                <BotaoBase
+                    text={'Cancelar solicitação'}
+                    title={'Cancelar solicitação'}
+                    disabled={(this.state.motivo.length === 0)}
+                    onPress={() => this.cancelar()}
+                />
+            </Card>
+        );
     }
 
     cancelar() {
@@ -101,7 +139,6 @@ export default class SolicitacaoScene extends Component {
                     </Card>
                     {this.acoes()}
                     {this.isCancelada()}
-
                 </Content>
             </Container>
         );

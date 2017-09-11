@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {View} from "native-base";
-import {StyleSheet} from "react-native";
+import {StyleSheet, ToastAndroid} from "react-native";
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 import MedicoSevice from "../Services/medicoService";
@@ -87,11 +87,17 @@ export default class CadastroLocalizacaoScene extends Component {
 
         if (StaticStorageService.contexto === ContextoEnum.PACIENTE) {
             PacienteService.atualizar(StaticStorageService.usuarioSessao._id, body)
-                .then((response) => console.log('RESPONSE: ', response))
+                .then((response) => {
+                    ToastAndroid.showWithGravity(`Endereço atualizado`, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                    console.log('RESPONSE: ', response);
+                })
                 .catch((error => console.log('ERRO', error)));
         } else {
             MedicoSevice.atualizar(StaticStorageService.usuarioSessao._id, body)
-                .then((response) => console.log('RESPONSE: ', response))
+                .then((response) => {
+                    ToastAndroid.showWithGravity(`Endereço atualizado`, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                    console.log('RESPONSE: ', response)
+                })
                 .catch((error => console.log('ERRO', error)));
         }
     }

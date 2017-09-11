@@ -133,7 +133,10 @@ export default class SolicitacaoMedicoScene extends Component {
                 <BotaoBase
                     text={'Desfazer'}
                     title={'Desfazer'}
-                    onPress={() => this.setState({cancelar: false})}
+                    onPress={() => this.setState({
+                        cancelar: false,
+                        motivo: '',
+                    })}
                 />
                 <CampoTexto
                     label="Motivo"

@@ -44,7 +44,7 @@ export default class CadastroPacienteScene extends Component {
     fetchData() {
         PacienteService.get(StaticStorageService.usuarioSessao._id)
             .then((response) => {
-                let dados = response.data[0];
+                let dados = response.data;
                 if (dados === undefined) return;
                 this.setState({
                     idPaciente: dados._id,
