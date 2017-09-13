@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import styles from "../StyleSheet/mainStyle";
-import {Body, Card, Container, Content, Form, H3, Icon, Left, List, ListItem, Right, Switch, Text} from "native-base";
+import {Card, Container, Content, Form, H3, ListItem, Text} from "native-base";
 import {Image, ScrollView, ToastAndroid} from "react-native";
 import SolicitacaoService from "../Services/solicitacaoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
@@ -8,7 +8,6 @@ import BotaoBase from "../Component/Campos/BotaoBase";
 import SceneEnum from "../Enums/SceneEnum";
 import StaticStorageService from "../Services/staticStorageService";
 import PacienteService from "../Services/pacienteService";
-import LocalizacaoService from "../Services/localizacaoService";
 
 export default class CadastroSolicitacaoScene extends Component {
 
@@ -21,12 +20,13 @@ export default class CadastroSolicitacaoScene extends Component {
 
         this.state = {
             paciente: {},
-            sintomas: "",
+            descricaoNecessidade: "",
             dataConsulta: new Date(),
-            localConsulta: "",
+            complemento: "",
             nomeMedico: "Médico",
             enderecoCadastro: true,
             endereco: {},
+            localConsulta: " "
         };
     }
 
@@ -58,27 +58,25 @@ export default class CadastroSolicitacaoScene extends Component {
         const form = {
             idMedico: medicoConsulta._id,
             idPaciente: perfil.idPaciente,
-            descricaoNecessidade: this.state.sintomas,
+            descricaoNecessidade: this.state.descricaoNecessidade,
             dataConsulta: this.state.dataConsulta,
-            localConsulta: this.state.localConsulta,
+            complemento: this.state.complemento,
             endereco: this.state.endereco,
+            localConsulta: "asdasda ",
         };
 
         SolicitacaoService.cadastrar(form)
             .then((responseJson) => {
                 ToastAndroid.showWithGravity('"Solicitação registrada', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                console.log('RESPONSE: ', responseJson);
                 if (responseJson.data._id) {
                     navigate(SceneEnum.LISTAGEM_SOLICITACAO);
                 }
-            });
+            })
+            .catch((error) => console.log('ERROR: ', error));
     }
 
     render() {
-        //TODO: Repensar endereco da solicitacao
-        //TODO: Desabilitar Outro endereco
-        //TODO: mostrar em small endereco do cadastro
-        //TODO: Fixar botoes no bottom
-        //TODO: Verificar pq endereco nao esta vindo.
         return (
             <Container>
                 <Content>
@@ -101,14 +99,17 @@ export default class CadastroSolicitacaoScene extends Component {
                                     <CampoTexto
                                         label="Necessidade"
                                         multiline={true}
-                                        onChange={(sintomas) =>
-                                            this.setState({sintomas})
+                                        onChange={(descricaoNecessidade) =>
+                                            this.setState({descricaoNecessidade})
                                         }
                                     />
+                                    <ListItem>
+                                        <Text>Endereço descritivo aqui</Text>
+                                    </ListItem>
                                     <CampoTexto
-                                        label="Endereço"
-                                        onChange={(localConsulta) =>
-                                            this.setState({localConsulta})
+                                        label="Complemento"
+                                        onChange={(complemento) =>
+                                            this.setState({complemento})
                                         }
                                     />
                                     {/*<CampoData*/}
@@ -118,33 +119,6 @@ export default class CadastroSolicitacaoScene extends Component {
                                     {/*style={{marginLeft: 10}}*/}
                                     {/*/>*/}
                                 </Form>
-                            </Card>
-                            <Card>
-                                <H3 style={{textAlign: 'center'}}>Endereço</H3>
-                                <List>
-                                    <ListItem icon>
-                                        <Left><Icon name='map'/></Left>
-                                        <Body>
-                                        <Text>Endereço do cadatro</Text>
-                                        {(this.state.paciente.endereco) ? <Text
-                                            note>{LocalizacaoService.formatarEndereco(this.state.paciente.endereco)}</Text> : null}
-                                        </Body>
-                                        <Right>
-                                            <Switch value={this.state.enderecoCadastro}
-                                                    onValueChange={(enderecoCadastro) => this.setState({enderecoCadastro})}
-                                            />
-                                        </Right>
-                                    </ListItem>
-                                    <ListItem icon>
-                                        <Left><Icon name='globe'/></Left>
-                                        <Body>
-                                        <Text>Outro endereço</Text>
-                                        </Body>
-                                        <Right>
-                                            <Icon name="arrow-forward"/>
-                                        </Right>
-                                    </ListItem>
-                                </List>
                             </Card>
                             <BotaoBase
                                 title="Registrar"
@@ -156,10 +130,13 @@ export default class CadastroSolicitacaoScene extends Component {
                 </Content>
             </Container>
         )
+        //TODO: Fixar botoes no bottom
+        //TODO: Verificar pq endereco nao esta vindo.
+        //TODO: Ajustas atributos.
     }
 
     disabled(state) {
-        return !state.sintomas || !state.localConsulta;
+        return !state.descricaoNecessidade;
     }
 }
 

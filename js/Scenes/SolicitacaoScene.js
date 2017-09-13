@@ -11,6 +11,11 @@ import MedicoService from "../Services/medicoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
 
 export default class SolicitacaoScene extends Component {
+
+    static navigationOptions = {
+        title: 'Solicitação',
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -89,7 +94,7 @@ export default class SolicitacaoScene extends Component {
 
     cancelar() {
         const {navigate} = this.props.navigation;
-        SolicitacaoService.movimentarSolicitacao(this.state.solicitacao._id, {situacao: StatusSolicitacaoEnum.CANCELADO.KEY})
+        SolicitacaoService.movimentar(this.state.solicitacao._id, {situacao: StatusSolicitacaoEnum.CANCELADO.KEY})
             .then((resp) => {
                 console.log(resp);
                 navigate(SceneEnum.LISTAGEM_SOLICITACAO);
