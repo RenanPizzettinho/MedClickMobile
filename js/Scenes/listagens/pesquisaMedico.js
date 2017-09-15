@@ -9,7 +9,7 @@ import {
     Icon,
     Input,
     Item,
-    Left,
+    Left, ListItem,
     Text,
     Thumbnail,
     Title,
@@ -108,7 +108,6 @@ export default class PesquisaMedico extends Component {
                     >
                         <Card>
                             <CardItem>
-                                <Thumbnail source={require('../../Images/UserLogo.png')}/>
                                 <View>
                                     <Text>Nome: {item.nome}</Text>
                                     <Text note>Especialidade: {item.especialidade}</Text>
@@ -153,25 +152,16 @@ export default class PesquisaMedico extends Component {
                 </Header>
                 <Content>
                     <Card>
-                        <Image
-                            source={require('../../Images/UserLogo.png')}
-                            object={styles.img}
-                            style={{
-                                width: 100,
-                                height: 100,
-                                alignSelf: "center",
-                                marginTop: 10,
-                                marginBottom: 10
-                            }}
-                        />
-                        <View>
-                            <Text>Nome: {item.nome}</Text>
-                            <Text>Especialidade: {item.especialidade}</Text>
-                            <Text>Atende em: {item.atendeEm}</Text>
-                            <Text>Está a {Math.round(item.distancia)} metros de você</Text>
-                            <Text>Dias em que
-                                atende: {(item.diasAtendimentoDomicilio) ? this.diasSemana(item.diasAtendimentoDomicilio) : null}</Text>
-                        </View>
+                        <CardItem>
+                            <View>
+                                <Text>Nome: {item.nome}</Text>
+                                <Text>Especialidade: {item.especialidade}</Text>
+                                <Text>Atende em: {item.atendeEm}</Text>
+                                <Text>Está a {Math.round(item.distancia)} metros de você</Text>
+                                <Text>Dias em que
+                                    atende: {(item.diasAtendimentoDomicilio) ? this.diasSemana(item.diasAtendimentoDomicilio) : null}</Text>
+                            </View>
+                        </CardItem>
                     </Card>
                     <BotaoBase
                         text={"Solicitar consulta"}

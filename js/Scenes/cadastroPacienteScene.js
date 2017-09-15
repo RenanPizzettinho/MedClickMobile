@@ -3,7 +3,7 @@ import {ToastAndroid} from "react-native";
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 import SceneEnum from "../Enums/SceneEnum";
-import {Body, Card, Container, Content, Form, H3, Text, View} from "native-base";
+import {Body, Card, Container, Content, Form, H3, ListItem, Text, View} from "native-base";
 import CheckBoxBase from "../Component/Campos/CheckBoxBase";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import Divider from "react-native-material-design/lib/Divider";
@@ -68,7 +68,7 @@ export default class CadastroPacienteScene extends Component {
             PacienteService.salvar(userId, form)
                 .then((response) => {
                     ToastAndroid.showWithGravity('Informações de paciente cadastradas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    console.log('RESPONSE: ',response);
+                    console.log('RESPONSE: ', response);
                     StaticStorageService.usuarioSessao.idPaciente = response.data._id;
                     console.log('USUARIO: ', StaticStorageService.usuarioSessao);
                     navigate(SceneEnum.MENU);
@@ -77,7 +77,7 @@ export default class CadastroPacienteScene extends Component {
             PacienteService.atualizar(userId, form)
                 .then((response) => {
                     ToastAndroid.showWithGravity('Informações de paciente atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    console.log('RESPONSE: ',response);
+                    console.log('RESPONSE: ', response);
                     StaticStorageService.usuarioSessao.idPaciente = response.data._id;
                     console.log('USUARIO: ', StaticStorageService.usuarioSessao);
                     navigate(SceneEnum.MENU);
@@ -107,14 +107,12 @@ export default class CadastroPacienteScene extends Component {
             <View>
                 <Card>
                     <H3 style={{textAlign: "center"}}>Azumio</H3>
-                    <Divider/>
                     <Body>
                     {this.state.integracoes.azumio.dados.map((item, index) =>
                         <View key={index}>
                             <Text style={{textAlign: "left"}}>Batimentos: {item.batimentos}</Text>
                             {/*<Text>Data marcação: {new Date(item.dataLeitura).toLocaleDateString().split('-').reverse().join('/')}</Text>*/}
                             <Text>Data marcação: {new Date(item.dataLeitura).toDateString()}</Text>
-                            <Divider/>
                         </View>
                     )}
                     <Text>Atualizado em: {new Date(this.state.integracoes.azumio.atualizadoEm).toDateString()}</Text>
@@ -127,7 +125,6 @@ export default class CadastroPacienteScene extends Component {
                     onPress={() => this.atualizarDadosAzumio()}
                 />
             </View>
-
         );
     }
 
@@ -137,7 +134,7 @@ export default class CadastroPacienteScene extends Component {
             <Container>
                 <Content>
                     <Card>
-                        <H3 style={{textAlign: "center"}}>Dados médicos</H3>
+                        <H3 style={{textAlign: "center"}}>Dados do paciente</H3>
                         <Divider/>
                         <Form>
                             <CheckBoxBase

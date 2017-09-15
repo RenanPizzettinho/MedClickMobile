@@ -1,13 +1,17 @@
 import React, {Component} from "react";
 import styles from "../StyleSheet/mainStyle";
-import {Card, Container, Content, Form, H3, ListItem, Text} from "native-base";
-import {Image, ScrollView, ToastAndroid} from "react-native";
+import {Card, Container, Content, Form, H3, ListItem, Text, View} from "native-base";
+import {Image, ScrollView, ToastAndroid, StyleSheet} from "react-native";
 import SolicitacaoService from "../Services/solicitacaoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import SceneEnum from "../Enums/SceneEnum";
 import StaticStorageService from "../Services/staticStorageService";
 import PacienteService from "../Services/pacienteService";
+import LocalizacaoService from "../Services/localizacaoService";
+import DatePicker from "react-native-datepicker";
+import Moment from "moment";
+
 
 export default class CadastroSolicitacaoScene extends Component {
 
@@ -23,10 +27,11 @@ export default class CadastroSolicitacaoScene extends Component {
             descricaoNecessidade: "",
             dataConsulta: new Date(),
             complemento: "",
-            nomeMedico: "Médico",
+            nomeMedico: "",
             enderecoCadastro: true,
             endereco: {},
-            localConsulta: " "
+            localizacao: {},
+            dataConsulta: new Date(),
         };
     }
 
@@ -41,7 +46,8 @@ export default class CadastroSolicitacaoScene extends Component {
                 console.log('PACIENTE: ', response);
                 this.setState({
                     paciente: response.data,
-                    endereco: response.data.paciente.endereco,
+                    localizacao: response.data.localizacao,
+                    endereco: response.data.endereco,
                 });
             })
     }
@@ -59,10 +65,10 @@ export default class CadastroSolicitacaoScene extends Component {
             idMedico: medicoConsulta._id,
             idPaciente: perfil.idPaciente,
             descricaoNecessidade: this.state.descricaoNecessidade,
+            localizacao: this.state.localizacao,
             dataConsulta: this.state.dataConsulta,
             complemento: this.state.complemento,
             endereco: this.state.endereco,
-            localConsulta: "asdasda ",
         };
 
         SolicitacaoService.cadastrar(form)
@@ -84,40 +90,48 @@ export default class CadastroSolicitacaoScene extends Component {
                         <ScrollView>
                             <Card>
                                 <Form>
-                                    <H3>{this.state.nomeMedico}</H3>
-                                    <Image
-                                        source={require('../Images/UserLogo.png')}
-                                        object={styles.img}
-                                        style={{
-                                            width: 100,
-                                            height: 100,
-                                            alignSelf: "center",
-                                            marginTop: 10,
-                                            marginBottom: 10
-                                        }}
-                                    />
-                                    <CampoTexto
-                                        label="Necessidade"
-                                        multiline={true}
-                                        onChange={(descricaoNecessidade) =>
-                                            this.setState({descricaoNecessidade})
-                                        }
-                                    />
+                                    <H3 style={{textAlign: 'center'}}>{this.state.nomeMedico}</H3>
                                     <ListItem>
-                                        <Text>Endereço descritivo aqui</Text>
+                                        <CampoTexto
+                                            label="Necessidade"
+                                            multiline={true}
+                                            onChange={(descricaoNecessidade) =>
+                                                this.setState({descricaoNecessidade})
+                                            }
+                                        />
                                     </ListItem>
-                                    <CampoTexto
-                                        label="Complemento"
-                                        onChange={(complemento) =>
-                                            this.setState({complemento})
-                                        }
-                                    />
-                                    {/*<CampoData*/}
-                                    {/*label="Data "*/}
-                                    {/*data={this.state.dataConsulta}*/}
-                                    {/*setData={(data) => this.setState({dataConsulta: data})}*/}
-                                    {/*style={{marginLeft: 10}}*/}
-                                    {/*/>*/}
+                                    <ListItem>
+                                        <Text note>{`Endereço: ${LocalizacaoService.formatarEndereco(this.state.endereco)}`}</Text>
+                                    </ListItem>
+                                        <CampoTexto
+                                            label="Complemento"
+                                            onChange={(complemento) =>
+                                                this.setState({complemento})
+                                            }
+                                        />
+                                    <ListItem>
+                                        <View style={{flex: 1, flexDirection: 'row'}}>
+                                            <Text style={{justifyContent: 'center'}}>Data:</Text>
+                                            <DatePicker
+                                                style={{paddingRight: 0, paddingLeft: 0}}
+                                                date={this.state.dataConsulta}
+                                                mode="datetime"
+                                                format="DD/MM/YYYY"
+                                                minDate={new Date()}
+                                                androidMode="calendar"
+                                                showIcon={true}
+
+                                                customStyles={{
+                                                    dateInput: {
+                                                        alignItems: 'flex-start',
+                                                        padding: 0,
+                                                    },
+                                                }}
+                                                onDateChange={(dataConsulta) => {
+                                                    this.setState({dataConsulta});
+                                                }}/>
+                                        </View>
+                                    </ListItem>
                                 </Form>
                             </Card>
                             <BotaoBase

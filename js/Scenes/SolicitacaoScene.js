@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Body, Card, Container, Content, H3, Text, View} from "native-base";
+import {Body, Card, CardItem, Container, Content, H2, H3, ListItem, Text, View} from "native-base";
 import StaticStorageService from "../Services/staticStorageService";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import Divider from "react-native-material-design/lib/Divider";
@@ -9,6 +9,8 @@ import SceneEnum from "../Enums/SceneEnum";
 import SolicitacaoService from "../Services/solicitacaoService";
 import MedicoService from "../Services/medicoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
+import LocalizacaoService from "../Services/localizacaoService";
+import Moment from "moment";
 
 export default class SolicitacaoScene extends Component {
 
@@ -28,7 +30,6 @@ export default class SolicitacaoScene extends Component {
 
     componentWillMount() {
         this.setState({solicitacao: StaticStorageService.solicitacao});
-        //TODO: resource  para pegar paciente e medico por id
         this.fetchData();
     }
 
@@ -52,6 +53,7 @@ export default class SolicitacaoScene extends Component {
     botaoCancelar() {
         let situacao = this.state.solicitacao.situacao;
         if (situacao !== StatusSolicitacaoEnum.CANCELADO.KEY &&
+            situacao !== StatusSolicitacaoEnum.CONFIRMADO.KEY &&
             situacao !== StatusSolicitacaoEnum.ENCERRADO.KEY
         ) {
             return (
@@ -122,25 +124,32 @@ export default class SolicitacaoScene extends Component {
             <Container>
                 <Content>
                     <Card>
-                        <H3 style={{textAlign: "center"}}>Informações do médico</H3>
-                        <Divider/>
-                        <Image style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}
-                               source={require("./../Images/UserLogo.png")}/>
-                        <Body>
-                        <Text>{`Nome: ${this.state.solicitacao.nomeMedico}`}</Text>
-                        <Text note>{`CRM: ${this.state.medico.crm} - ${this.state.medico.estado}`}</Text>
-                        <Text note>{`Especialidade: ${this.state.medico.especialidade}`}</Text>
-                        </Body>
-                    </Card>
-                    <Card>
-                        <H3 style={{textAlign: "center"}}>Informações da solicitação</H3>
-                        <Divider/>
-                        <Body>
-                        <Text note>{`Data: ${this.state.solicitacao.dataConsulta}`}</Text>
-                        <Text note>{`Necessicade: ${this.state.solicitacao.descricaoNecessidade}`}</Text>
-                        <Text note>{`Local: ${this.state.solicitacao.localConsulta}`}</Text>
-                        <Text note>{`Situação: ${StatusSolicitacaoEnum.toDesc(this.state.solicitacao.situacao)}`}</Text>
-                        </Body>
+                        <ListItem>
+                            <H2 style={{textAlign: "center"}}>Informações do médico</H2>
+                        </ListItem>
+                        <CardItem>
+                            <Divider/>
+                            <Body>
+                            <Text note>{`Nome: ${this.state.solicitacao.nomeMedico}`}</Text>
+                            <Text note>{`CRM: ${this.state.medico.crm} - ${this.state.medico.estado}`}</Text>
+                            <Text note>{`Especialidade: ${this.state.medico.especialidade}`}</Text>
+                            </Body>
+                        </CardItem>
+                        <ListItem>
+                            <H2 style={{textAlign: "center"}}>Informações da solicitação</H2>
+                        </ListItem>
+                        <CardItem>
+                            <Divider/>
+                            <Body>
+                            <Text
+                                note>{`Data: ${Moment(this.state.solicitacao.dataConsulta).format('DD/MM/YYYY')}`}</Text>
+                            <Text note>{`Necessicade: ${this.state.solicitacao.descricaoNecessidade}`}</Text>
+                            <Text
+                                note>{`Local: ${LocalizacaoService.formatarEndereco(this.state.solicitacao.endereco)}`}</Text>
+                            <Text
+                                note>{`Situação: ${StatusSolicitacaoEnum.toDesc(this.state.solicitacao.situacao)}`}</Text>
+                            </Body>
+                        </CardItem>
                     </Card>
                     {this.acoes()}
                     {this.isCancelada()}

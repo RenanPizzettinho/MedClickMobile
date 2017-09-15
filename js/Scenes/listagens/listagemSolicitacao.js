@@ -79,9 +79,7 @@ export default class listagemSolicitacaoMedico extends Component {
                     <Card>
                         <CardItem>
                             <Left>
-                                <Thumbnail square source={require("./../../Images/UserLogo.png")}/>
                                 <Body>
-
                                 {(StaticStorageService.contexto === ContextoEnum.PACIENTE) ?
                                     <Text>{`Médico: ${solicitacao.nomeMedico}`}</Text>
                                     : <Text>{`Paciente: ${solicitacao.nomePaciente}`}</Text>}

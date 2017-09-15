@@ -1,16 +1,22 @@
 import React, {Component} from "react";
-import {Body, Card, Container, Content, H3, Text, View} from "native-base";
+import {Body, Card, CardItem, Container, Content, H3, ListItem, Text, View} from "native-base";
 import StaticStorageService from "../Services/staticStorageService";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import Divider from "react-native-material-design/lib/Divider";
-import {Image, Linking, ToastAndroid} from "react-native";
+import {Linking, ToastAndroid} from "react-native";
 import StatusSolicitacaoEnum from "../Enums/StatusSolicitacaoEnum";
 import SolicitacaoService from "../Services/solicitacaoService";
 import SceneEnum from "../Enums/SceneEnum";
 import CampoTexto from "../Component/Campos/CampoTexto";
 import PacienteService from "../Services/pacienteService";
+import LocalizacaoService from "../Services/localizacaoService";
 
 export default class SolicitacaoMedicoScene extends Component {
+
+    static navigationOptions = {
+        title: 'Solicitação',
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -18,7 +24,7 @@ export default class SolicitacaoMedicoScene extends Component {
             paciente: {},
             medico: {},
             cancelar: false,
-            motivo: '',
+            motivoCancelamento: '',
         }
     }
 
@@ -59,7 +65,7 @@ export default class SolicitacaoMedicoScene extends Component {
                         text={'Localizar'}
                         title={'Localizar'}
                         disabled={false}
-                        onPress={() => this.startNavigation(`geo:${this.state.paciente.localizacao.latitude},${this.state.paciente.localizacao.longitude}?q=${this.state.paciente.localizacao.latitude},${this.state.paciente.localizacao.longitude}`)}
+                        onPress={() => this.startNavigation(`geo:${this.state.solicitacao.localizacao.latitude},${this.state.solicitacao.localizacao.longitude}?q=${this.state.solicitacao.localizacao.latitude},${this.state.solicitacao.localizacao.longitude}&`)}
                     />
                 </Card>
             );
@@ -135,31 +141,34 @@ export default class SolicitacaoMedicoScene extends Component {
                     title={'Desfazer'}
                     onPress={() => this.setState({
                         cancelar: false,
-                        motivo: '',
+                        motivoCancelamento: '',
                     })}
                 />
                 <CampoTexto
                     label="Motivo"
-                    onChange={(motivo) => {
-                        this.setState({motivo});
+                    onChange={(motivoCancelamento) => {
+                        this.setState({motivoCancelamento});
                     }}
                 />
                 <BotaoBase
                     text={'Cancelar solicitação'}
                     title={'Cancelar solicitação'}
-                    disabled={(this.state.motivo.length === 0)}
-                    onPress={() => this.movimentarSolicitacao(StatusSolicitacaoEnum.CANCELADO.KEY, this.state.motivo, 'Solicitação cancelada')}
+                    disabled={(this.state.motivoCancelamento.length === 0)}
+                    onPress={() => this.movimentarSolicitacao(StatusSolicitacaoEnum.CANCELADO.KEY, this.state.motivoCancelamento, 'Solicitação cancelada')}
                 />
             </Card>
         );
     }
 
-    movimentarSolicitacao(status, motivo, mensagem) {
+    movimentarSolicitacao(status, motivoCancelamento, mensagem) {
         const {navigate} = this.props.navigation;
-        SolicitacaoService.movimentar(this.state.solicitacao._id, {situacao: status, motivo: motivo})
+        SolicitacaoService.movimentar(this.state.solicitacao._id, {
+            situacao: status,
+            motivoCancelamento: motivoCancelamento
+        })
             .then((resp) => {
                 console.log(resp);
-                navigate(SceneEnum.LISTAGEM_SOLICITACAO_MEDICO);
+                navigate(SceneEnum.LISTAGEM_SOLICITACAO);
                 ToastAndroid.showWithGravity(mensagem, ToastAndroid.SHORT, ToastAndroid.BOTTOM)
             })
             .catch((err) => console.log(err));
@@ -172,7 +181,7 @@ export default class SolicitacaoMedicoScene extends Component {
                     <H3 style={{textAlign: "center"}}>Motivo cancelamento</H3>
                     <Divider/>
                     <Body>
-                    <Text note>{this.state.solicitacao.motivo}</Text>
+                    <Text note>{this.state.solicitacao.motivoCancelamento}</Text>
                     </Body>
                 </Card>
             );
@@ -185,25 +194,31 @@ export default class SolicitacaoMedicoScene extends Component {
             <Container>
                 <Content>
                     <Card>
-                        <H3 style={{textAlign: "center"}}>Informações do paciente</H3>
-                        <Divider/>
-                        <Image style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}
-                               source={require("./../Images/UserLogo.png")}/>
-                        <Body>
-                        <Text>{`Paciente: ${this.state.solicitacao.nomePaciente}`}</Text>
-                        {(this.state.paciente.possuiDiabete) ? <Text note> Possui diabetes</Text> : null}
-                        {(this.state.paciente.possuiPressaoAlta) ? <Text note> Possui pressao alta</Text> : null}
-                        </Body>
-                    </Card>
-                    <Card>
-                        <H3 style={{textAlign: "center"}}>Informações da solicitação</H3>
-                        <Divider/>
-                        <Body>
-                        <Text note>{`Data: ${this.state.solicitacao.dataConsulta}`}</Text>
-                        <Text note>{`Necessicade: ${this.state.solicitacao.descricaoNecessidade}`}</Text>
-                        <Text note>{`Local: ${this.state.solicitacao.localConsulta}`}</Text>
-                        <Text note>{`Situação: ${StatusSolicitacaoEnum.toDesc(this.state.solicitacao.situacao)}`}</Text>
-                        </Body>
+                        <ListItem>
+                            <H3 style={{textAlign: "center"}}>Informações do paciente</H3>
+                        </ListItem>
+                        <CardItem>
+                            <Divider/>
+                            <Body>
+                            <Text note>{`Nome: ${this.state.solicitacao.nomePaciente}`}</Text>
+                            {(this.state.paciente.possuiDiabete) ? <Text note>Possui diabetes</Text> : null}
+                            {(this.state.paciente.possuiPressaoAlta) ? <Text note>Possui pressao alta</Text> : null}
+                            </Body>
+                        </CardItem>
+                        <ListItem>
+                            <H3 style={{textAlign: "center"}}>Informações da solicitação</H3>
+                        </ListItem>
+                        <CardItem>
+                            <Divider/>
+                            <Body>
+                            <Text note>{`Data: ${this.state.solicitacao.dataConsulta}`}</Text>
+                            <Text note>{`Necessicade: ${this.state.solicitacao.descricaoNecessidade}`}</Text>
+                            <Text
+                                note>{`Local: ${LocalizacaoService.formatarEndereco(this.state.solicitacao.endereco)}`}</Text>
+                            <Text
+                                note>{`Situação: ${StatusSolicitacaoEnum.toDesc(this.state.solicitacao.situacao)}`}</Text>
+                            </Body>
+                        </CardItem>
                     </Card>
                     {this.acoes()}
                     {this.isCancelada()}

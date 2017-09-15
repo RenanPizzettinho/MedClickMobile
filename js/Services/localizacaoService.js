@@ -13,7 +13,7 @@ function getEndereco(latitude, longitude) {
 }
 
 function formatarEndereco(endereco) {
-    return `${endereco.rua}, ${endereco.bairro}, ${endereco.cidade} - ${endereco.estado} - ${endereco.pais} - ${endereco.cep}`;
+    return `${(endereco.rua) ? endereco.rua + ',' : ''} ${(endereco.bairro) ? endereco.bairro + ',' : ''} ${(endereco.cidade) ? endereco.cidade + ' - ' : ''}${(endereco.estado) ? endereco.estado + ' - ' : ''}${(endereco.pais) ? endereco.pais + ' - ' : ''}${(endereco.cep) ? endereco.cep : ''}`;
 }
 
 export default LocalizacaoService;

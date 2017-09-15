@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {View} from "native-base";
-import {StyleSheet, ToastAndroid} from "react-native";
+import {StyleSheet, ToastAndroid, Alert} from "react-native";
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 import MedicoSevice from "../Services/medicoService";
@@ -24,7 +24,10 @@ export default class CadastroLocalizacaoScene extends Component {
                 latitude: -28.6811714,
                 longitude: -49.3760146,
 
-            }
+            },
+            endereco: {
+                teste: 1
+            },
         };
     }
 
@@ -68,14 +71,6 @@ export default class CadastroLocalizacaoScene extends Component {
     }
 
     save() {
-        LocalizacaoService.getEndereco(this.state.coordinate.latitude, this.state.coordinate.longitude)
-            .then((response) => {
-                console.log('ENDERECO: ', response.results[0].address_components[0].short_name);
-                let endereco = this.getEndereco(response);
-                this.setState({endereco});
-            })
-            .catch((error) => console.log('ERRO: ', error));
-
         let body = {
             localizacao: {
                 latitude: this.state.coordinate.latitude,
@@ -83,7 +78,6 @@ export default class CadastroLocalizacaoScene extends Component {
             },
             endereco: this.state.endereco
         };
-        console.log('BODY: ', body);
 
         if (StaticStorageService.contexto === ContextoEnum.PACIENTE) {
             PacienteService.atualizar(StaticStorageService.usuarioSessao._id, body)
@@ -100,6 +94,18 @@ export default class CadastroLocalizacaoScene extends Component {
                 })
                 .catch((error => console.log('ERRO', error)));
         }
+    }
+
+    getDescricaoEndereco() {
+        LocalizacaoService.getEndereco(this.state.coordinate.latitude, this.state.coordinate.longitude)
+            .then((response) => {
+                console.log('ENDERECO: ', response.results[0].address_components[0].short_name);
+                let endereco = this.getEndereco(response);
+                this.setState({endereco});
+                ToastAndroid.showWithGravity(JSON.stringify(this.state.endereco), ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                this.save();
+            })
+            .catch((error) => console.log('ERRO: ', error));
     }
 
     getEndereco(response) {
@@ -169,7 +175,7 @@ export default class CadastroLocalizacaoScene extends Component {
                         style={{flexDirection: 'row'}}
                         title={'Salvar'}
                         text={'Salvar'}
-                        onPress={() => this.save()}
+                        onPress={() => this.getDescricaoEndereco()}
                     />
                 </View>
             </View>
