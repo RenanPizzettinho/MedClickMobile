@@ -1,7 +1,6 @@
 import React, {Component} from "react";
-import styles from "../StyleSheet/mainStyle";
 import {Card, Container, Content, Form, H3, ListItem, Text, View} from "native-base";
-import {Image, ScrollView, ToastAndroid, StyleSheet} from "react-native";
+import {ScrollView, ToastAndroid} from "react-native";
 import SolicitacaoService from "../Services/solicitacaoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
 import BotaoBase from "../Component/Campos/BotaoBase";
@@ -10,8 +9,6 @@ import StaticStorageService from "../Services/staticStorageService";
 import PacienteService from "../Services/pacienteService";
 import LocalizacaoService from "../Services/localizacaoService";
 import DatePicker from "react-native-datepicker";
-import Moment from "moment";
-
 
 export default class CadastroSolicitacaoScene extends Component {
 
@@ -21,11 +18,9 @@ export default class CadastroSolicitacaoScene extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             paciente: {},
             descricaoNecessidade: "",
-            dataConsulta: new Date(),
             complemento: "",
             nomeMedico: "",
             enderecoCadastro: true,
@@ -73,7 +68,7 @@ export default class CadastroSolicitacaoScene extends Component {
 
         SolicitacaoService.cadastrar(form)
             .then((responseJson) => {
-                ToastAndroid.showWithGravity('"Solicitação registrada', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+                ToastAndroid.showWithGravity('Solicitação registrada', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
                 console.log('RESPONSE: ', responseJson);
                 if (responseJson.data._id) {
                     navigate(SceneEnum.LISTAGEM_SOLICITACAO);
@@ -101,24 +96,25 @@ export default class CadastroSolicitacaoScene extends Component {
                                         />
                                     </ListItem>
                                     <ListItem>
-                                        <Text note>{`Endereço: ${LocalizacaoService.formatarEndereco(this.state.endereco)}`}</Text>
+                                        <Text
+                                            note>{`Endereço: ${LocalizacaoService.formatarEndereco(this.state.endereco)}`}</Text>
                                     </ListItem>
-                                        <CampoTexto
-                                            label="Complemento"
-                                            onChange={(complemento) =>
-                                                this.setState({complemento})
-                                            }
-                                        />
+                                    <CampoTexto
+                                        label="Complemento"
+                                        onChange={(complemento) =>
+                                            this.setState({complemento})
+                                        }
+                                    />
                                     <ListItem>
                                         <View style={{flex: 1, flexDirection: 'row'}}>
                                             <Text style={{justifyContent: 'center'}}>Data:</Text>
                                             <DatePicker
                                                 style={{paddingRight: 0, paddingLeft: 0}}
                                                 date={this.state.dataConsulta}
-                                                mode="datetime"
-                                                format="DD/MM/YYYY"
+                                                mode='date'
+                                                format='DD/MM/YYYY'
                                                 minDate={new Date()}
-                                                androidMode="calendar"
+                                                androidMode='calendar'
                                                 showIcon={true}
 
                                                 customStyles={{
@@ -144,9 +140,6 @@ export default class CadastroSolicitacaoScene extends Component {
                 </Content>
             </Container>
         )
-        //TODO: Fixar botoes no bottom
-        //TODO: Verificar pq endereco nao esta vindo.
-        //TODO: Ajustas atributos.
     }
 
     disabled(state) {

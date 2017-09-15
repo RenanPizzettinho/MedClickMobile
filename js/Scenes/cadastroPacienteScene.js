@@ -7,7 +7,7 @@ import {Body, Card, Container, Content, Form, H3, ListItem, Text, View} from "na
 import CheckBoxBase from "../Component/Campos/CheckBoxBase";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import Divider from "react-native-material-design/lib/Divider";
-
+import Moment from "moment";
 
 export default class CadastroPacienteScene extends Component {
 
@@ -101,7 +101,6 @@ export default class CadastroPacienteScene extends Component {
     }
 
     integracoesAzumio() {
-        //TODO: remover informacoes de batimentos, mover pro card do paciente na solicitacao
         console.log(this.state.integracoes.azumio.dados);
         return (
             <View>
@@ -110,12 +109,13 @@ export default class CadastroPacienteScene extends Component {
                     <Body>
                     {this.state.integracoes.azumio.dados.map((item, index) =>
                         <View key={index}>
-                            <Text style={{textAlign: "left"}}>Batimentos: {item.batimentos}</Text>
-                            {/*<Text>Data marcação: {new Date(item.dataLeitura).toLocaleDateString().split('-').reverse().join('/')}</Text>*/}
-                            <Text>Data marcação: {new Date(item.dataLeitura).toDateString()}</Text>
+                            <ListItem>
+                                <Text note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
+                            </ListItem>
                         </View>
                     )}
-                    <Text>Atualizado em: {new Date(this.state.integracoes.azumio.atualizadoEm).toDateString()}</Text>
+                    <Text>Atualizados
+                        em: {Moment(this.state.integracoes.azumio.atualizadoEm).format('DD/MM/YYYY')}</Text>
                     </Body>
                 </Card>
                 <BotaoBase
@@ -129,7 +129,6 @@ export default class CadastroPacienteScene extends Component {
     }
 
     render() {
-        const {navigate} = this.props.navigation;
         return (
             <Container>
                 <Content>
@@ -165,6 +164,4 @@ export default class CadastroPacienteScene extends Component {
             </Container>
         );
     }
-
-
 }
