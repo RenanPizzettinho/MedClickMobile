@@ -116,7 +116,7 @@ export default class listagemSolicitacaoMedico extends Component {
                                 this.state.confirmados)}
 
                             {this.listaAgrupada(
-                                this.separarPorSituacao(StatusSolicitacaoEnum.ENCERRADO.KEY),
+                                this.separarPorSituacao(StatusSolicitacaoEnum.ATENDIDO.KEY),
                                 'ios-checkmark-circle-outline',
                                 'Atendidos',
                                 () => this.setState({atendidos: !this.state.atendidos}),

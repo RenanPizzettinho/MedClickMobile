@@ -2,7 +2,7 @@ const StatusSolicitacaoEnum = {
     EM_ABERTO: {KEY: 'EM_ABERTO', DESC: 'Em aberto'},
     CANCELADO: {KEY: 'CANCELADO', DESC: 'Cancelada'},
     CONFIRMADO: {KEY: 'CONFIRMADO', DESC: 'Confirmada'},
-    ENCERRADO: {KEY: 'ENCERRADO', DESC: 'Encerrado'},
+    ATENDIDO: {KEY: 'ATENDIDO', DESC: 'Encerrado'},
 };
 
 StatusSolicitacaoEnum.toDesc = (key) => {
@@ -13,8 +13,8 @@ StatusSolicitacaoEnum.toDesc = (key) => {
             return StatusSolicitacaoEnum.CANCELADO.DESC;
         case StatusSolicitacaoEnum.CONFIRMADO.KEY:
             return StatusSolicitacaoEnum.CONFIRMADO.DESC;
-        case StatusSolicitacaoEnum.ENCERRADO.KEY:
-            return StatusSolicitacaoEnum.ENCERRADO.DESC
+        case StatusSolicitacaoEnum.ATENDIDO.KEY:
+            return StatusSolicitacaoEnum.ATENDIDO.DESC
     }
 };
 

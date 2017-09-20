@@ -91,7 +91,7 @@ export default class SolicitacaoMedicoScene extends Component {
                         text={'Atender'}
                         title={'Atender'}
                         disabled={false}
-                        onPress={() => this.movimentarSolicitacao(StatusSolicitacaoEnum.ENCERRADO.KEY, null, 'Solicitação atendida')}
+                        onPress={() => this.movimentarSolicitacao(StatusSolicitacaoEnum.ATENDIDO.KEY, null, 'Solicitação atendida')}
                     />
                 </Card>
             );
@@ -117,7 +117,7 @@ export default class SolicitacaoMedicoScene extends Component {
     botaoCancelar() {
         const situacao = this.state.solicitacao.situacao;
         if (situacao !== StatusSolicitacaoEnum.CANCELADO.KEY &&
-            situacao !== StatusSolicitacaoEnum.ENCERRADO.KEY) {
+            situacao !== StatusSolicitacaoEnum.ATENDIDO.KEY) {
             return (
                 <View>
                     <Card>

@@ -25,6 +25,7 @@ import SceneEnum from "../../Enums/SceneEnum";
 import StaticStorageService from "../../Services/staticStorageService";
 import Loader from "../../Component/Loader";
 import DiasSemana from "../../Enums/DiasSemanaEnum";
+import LocalizacaoService from "../../Services/localizacaoService";
 
 export default class PesquisaMedico extends Component {
 
@@ -97,7 +98,6 @@ export default class PesquisaMedico extends Component {
     }
 
     medicos() {
-        //TODO: Retirar imagem.
         return (
             this.state.medicos.map((item, index) =>
                 <Content key={index}>
@@ -121,10 +121,10 @@ export default class PesquisaMedico extends Component {
             ));
     }
 
-    setModalVisible(visible, x) {
+    setModalVisible(visible, item) {
         this.setState({
             modalVisible: visible,
-            selectedItem: x
+            selectedItem: item
         });
     }
 
@@ -155,10 +155,12 @@ export default class PesquisaMedico extends Component {
                         <CardItem>
                             <View>
                                 <Text>Nome: {item.nome}</Text>
-                                <Text>Especialidade: {item.especialidade}</Text>
-                                <Text>Atende em: {item.atendeEm}</Text>
-                                <Text>Está a {Math.round(item.distancia)} metros de você</Text>
-                                <Text>Dias em que
+                                <Text note>Especialidade: {item.especialidade}</Text>
+                                {(item.endereco) ?
+                                    <Text note>Endereço: {LocalizacaoService.formatarEndereco(item.endereco)}</Text> : null}
+                                <Text note>Atende em: {item.atendeEm}</Text>
+                                <Text note>Está a {Math.round(item.distancia)} metros de você</Text>
+                                <Text note>Dias em que
                                     atende: {(item.diasAtendimentoDomicilio) ? this.diasSemana(item.diasAtendimentoDomicilio) : null}</Text>
                             </View>
                         </CardItem>

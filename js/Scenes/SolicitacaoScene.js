@@ -54,7 +54,7 @@ export default class SolicitacaoScene extends Component {
         let situacao = this.state.solicitacao.situacao;
         if (situacao !== StatusSolicitacaoEnum.CANCELADO.KEY &&
             situacao !== StatusSolicitacaoEnum.CONFIRMADO.KEY &&
-            situacao !== StatusSolicitacaoEnum.ENCERRADO.KEY
+            situacao !== StatusSolicitacaoEnum.ATENDIDO.KEY
         ) {
             return (
                 <BotaoBase

@@ -13,6 +13,9 @@ function getEndereco(latitude, longitude) {
 }
 
 function formatarEndereco(endereco) {
+    if (endereco === undefined){
+        return;
+    }
     return `${(endereco.rua) ? endereco.rua + ',' : ''} ${(endereco.bairro) ? endereco.bairro + ',' : ''} ${(endereco.cidade) ? endereco.cidade + ' - ' : ''}${(endereco.estado) ? endereco.estado + ' - ' : ''}${(endereco.pais) ? endereco.pais + ' - ' : ''}${(endereco.cep) ? endereco.cep : ''}`;
 }
 
