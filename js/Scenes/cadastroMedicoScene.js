@@ -164,22 +164,16 @@ export default class CadastroMedicoScene extends Component {
     validarCrm() {
         console.log('Validando');
         ToastAndroid.showWithGravity('Validando', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-        let nome = '';
-        let total = 0;
         MedicoService.validarCrm(this.state.estado, this.state.crm)
             .then((response) => {
-                parseString(response, function callback(err, result) {
-                    console.log(result.rss.channel[0]);
-                    total = result.rss.channel[0].total[0];
-                    if (total > 0) {
-                        nome = result.rss.channel[0].item[0].nome[0];
-                    }
-                });
-                console.log('Validado', total);
-                if (total > 0 && nome === this.state.nome) {
+                response = JSON.parse(response);
+                console.log('RESPONSE: ', response);
+                let total = response.total;
+                let item = response.item[0];
+                if (total > 0 && item.nome === this.state.nome) {
                     this.setState({
                         valido: true,
-                        nome: nome
+                        nome: item.nome
                     });
                 } else {
                     ToastAndroid.showWithGravity('Informações invalidas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
