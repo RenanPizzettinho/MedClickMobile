@@ -10,6 +10,7 @@ import SceneEnum from "../Enums/SceneEnum";
 import CampoTexto from "../Component/Campos/CampoTexto";
 import PacienteService from "../Services/pacienteService";
 import LocalizacaoService from "../Services/localizacaoService";
+import Moment from "moment";
 
 export default class SolicitacaoMedicoScene extends Component {
 
@@ -188,8 +189,32 @@ export default class SolicitacaoMedicoScene extends Component {
         }
     }
 
+    dadosAzumio(dados) {
+        console.log('DADOS: ', dados);
+        return (
+            <View>
+                <ListItem>
+                    <H3 style={{textAlign: "center"}}>Azumio</H3>
+                </ListItem>
+                <CardItem>
+                    <View>
+                        {dados.map((item, index) =>
+                            (index < 5)?
+                            <ListItem key={index}>
+                                <Text
+                                    note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
+                            </ListItem>:null
+                        )}
+                    </View>
+                </CardItem>
+            </View>
+        );
+    }
+
     render() {
-        //TODO: colocar informacoes sobre medicoes de batimento
+        let paciente = this.state.paciente;
+        let solicitacao = this.state.solicitacao;
+        let azumio = (paciente.integracoes) ? (paciente.integracoes.azumio) ? (paciente.integracoes.azumio.dados.length > 0 ) : false : false;
         return (
             <Container>
                 <Content>
@@ -200,23 +225,25 @@ export default class SolicitacaoMedicoScene extends Component {
                         <CardItem>
                             <Divider/>
                             <Body>
-                            <Text note>{`Nome: ${this.state.solicitacao.nomePaciente}`}</Text>
-                            {(this.state.paciente.possuiDiabete) ? <Text note>Possui diabetes</Text> : null}
-                            {(this.state.paciente.possuiPressaoAlta) ? <Text note>Possui pressao alta</Text> : null}
+                            <Text note>{`Nome: ${solicitacao.nomePaciente}`}</Text>
+                            {(paciente.possuiDiabete) ? <Text note>Possui diabetes</Text> : null}
+                            {(paciente.possuiPressaoAlta) ? <Text note>Possui pressao alta</Text> : null}
+
                             </Body>
                         </CardItem>
+                        {(azumio) ? this.dadosAzumio(paciente.integracoes.azumio.dados) : null}
                         <ListItem>
                             <H3 style={{textAlign: "center"}}>Informações da solicitação</H3>
                         </ListItem>
                         <CardItem>
                             <Divider/>
                             <Body>
-                            <Text note>{`Data: ${this.state.solicitacao.dataConsulta}`}</Text>
-                            <Text note>{`Necessicade: ${this.state.solicitacao.descricaoNecessidade}`}</Text>
+                            <Text note>{`Data: ${Moment(solicitacao.dataConsulta).format("DD/MM/YYYY")}`}</Text>
+                            <Text note>{`Necessicade: ${solicitacao.descricaoNecessidade}`}</Text>
                             <Text
-                                note>{`Local: ${LocalizacaoService.formatarEndereco(this.state.solicitacao.endereco)}`}</Text>
+                                note>{`Local: ${LocalizacaoService.formatarEndereco(solicitacao.endereco)}`}</Text>
                             <Text
-                                note>{`Situação: ${StatusSolicitacaoEnum.toDesc(this.state.solicitacao.situacao)}`}</Text>
+                                note>{`Situação: ${StatusSolicitacaoEnum.toDesc(solicitacao.situacao)}`}</Text>
                             </Body>
                         </CardItem>
                     </Card>
@@ -226,4 +253,6 @@ export default class SolicitacaoMedicoScene extends Component {
             </Container>
         );
     }
+
+
 }

@@ -1,19 +1,5 @@
 import React, {Component} from "react";
-import {
-    Body,
-    Card,
-    CardItem,
-    Container,
-    Content,
-    Icon,
-    Left,
-    List,
-    ListItem,
-    Right,
-    Text,
-    Thumbnail,
-    View
-} from "native-base";
+import {Body, Card, CardItem, Container, Content, Icon, Left, List, ListItem, Right, Text, View} from "native-base";
 import SolicitacaoService from "../../Services/solicitacaoService";
 import StaticStorageService from "../../Services/staticStorageService";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
@@ -149,8 +135,8 @@ export default class listagemSolicitacaoMedico extends Component {
     listaAgrupada(itens, icon, label, press, indicador) {
         return (
             <View style={{flex: 1}}>
-                <View  style={(indicador) ? {backgroundColor: '#0064A3'} : {}}>
-                    <ListItem icon >
+                <View style={(indicador) ? {backgroundColor: '#0064A3'} : {}}>
+                    <ListItem icon>
                         <Left><Icon name={icon} style={(indicador) ? {color: '#ffffff'} : {}}/></Left>
                         <Body>
                         <TouchableItem onPress={press}>

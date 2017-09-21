@@ -100,22 +100,23 @@ export default class CadastroPacienteScene extends Component {
             .catch((err) => console.log(err));
     }
 
-    integracoesAzumio() {
-        console.log(this.state.integracoes.azumio.dados);
+    integracoesAzumio(dados) {
+        console.log(dados);
         return (
             <View>
                 <Card>
                     <H3 style={{textAlign: "center"}}>Azumio</H3>
                     <Body>
-                    {this.state.integracoes.azumio.dados.map((item, index) =>
+                    {dados.map((item, index) =>
                         <View key={index}>
                             <ListItem>
-                                <Text note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
+                                <Text
+                                    note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
                             </ListItem>
                         </View>
                     )}
                     <Text>Atualizados
-                        em: {Moment(this.state.integracoes.azumio.atualizadoEm).format('DD/MM/YYYY')}</Text>
+                        em: {Moment(dados.atualizadoEm).format('DD/MM/YYYY')}</Text>
                     </Body>
                 </Card>
                 <BotaoBase
@@ -129,6 +130,8 @@ export default class CadastroPacienteScene extends Component {
     }
 
     render() {
+        let integracoes = this.state.integracoes;
+        let azumio = (integracoes) ? (integracoes.azumio) ? !!(integracoes.azumio.dados) : false : false;
         return (
             <Container>
                 <Content>
@@ -159,7 +162,7 @@ export default class CadastroPacienteScene extends Component {
                             this.salvarPaciente(this.state);
                         }}
                     />
-                    {(this.state.integracoes.azumio.token) ? this.integracoesAzumio() : null}
+                    {(azumio) ? this.integracoesAzumio(integracoes.azumio.dados) : null}
                 </Content>
             </Container>
         );
