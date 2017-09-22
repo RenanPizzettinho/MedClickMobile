@@ -6,85 +6,87 @@ import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 
 export default class ModoPesquisaScene extends Component {
-    static navigationOptions = {
-        title: 'Modo de pesquisa',
+  static navigationOptions = {
+    title: 'Modo de pesquisa',
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      localizacao: null
     };
+  }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            localizacao: null
-        };
-    }
+  componentWillMount() {
+    this.fetchData();
+  }
 
-    componentWillMount() {
-        this.fetchData();
-    }
+  fetchData() {
+    let id = StaticStorageService.usuarioSessao._id;
+    PacienteService.get(id)
+      .then((response) => {
+        console.log(response);
+        this.setState({localizacao: response.data.localizacao});
+      })
+      .catch((erro) => console.log('ERRO: ', erro));
+  }
 
-    fetchData() {
-        let id = StaticStorageService.usuarioSessao._id;
-        PacienteService.get(id)
-            .then((response) => {
-                console.log(response);
-                this.setState({localizacao: response.data.localizacao});
-            })
-            .catch((erro) => console.log('ERRO: ', erro));
-    }
+  hasLocalizacao() {
+    return (this.state.localizacao !== null);
+  }
 
-    hasLocalizacao() {
-        return (this.state.localizacao !== null);
-    }
+  modoPesquisa() {
+    const {navigate} = this.props.navigation;
+    const modos = [
+      {text: 'Pesquisar por nome', filtro: '?nome='},
+      {text: 'Pesquisar por especialidade', filtro: '?especialidade='},
+    ];
+    return (
 
-    modoPesquisa() {
-        const {navigate} = this.props.navigation;
-        const modos = [
-            {text: 'Pesquisar por nome', filtro: '?nome='},
-            {text: 'Pesquisar por especialidade', filtro: '?especialidade='},
-        ];
-        return (
-            modos.map((item, index) =>
-                <ListItem key={index}>
-                    <TouchableItem
-                        onPress={() => navigate(SceneEnum.PESQUISA_MEDICO, {
-                            filtro: item.filtro,
-                            localizacao: this.state.localizacao
-                        })}>
-                        <Content>
-                            <Text>{item.text}</Text>
-                        </Content>
-                    </TouchableItem>
-                </ListItem>
-            ));
-    }
-
-    cadastrarLocalizacao() {
-        const {navigate} = this.props.navigation;
-        return (
-            <ListItem>
-                <TouchableItem
-                    onPress={() => navigate(SceneEnum.CADASTRO_LOCALIZACAO)}>
-                    <Content>
-                        <Text>Você ainda não possui localizacao cadastrada</Text>
-                        <Text note>Clique aqui para cadastrar</Text>
-                    </Content>
-                </TouchableItem>
+      <Container>
+        <Content>
+          <List dataArray={modos} renderRow={(item) =>
+            <ListItem button onPress={() => navigate(SceneEnum.PESQUISA_MEDICO, {
+              filtro: item.filtro,
+              localizacao: this.state.localizacao
+            })}>
+              <Text>{item.text}</Text>
             </ListItem>
-        );
-    }
+          }>
+          </List>
+        </Content>
+      </Container>
+    );
+  }
 
-    render() {
-        return (
-            <Container>
-                <Content>
-                    <Card>
-                        <List primaryText="Teste">
-                            {(this.hasLocalizacao()) ? this.modoPesquisa() : this.cadastrarLocalizacao()}
-                        </List>
-                    </Card>
-                </Content>
-            </Container>
-        );
-    }
+  cadastrarLocalizacao() {
+    const {navigate} = this.props.navigation;
+    return (
+      <ListItem>
+        <TouchableItem
+          onPress={() => navigate(SceneEnum.CADASTRO_LOCALIZACAO)}>
+          <Content>
+            <Text>Você ainda não possui localizacao cadastrada</Text>
+            <Text note>Clique aqui para cadastrar</Text>
+          </Content>
+        </TouchableItem>
+      </ListItem>
+    );
+  }
+
+  render() {
+    return (
+      <Container>
+        <Content>
+          <Card>
+            <List primaryText="Teste">
+              {(this.hasLocalizacao()) ? this.modoPesquisa() : this.cadastrarLocalizacao()}
+            </List>
+          </Card>
+        </Content>
+      </Container>
+    );
+  }
 
 
 }

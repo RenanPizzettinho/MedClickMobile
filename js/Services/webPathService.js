@@ -1,5 +1,5 @@
-const webService = 'http://192.168.99.1:3000/api/v1/';
-// const webService = 'http://localhost:3000/api/v1/';//USB
+// const webService = 'http://192.168.99.1:3000/api/v1/';
+const webService = 'http://localhost:3000/api/v1/';//USB
 // const webService = 'http://192.168.71.2:3000/api/v1/';//REDE
 // const webService = 'http://medclick.herokuapp.com/api/v1/';
 
