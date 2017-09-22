@@ -1,5 +1,7 @@
 import React, {Component} from "react";
+// import TouchableItem from "../../../node_modules/react-navigation/src/views/TouchableItem";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
+
 import {Icon} from "native-base";
 import SceneEnum from "../Enums/SceneEnum";
 

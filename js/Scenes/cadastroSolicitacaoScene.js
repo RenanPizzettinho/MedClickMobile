@@ -12,6 +12,8 @@ import DatePicker from "react-native-datepicker";
 import moment from 'moment'
 // import 'moment/locale/pt-br'
 // moment.locale('pt-BR')
+
+
 export default class CadastroSolicitacaoScene extends Component {
 
   static navigationOptions = {
@@ -143,6 +145,7 @@ export default class CadastroSolicitacaoScene extends Component {
                       </View>
                       <Text note>{moment(this.state.dataConsulta, "DD/MM/YYYY").format('dddd')}</Text>
                   </ListItem>
+
                 </Form>
               </Card>
               <BotaoBase

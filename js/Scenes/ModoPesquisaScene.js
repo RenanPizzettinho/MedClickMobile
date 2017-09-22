@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import {Card, Container, Content, List, ListItem, Text} from "native-base";
-import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
 import SceneEnum from '../Enums/SceneEnum';
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
+import TouchableItem from "react-navigation/src/views/TouchableItem";
+// import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
 
 export default class ModoPesquisaScene extends Component {
   static navigationOptions = {

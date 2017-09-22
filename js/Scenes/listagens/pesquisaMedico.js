@@ -16,7 +16,6 @@ import {
   View
 } from "native-base";
 import MedicoService from "../../Services/medicoService";
-import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
 import Card from "react-native-material-design/lib/Card/index";
 import {Image, Modal, ToastAndroid} from "react-native";
 import BotaoBase from "../../Component/Campos/BotaoBase";

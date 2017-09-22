@@ -5,7 +5,8 @@ import {Alert, ToastAndroid} from "react-native";
 import StaticStorageService from "../Services/staticStorageService";
 import SceneEnum from '../Enums/SceneEnum';
 import {Button, Icon} from "native-base";
-import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
+import TouchableItem from "react-navigation";
+// import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
 import Sair from "../Component/Sair";
 
 export default class LoginScene extends Component {
