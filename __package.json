@@ -11,7 +11,7 @@
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "native-base": "2.1.4",
-    "react": "^16.0.0-alpha.6",
+    "react": "^16.0.0-rc.3",
     "react-addons-shallow-compare": "^15.6.0",
     "react-dates": "^12.6.0",
     "react-dom": "^15.6.1",

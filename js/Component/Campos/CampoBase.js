@@ -9,7 +9,7 @@ export default class CampoBase extends Component {
 
     render() {
         return (
-            <Item>
+            <Item floatingLabel>
                 <Label>{this.props.label}</Label>
                 <Input
                     value={this.props.value}

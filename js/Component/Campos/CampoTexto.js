@@ -10,6 +10,7 @@ export default class CampoTexto extends Component {
     render() {
         return (
             <CampoBase
+              {...this.props}
                 label={this.props.label}
                 multiline={this.props.multiline || false}
                 value={this.props.value}
