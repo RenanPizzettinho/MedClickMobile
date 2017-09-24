@@ -5,11 +5,12 @@ export default StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
+        padding : 10
     },
     title: {
-        fontSize: 32,
+        fontSize: 30,
         textAlign: 'center',
-        margin: 10,
+        margin: 1,
         color: 'black'
     },
     formTitleView: {
@@ -36,9 +37,14 @@ export default StyleSheet.create({
         width: 200,
         margin: 1
     },
+    btnLogin: {
+        flex: 1,
+        padding: 100
+    },
     img: {
         height: 200,
-        width: 200
+        width: 200,
+
     },
     card: {
         justifyContent: 'center',
