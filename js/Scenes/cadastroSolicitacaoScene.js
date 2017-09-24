@@ -9,10 +9,9 @@ import StaticStorageService from "../Services/staticStorageService";
 import PacienteService from "../Services/pacienteService";
 import LocalizacaoService from "../Services/localizacaoService";
 import DatePicker from "react-native-datepicker";
-import moment from 'moment'
-// import 'moment/locale/pt-br'
-// moment.locale('pt-BR')
-
+import moment from 'moment';
+import 'moment/locale/pt-br';
+moment.locale('pt-BR');
 
 export default class CadastroSolicitacaoScene extends Component {
 
@@ -143,9 +142,8 @@ export default class CadastroSolicitacaoScene extends Component {
                           console.log(this.state)
                         }}/>
                       </View>
-                      <Text note>{moment(this.state.dataConsulta, "DD/MM/YYYY").format('dddd')}</Text>
+                      <Text note>{moment(this.state.dataConsulta, "LL").format('dddd')}</Text>
                   </ListItem>
-
                 </Form>
               </Card>
               <BotaoBase

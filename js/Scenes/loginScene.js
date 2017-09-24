@@ -10,53 +10,64 @@ import TouchableItem from "react-navigation";
 import Sair from "../Component/Sair";
 
 export default class LoginScene extends Component {
-    static navigationOptions = {
-        title: 'Login',
+  static navigationOptions = {
+    title: 'Login',
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: "dogra@teste.com",
+      senha: "123456"
     };
+  }
 
-    constructor(props) {
-        super(props);
+  render() {
+    return (
 
-        this.state = {
-            email: "dogra@teste.com",
-            senha: "123456"
-        };
-    }
 
-    render() {
-        return (
-            <LoginComponent
-                login={this.login}
-                disabled={this.disabled}
-                states={this.state}
-                navigation={this.props.navigation}
-            />
-        );
-    }
+      <LoginComponent
+        login={this.login}
+        disabled={this.disabled}
+        states={this.state}
+        navigation={this.props.navigation}
+      />
+    );
+  }
 
-    login() {
-        const {navigate} = this.props.navigation;
-        const form = {
-            email: this.state.email,
-            senha: this.state.senha
-        };
-        LoginService.login(form)
-            .then((responseJson) => {
-                if (responseJson.status === 403) {
-                    ToastAndroid.showWithGravity('Sem acesso', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                }
-                if (responseJson.data._id) {
-                    console.log('RESPONSE: ', responseJson);
-                    StaticStorageService.usuarioSessao = responseJson.data;
-                    navigate(SceneEnum.SELECAO_CONTEXTO);
-                } else {
-                    Alert.alert('Erro', responseJson.data);
-                }
+  login() {
+    const {navigate} = this.props.navigation;
+    const form = {
+      email: this.state.email,
+      senha: this.state.senha
+    };
+    LoginService.login(form)
+      .then((responseJson) => {
+        if (responseJson.status === 403) {
+          ToastAndroid.showWithGravity('Sem acesso', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+        }
+        if(responseJson.errors){
+          ToastAndroid.showWithGravity(responseJson.errors[0].mensagem, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+          return;
+        }
 
-            });
-    }
+        if (responseJson.data._id) {
+          console.log('RESPONSE: ', responseJson);
+          StaticStorageService.usuarioSessao = responseJson.data;
+          navigate(SceneEnum.SELECAO_CONTEXTO);
+        } else {
+          Alert.alert('Erro', responseJson.data);
+        }
 
-    disabled() {
-        return !this.state.email || !this.state.senha;
-    }
+      })
+      .catch(function (err) {
+        console.log(err)
+        ToastAndroid.showWithGravity('Problema ao tentar realizar login', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+      });
+  }
+
+  disabled() {
+    return !this.state.email || !this.state.senha;
+  }
 }

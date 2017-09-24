@@ -7,13 +7,16 @@
     "test": "jest"
   },
   "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-helper-builder-binary-assignment-operator-visitor": "^6.24.1",
+    "babel-plugin-transform-replace-object-assign": "^0.2.1",
     "jquery": "^3.2.1",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "native-base": "2.1.4",
     "react": "16.0.0-alpha.6",
     "react-addons-shallow-compare": "^15.6.0",
-    "react-dates": "^12.6.0",
+    "react-day-picker": "^6.1.0",
     "react-dom": "^15.6.1",
     "react-moment": "^0.6.5",
     "react-native": "0.44.0",
@@ -29,6 +32,8 @@
   },
   "devDependencies": {
     "babel-jest": "20.0.3",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-airbnb": "^2.4.0",
     "babel-preset-react-native": "1.9.2",
     "jest": "20.0.4",
     "react-test-renderer": "16.0.0-alpha.6"
