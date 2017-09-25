@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {ToastAndroid} from "react-native";
+import {ToastAndroid, Alert} from "react-native";
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 import SceneEnum from "../Enums/SceneEnum";
-import {Body, Card, Container, Content, Form, H3, ListItem, Text, View} from "native-base";
+import {Body, Card, Container, Content, Form, H3, List, ListItem, Text, View} from "native-base";
 import CheckBoxBase from "../Component/Campos/CheckBoxBase";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import Divider from "react-native-material-design/lib/Divider";
@@ -22,18 +22,6 @@ export default class CadastroPacienteScene extends Component {
             idPaciente: null,
             possuiDiabete: false,
             possuiPressaoAlta: false,
-            integracoes: {
-                azumio: {
-                    token: null,
-                    atualizadoEm: null,
-                    dados: [
-                        {
-                            batimentos: null,
-                            dataLeitura: null,
-                        },
-                    ]
-                }
-            }
         };
     }
 
@@ -45,12 +33,13 @@ export default class CadastroPacienteScene extends Component {
         PacienteService.get(StaticStorageService.usuarioSessao._id)
             .then((response) => {
                 let dados = response.data;
+                console.log('RESPONSE: ', dados);
                 if (dados === undefined) return;
                 this.setState({
                     idPaciente: dados._id,
-                    possuiDiabete: dados.possuiDiabete,
-                    possuiPressaoAlta: dados.possuiPressaoAlta,
-                    integracoes: dados.integracoes
+                    possuiDiabete: dados.possuiDiabete || false,
+                    possuiPressaoAlta: dados.possuiPressaoAlta || false,
+                    integracoes: dados.integracoes || null
                 });
             });
     }
@@ -100,22 +89,23 @@ export default class CadastroPacienteScene extends Component {
             .catch((err) => console.log(err));
     }
 
-    integracoesAzumio() {
-        console.log(this.state.integracoes.azumio.dados);
+    integracoesAzumio(dados) {
+        console.log(dados);
         return (
             <View>
                 <Card>
-                    <H3 style={{textAlign: "center"}}>Azumio</H3>
+                    <H3 style={{textAlign: "center"}}>Instant Heart Rates</H3>
                     <Body>
-                    {this.state.integracoes.azumio.dados.map((item, index) =>
-                        <View key={index}>
-                            <ListItem>
-                                <Text note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
-                            </ListItem>
-                        </View>
-                    )}
+                    <List dataArray={dados}
+                          itemDivider={true}
+                          renderRow={(item) =>
+                              <ListItem>
+                                  <Text note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
+                              </ListItem>
+                          }>
+                    </List>
                     <Text>Atualizados
-                        em: {Moment(this.state.integracoes.azumio.atualizadoEm).format('DD/MM/YYYY')}</Text>
+                        em: {Moment(dados.atualizadoEm).format('DD/MM/YYYY')}</Text>
                     </Body>
                 </Card>
                 <BotaoBase
@@ -129,6 +119,8 @@ export default class CadastroPacienteScene extends Component {
     }
 
     render() {
+        let integracoes = this.state.integracoes;
+        let azumio = (integracoes) ? (integracoes.azumio) ? (integracoes.azumio.token) : false : false;
         return (
             <Container>
                 <Content>
@@ -159,7 +151,7 @@ export default class CadastroPacienteScene extends Component {
                             this.salvarPaciente(this.state);
                         }}
                     />
-                    {(this.state.integracoes.azumio.token) ? this.integracoesAzumio() : null}
+                    {(azumio) ? this.integracoesAzumio(integracoes.azumio.dados) : null}
                 </Content>
             </Container>
         );

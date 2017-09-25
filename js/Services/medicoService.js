@@ -27,7 +27,7 @@ function pesquisar(parametro) {
 }
 
 function validarCrm(uf, crm) {
-    return RestService.getXml(`https://www.consultacrm.com.br/api/index.php?tipo=crm&uf=${uf}&q=${crm}&chave=lulucrate455566`)
+    return RestService.getXml(`https://www.consultacrm.com.br/api/index.php?tipo=crm&uf=${uf}&q=${crm}&chave=7677245436&destino=json`)
 }
 
 function byId(id) {
