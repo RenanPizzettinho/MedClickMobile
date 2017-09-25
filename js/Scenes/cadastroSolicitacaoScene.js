@@ -1,5 +1,19 @@
 import React, {Component} from "react";
-import {Card, Container, Content, Form, H3, ListItem, Text, View, Input, Item, Label} from "native-base";
+import {
+  Card,
+  CardItem,
+  Body,
+  Container,
+  Content,
+  Form,
+  H3,
+  ListItem,
+  Text,
+  View,
+  Input,
+  Item,
+  Label
+} from "native-base";
 import {ScrollView, ToastAndroid, TextInput} from "react-native";
 import SolicitacaoService from "../Services/solicitacaoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
@@ -11,6 +25,7 @@ import LocalizacaoService from "../Services/localizacaoService";
 import DatePicker from "react-native-datepicker";
 import moment from 'moment';
 import 'moment/locale/pt-br';
+
 moment.locale('pt-BR');
 
 export default class CadastroSolicitacaoScene extends Component {
@@ -84,16 +99,18 @@ export default class CadastroSolicitacaoScene extends Component {
     return (
       <Container>
         <Content>
-          <Form>
-            <ScrollView>
-              <Card>
+          <ScrollView>
+            <Card>
+              <CardItem header>
+                <Text note style={{lineHeight: 25, marginRight: 20}}>Médico</Text>
+                <H3 style={{flex: 1, lineHeight: 20}}>{this.state.nomeMedico}</H3>
+              </CardItem>
                 <Form>
-                  <H3 style={{textAlign: 'center'}}>Médico: {this.state.nomeMedico}</H3>
                   <ListItem>
-                    <Item floatingLabel>
-                      <Label>Descrição necessidade</Label>
+                    <Item stackedLabel>
+                      <Label>Descrição da necessidade: * </Label>
                       <Input
-                        style={{height: Math.max(this.state.height), minHeight: 60}}
+                        style={{height: Math.max(this.state.height)}}
                         multiline={true}
                         onChange={(e) => {
                           this.setState({
@@ -104,26 +121,37 @@ export default class CadastroSolicitacaoScene extends Component {
                       />
                     </Item>
                   </ListItem>
-                  <ListItem>
 
+                  <ListItem>
+                    <Item stackedLabel>
+                      <Label>Endereço:</Label>
+                      <Input
+                        style={{height: 60}}
+                        multiline={true}
+                        value={LocalizacaoService.formatarEndereco(this.state.endereco)}
+                        disabled={true}
+                      />
+                    </Item>
                     <Text disabled
-                      note>{`Endereço: ${LocalizacaoService.formatarEndereco(this.state.endereco)}`}</Text>
+                          note>{`Endereço: `}</Text>
                   </ListItem>
-                  <CampoTexto
-                    label="Complemento"
-                    onChange={(complemento) =>
-                      this.setState({complemento})
-                    }
-                  />
-                  <ListItem style={{flexDirection : "column"}}>
-                      <View style={{flexDirection: 'row'}}>
-                        <Label >Data: </Label>
+                  <ListItem>
+                    <CampoTexto
+                      label="Complemento"
+                      onChange={(complemento) =>
+                        this.setState({complemento})
+                      }
+                    />
+                  </ListItem>
+                  <ListItem style={{flexDirection: "column"}}>
+                    <View style={{flexDirection: 'row'}}>
+                      <Label>Data: </Label>
                       <DatePicker
-                        style={{flex:1}}
+                        style={{flex: 1}}
                         date={this.state.dataConsulta}
                         mode='date'
                         format="LL"
-                         // format='DD/MM/YYYY'
+                        // format='DD/MM/YYYY'
                         minDate={new Date()}
                         androidMode='calendar'
                         showIcon={true}
@@ -141,18 +169,21 @@ export default class CadastroSolicitacaoScene extends Component {
                           this.setState({dataConsulta});
                           console.log(this.state)
                         }}/>
-                      </View>
-                      <Text note>{moment(this.state.dataConsulta, "LL").format('dddd')}</Text>
+                    </View>
+                    <Text note>{moment(this.state.dataConsulta, "LL").format('dddd')}</Text>
+
                   </ListItem>
+
                 </Form>
-              </Card>
-              <BotaoBase
-                title="Registrar"
-                disabled={this.disabled(this.state)}
-                onPress={() => this.cadastrar()}
-              />
-            </ScrollView>
-          </Form>
+
+
+            </Card>
+            <BotaoBase
+              title="Registrar"
+              disabled={this.disabled(this.state)}
+              onPress={() => this.cadastrar()}
+            />
+          </ScrollView>
         </Content>
       </Container>
     )
