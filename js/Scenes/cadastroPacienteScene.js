@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {ToastAndroid} from "react-native";
+import {ToastAndroid, Alert} from "react-native";
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 import SceneEnum from "../Enums/SceneEnum";
@@ -22,18 +22,6 @@ export default class CadastroPacienteScene extends Component {
             idPaciente: null,
             possuiDiabete: false,
             possuiPressaoAlta: false,
-            integracoes: {
-                azumio: {
-                    token: null,
-                    atualizadoEm: null,
-                    dados: [
-                        {
-                            batimentos: null,
-                            dataLeitura: null,
-                        },
-                    ]
-                }
-            }
         };
     }
 
@@ -48,9 +36,9 @@ export default class CadastroPacienteScene extends Component {
                 if (dados === undefined) return;
                 this.setState({
                     idPaciente: dados._id,
-                    possuiDiabete: dados.possuiDiabete,
-                    possuiPressaoAlta: dados.possuiPressaoAlta,
-                    integracoes: dados.integracoes
+                    possuiDiabete: dados.possuiDiabete|| false,
+                    possuiPressaoAlta: dados.possuiPressaoAlta || false,
+                    integracoes: dados.integracoes || null
                 });
             });
     }
@@ -131,7 +119,7 @@ export default class CadastroPacienteScene extends Component {
 
     render() {
         let integracoes = this.state.integracoes;
-        let azumio = (integracoes) ? (integracoes.azumio) ? !!(integracoes.azumio.dados) : false : false;
+        let azumio = (integracoes) ? (integracoes.azumio) ? (integracoes.azumio.dados.length > 0) : false : false;
         return (
             <Container>
                 <Content>
