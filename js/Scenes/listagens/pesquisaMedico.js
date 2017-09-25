@@ -17,7 +17,7 @@ import {
 } from "native-base";
 import MedicoService from "../../Services/medicoService";
 import Card from "react-native-material-design/lib/Card/index";
-import {Image, Modal, ToastAndroid} from "react-native";
+import {Image, Modal, ToastAndroid, TouchableOpacity} from "react-native";
 import BotaoBase from "../../Component/Campos/BotaoBase";
 import styles from "../../StyleSheet/mainStyle";
 import SceneEnum from "../../Enums/SceneEnum";
@@ -86,13 +86,13 @@ export default class PesquisaMedico extends Component {
       <Container>
         <Header searchBar rounded>
           <Item>
-            <Icon name="ios-search"/>
-            <Input placeholder="Pesquisar por..." value={this.state.search}
+
+            <Input placeholder={`Pesquisar por ${params.filtro.replace(/[\?=]/g, '')}...`} value={this.state.search}
                    onChangeText={(text) => this.setState({search: text})}
                    onSubmitEditing={() => this.search()}/>
-            <Button transparent onPress={() => this.search()}>
-              <Text>Pesquisar</Text>
-            </Button>
+            <TouchableOpacity onPress={() => this.search()}>
+              <Icon name="ios-search"/>
+            </TouchableOpacity>
           </Item>
         </Header>
         <Content>
@@ -167,15 +167,18 @@ export default class PesquisaMedico extends Component {
               </View>
             </CardItem>
           </Card>
-          <BotaoBase
-            text={"Solicitar consulta"}
-            title={"Solicitar consulta"}
-            onPress={() => {
-              this.guardarMedico(item);
-              this.setModalVisible(!this.state.modalVisible, item);
-              navigate(SceneEnum.CADASTRO_SOLICITACAO);
-            }}
-          />
+          <View style={{paddingLeft: 7, paddingRight: 7}}>
+            <BotaoBase
+              style={{paddingLeft: 10}}
+              text={"Solicitar consulta"}
+              title={"Solicitar consulta"}
+              onPress={() => {
+                this.guardarMedico(item);
+                this.setModalVisible(!this.state.modalVisible, item);
+                navigate(SceneEnum.CADASTRO_SOLICITACAO);
+              }}
+            />
+          </View>
         </Content>
       </Modal>
     );

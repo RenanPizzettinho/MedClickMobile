@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import StaticStorageService from '../Services/staticStorageService';
 import ContextoEnum from '../Enums/ContextoEnum';
-import {Alert, Image} from "react-native";
+import {Alert, Image, TouchableOpacity} from "react-native";
 import SceneEnum from '../Enums/SceneEnum';
 import {Body, Card, CardItem, Container, Content, Left, Text, Thumbnail} from "native-base";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
@@ -23,7 +23,7 @@ export default class SelecaoContextoScene extends Component {
         return (
             <Container>
                 <Content>
-                    <TouchableItem onPress={() => this.entrarPaciente()}>
+                    <TouchableOpacity onPress={() => this.entrarPaciente()}>
                         <Card>
                             <CardItem>
                                 <Left>
@@ -39,8 +39,8 @@ export default class SelecaoContextoScene extends Component {
                                        style={{height: 135, width: null, flex: 1}}/>
                             </CardItem>
                         </Card>
-                    </TouchableItem>
-                    <TouchableItem onPress={() => this.entrarMedico() }>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.entrarMedico() }>
                         <Card>
                             <CardItem>
                                 <Left>
@@ -56,7 +56,7 @@ export default class SelecaoContextoScene extends Component {
                                        style={{height: 135, width: null, flex: 1}}/>
                             </CardItem>
                         </Card>
-                    </TouchableItem>
+                    </TouchableOpacity>
                 </Content>
             </Container>
         );

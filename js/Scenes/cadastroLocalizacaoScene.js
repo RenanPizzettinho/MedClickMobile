@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {View} from "native-base";
-import {StyleSheet, ToastAndroid, Alert} from "react-native";
+import {StyleSheet, ToastAndroid, Alert, Dimensions} from "react-native";
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 import MedicoSevice from "../Services/medicoService";
@@ -8,6 +8,11 @@ import ContextoEnum from "../Enums/ContextoEnum";
 import MapView from "react-native-maps";
 import LocalizacaoService from "../Services/localizacaoService";
 import BotaoBase from "../Component/Campos/BotaoBase";
+
+const {width, height} = Dimensions.get('window');
+const ASPECT_RATIO = width / height;
+const LATITUDE_DELTA = 0.004; //Very high zoom level
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default class CadastroLocalizacaoScene extends Component {
 
@@ -158,11 +163,18 @@ export default class CadastroLocalizacaoScene extends Component {
                     zoomEnabled={true}
                     loadingEnabled={true}
                     showsScale={true}
+                    showsUserLocation={true}
                     onPress={(e) => {
                         this.setState({coordinate: e.nativeEvent.coordinate});
                         console.log('COORDINATE: ', `${this.state.coordinate.latitude} - ${this.state.coordinate.longitude}`);
                     }}
-                    showsUserLocation={true}
+                    initialRegion={{
+                      latitude : this.state.coordinate.latitude,
+                      longitude : this.state.coordinate.longitude,
+
+                      latitudeDelta: LATITUDE_DELTA,
+                      longitudeDelta: LONGITUDE_DELTA,
+                    }}
                 >
                     <MapView.Marker
                         coordinate={this.state.coordinate}

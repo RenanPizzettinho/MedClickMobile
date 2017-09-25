@@ -14,7 +14,7 @@ import {
   Item,
   Label
 } from "native-base";
-import {ScrollView, ToastAndroid, TextInput} from "react-native";
+import {ScrollView, ToastAndroid, TextInput, TouchableOpacity} from "react-native";
 import SolicitacaoService from "../Services/solicitacaoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
 import BotaoBase from "../Component/Campos/BotaoBase";
@@ -45,11 +45,15 @@ export default class CadastroSolicitacaoScene extends Component {
       endereco: {},
       localizacao: {},
       dataConsulta: new Date(),
+      medicoConsulta: {
+        nome: "",
+        especialidade: ""
+      },
     };
   }
 
   componentWillMount() {
-    this.getNomeMedico();
+    this.getMedico();
     this.getPaciente();
   }
 
@@ -65,8 +69,8 @@ export default class CadastroSolicitacaoScene extends Component {
       })
   }
 
-  getNomeMedico() {
-    this.setState({nomeMedico: StaticStorageService.medicoConsulta.nome});
+  getMedico() {
+    this.setState({medicoConsulta: StaticStorageService.medicoConsulta});
   }
 
   cadastrar() {
@@ -101,80 +105,139 @@ export default class CadastroSolicitacaoScene extends Component {
         <Content>
           <ScrollView>
             <Card>
-              <CardItem header>
-                <Text note style={{lineHeight: 25, marginRight: 20}}>Médico</Text>
-                <H3 style={{flex: 1, lineHeight: 20}}>{this.state.nomeMedico}</H3>
+              <CardItem header style={{
+                backgroundColor: "#F2F2F2",
+                paddingTop: 0,
+                flexDirection: 'column',
+                alignItems: 'stretch'
+              }}>
+
+                <Label style={{lineHeight: 25, marginBottom: 5}}>Médico escolhido: </Label>
+
+                <View style={{flexDirection: 'column', flex: 1}}>
+                  <H3 style={{flex: 1, lineHeight: 20, textAlign: 'center'}}>{this.state.medicoConsulta.nome}</H3>
+                  <Text note style={{textAlign: 'center'}}>{this.state.medicoConsulta.especialidade}</Text>
+                </View>
+
               </CardItem>
-                <Form>
-                  <ListItem>
-                    <Item stackedLabel>
-                      <Label>Descrição da necessidade: * </Label>
+              <Form>
+                <CardItem>
+                  <Body style={{flex: 1, alignItems: 'stretch'}}>
+
+                  <View>
+                    <Label>Descrição da necessidade: * </Label>
+                    <Item regular>
                       <Input
-                        style={{height: Math.max(this.state.height)}}
+                        autoFocus={true}
+                        ref={(ref) => {
+                          this.ref = ref
+                        }}
+                        style={{height: (this.ref && this.ref.height) ? Math.max(this.ref.height) : 40}}
                         multiline={true}
                         onChange={(e) => {
+                          this.ref.height = e.nativeEvent.contentSize.height;
                           this.setState({
                             descricaoNecessidade: e.nativeEvent.text,
                             height: e.nativeEvent.contentSize.height,
                           })
                         }}
+
                       />
                     </Item>
-                  </ListItem>
+                  </View>
 
-                  <ListItem>
-                    <Item stackedLabel>
-                      <Label>Endereço:</Label>
+                  <View style={{marginTop: 10}}>
+                    <Label>Local da consulta:</Label>
+                    <Item regular disabled style={{backgroundColor: '#F2F2F2'}}>
                       <Input
-                        style={{height: 60}}
+                        disabled
+                        style={{height: 60, color: '#6E6E6E'}}
                         multiline={true}
                         value={LocalizacaoService.formatarEndereco(this.state.endereco)}
-                        disabled={true}
                       />
                     </Item>
-                    <Text disabled
-                          note>{`Endereço: `}</Text>
-                  </ListItem>
-                  <ListItem>
-                    <CampoTexto
-                      label="Complemento"
-                      onChange={(complemento) =>
-                        this.setState({complemento})
-                      }
-                    />
-                  </ListItem>
-                  <ListItem style={{flexDirection: "column"}}>
-                    <View style={{flexDirection: 'row'}}>
-                      <Label>Data: </Label>
-                      <DatePicker
-                        style={{flex: 1}}
-                        date={this.state.dataConsulta}
-                        mode='date'
-                        format="LL"
-                        // format='DD/MM/YYYY'
-                        minDate={new Date()}
-                        androidMode='calendar'
-                        showIcon={true}
-
-                        customStyles={{
-                          dateInput: {
-                            alignItems: 'center',
-                            padding: 0,
-                            borderWidth: 0,
-                            borderBottomWidth: 1
-                          },
+                  </View>
+                  <View style={{marginTop: 10}}>
+                    <Label>Complemento: </Label>
+                    <Item regular>
+                      <Input
+                        ref={(ref) => {
+                          this.ref = ref
                         }}
-                        onDateChange={(dataConsulta) => {
-                          // this.setState({dataConsulta : moment(dataConsulta, 'LL').format('DD/MM/YYYY')});
-                          this.setState({dataConsulta});
-                          console.log(this.state)
-                        }}/>
-                    </View>
-                    <Text note>{moment(this.state.dataConsulta, "LL").format('dddd')}</Text>
+                        style={{height: (this.ref && this.ref.height) ? Math.max(this.ref.height) : 40}}
+                        label="Complemento"
+                        multiline={true}
+                        onChange={(e) => {
+                          this.ref.height = e.nativeEvent.contentSize.height;
+                          this.setState({complemento: e.nativeEvent.text})
+                        }}
+                      />
+                    </Item>
+                  </View>
 
-                  </ListItem>
+                  <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+                    <Label>Data: </Label>
+                    <DatePicker
+                      style={{flex: 1}}
+                      date={this.state.dataConsulta}
+                      mode='date'
+                      format="LL"
+                      // format='DD/MM/YYYY'
+                      minDate={new Date()}
+                      androidMode='calendar'
+                      showIcon={true}
 
-                </Form>
+                      customStyles={{
+                        dateInput: {
+                          alignItems: 'center',
+                          padding: 0,
+                          borderWidth: 0,
+                          borderBottomWidth: 1
+                        },
+                      }}
+                      onDateChange={(dataConsulta) => {
+                        // this.setState({dataConsulta : moment(dataConsulta, 'LL').format('DD/MM/YYYY')});
+                        this.setState({dataConsulta});
+                        console.log(this.state)
+                      }}/>
+                  </View>
+                  <Text note style={{textAlign: 'center'}}>{moment(this.state.dataConsulta, "LL").format('dddd')}</Text>
+                  </Body>
+                </CardItem>
+
+
+                {/*<ListItem style={{flexDirection: "column"}}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Label>Data: </Label>
+                    <DatePicker
+                      style={{flex: 1}}
+                      date={this.state.dataConsulta}
+                      mode='date'
+                      format="LL"
+                      // format='DD/MM/YYYY'
+                      minDate={new Date()}
+                      androidMode='calendar'
+                      showIcon={true}
+
+                      customStyles={{
+                        dateInput: {
+                          alignItems: 'center',
+                          padding: 0,
+                          borderWidth: 0,
+                          borderBottomWidth: 1
+                        },
+                      }}
+                      onDateChange={(dataConsulta) => {
+                        // this.setState({dataConsulta : moment(dataConsulta, 'LL').format('DD/MM/YYYY')});
+                        this.setState({dataConsulta});
+                        console.log(this.state)
+                      }}/>
+                  </View>
+                  <Text note>{moment(this.state.dataConsulta, "LL").format('dddd')}</Text>
+
+                </ListItem>*/}
+
+              </Form>
 
 
             </Card>

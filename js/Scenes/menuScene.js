@@ -4,6 +4,7 @@ import ContextoEnum from "../Enums/ContextoEnum";
 import StaticStorageService from '../Services/staticStorageService';
 import SceneEnum from '../Enums/SceneEnum';
 
+
 export default class MenuScene extends Component {
     static navigationOptions = {
         title: 'Menu',

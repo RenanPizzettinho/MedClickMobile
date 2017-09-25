@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Body, Card, CardItem, Container, Content, Left, Text, Thumbnail} from "native-base";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
-// import TouchableItem from "../../../node_modules/react-navigation/lib/views/TouchableItem";
+import {TouchableOpacity} from 'react-native';
 
 export default class MenuComponent extends Component {
     constructor(props) {
@@ -24,7 +24,8 @@ export default class MenuComponent extends Component {
         const {navigate} = this.props.navigation;
         return (
             this.props.menus.map((item, index) =>
-                <TouchableItem
+                <TouchableOpacity
+
                     key={index}
                     onPress={() => {
                         navigate(item.irPara);
@@ -41,7 +42,7 @@ export default class MenuComponent extends Component {
                             </Left>
                         </CardItem>
                     </Card>
-                </TouchableItem>
+                </TouchableOpacity>
             ));
     }
 }
