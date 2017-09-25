@@ -93,7 +93,7 @@ export default class CadastroPacienteScene extends Component {
         return (
             <View>
                 <Card>
-                    <H3 style={{textAlign: "center"}}>Azumio</H3>
+                    <H3 style={{textAlign: "center"}}>Instant Heart Rates</H3>
                     <Body>
                     {dados.map((item, index) =>
                         <View key={index}>

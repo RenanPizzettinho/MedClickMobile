@@ -22,11 +22,11 @@ export default class CadastroMedicoScene extends Component {
 
         this.state = {
             crm: '',
-            estado: '',
+            estado: 'SC',
             nome: null,
             valido: false,
-            especialidade: '',
-            atendeEm: '',
+            especialidade: 'Cardiologista',
+            atendeEm: 'Criciuma',
             distanciaMaxima: 50,
             segunda: false,
             terca: false,
@@ -49,8 +49,8 @@ export default class CadastroMedicoScene extends Component {
         MedicoService.get(userId)
             .then((response) => {
                 let dados = response.data;
-
-                if (dados === undefined) return;
+                console.log('RESPONSE: ', dados);
+                if (dados === undefined || dados._id === undefined) return;
 
                 this.setState({
                     nome: StaticStorageService.usuarioSessao.nome,
