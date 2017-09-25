@@ -3,7 +3,7 @@ import {ToastAndroid, Alert} from "react-native";
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 import SceneEnum from "../Enums/SceneEnum";
-import {Body, Card, Container, Content, Form, H3, ListItem, Text, View} from "native-base";
+import {Body, Card, Container, Content, Form, H3, List, ListItem, Text, View} from "native-base";
 import CheckBoxBase from "../Component/Campos/CheckBoxBase";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import Divider from "react-native-material-design/lib/Divider";
@@ -33,10 +33,11 @@ export default class CadastroPacienteScene extends Component {
         PacienteService.get(StaticStorageService.usuarioSessao._id)
             .then((response) => {
                 let dados = response.data;
+                console.log('RESPONSE: ', dados);
                 if (dados === undefined) return;
                 this.setState({
                     idPaciente: dados._id,
-                    possuiDiabete: dados.possuiDiabete|| false,
+                    possuiDiabete: dados.possuiDiabete || false,
                     possuiPressaoAlta: dados.possuiPressaoAlta || false,
                     integracoes: dados.integracoes || null
                 });
@@ -95,14 +96,14 @@ export default class CadastroPacienteScene extends Component {
                 <Card>
                     <H3 style={{textAlign: "center"}}>Instant Heart Rates</H3>
                     <Body>
-                    {dados.map((item, index) =>
-                        <View key={index}>
-                            <ListItem>
-                                <Text
-                                    note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
-                            </ListItem>
-                        </View>
-                    )}
+                    <List dataArray={dados}
+                          itemDivider={true}
+                          renderRow={(item) =>
+                              <ListItem>
+                                  <Text note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
+                              </ListItem>
+                          }>
+                    </List>
                     <Text>Atualizados
                         em: {Moment(dados.atualizadoEm).format('DD/MM/YYYY')}</Text>
                     </Body>
@@ -119,7 +120,7 @@ export default class CadastroPacienteScene extends Component {
 
     render() {
         let integracoes = this.state.integracoes;
-        let azumio = (integracoes) ? (integracoes.azumio) ? (integracoes.azumio.dados.length > 0) : false : false;
+        let azumio = (integracoes) ? (integracoes.azumio) ? (integracoes.azumio.token) : false : false;
         return (
             <Container>
                 <Content>
