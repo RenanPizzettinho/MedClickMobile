@@ -7,9 +7,9 @@ import {
   Content,
   Header,
   Icon,
-  Input,
+  Input, InputGroup,
   Item,
-  Left, ListItem,
+  Left, ListItem, Right,
   Text,
   Thumbnail,
   Title,
@@ -17,7 +17,7 @@ import {
 } from "native-base";
 import MedicoService from "../../Services/medicoService";
 import Card from "react-native-material-design/lib/Card/index";
-import {Image, Modal, ToastAndroid, TouchableOpacity} from "react-native";
+import {Image, Modal, TextInput, ToastAndroid, TouchableOpacity} from "react-native";
 import BotaoBase from "../../Component/Campos/BotaoBase";
 import styles from "../../StyleSheet/mainStyle";
 import SceneEnum from "../../Enums/SceneEnum";
@@ -25,6 +25,8 @@ import StaticStorageService from "../../Services/staticStorageService";
 import Loader from "../../Component/Loader";
 import DiasSemana from "../../Enums/DiasSemanaEnum";
 import LocalizacaoService from "../../Services/localizacaoService";
+import {Divider} from "react-native-material-design";
+import {StyleSheet} from "react-native";
 
 export default class PesquisaMedico extends Component {
 
@@ -84,18 +86,19 @@ export default class PesquisaMedico extends Component {
     const {params} = this.props.navigation.state;
     return (
       <Container>
-        <Header searchBar rounded>
-          <Item>
-
-            <Input placeholder={`Pesquisar por ${params.filtro.replace(/[\?=]/g, '')}...`} value={this.state.search}
-                   onChangeText={(text) => this.setState({search: text})}
-                   onSubmitEditing={() => this.search()}/>
-            <TouchableOpacity onPress={() => this.search()}>
-              <Icon name="ios-search"/>
-            </TouchableOpacity>
-          </Item>
-        </Header>
         <Content>
+          <View
+            style={{paddingLeft: 10, paddingRight: 10, paddingTop: 8, paddingBottom: 8, backgroundColor: '#0064A3'}}>
+            <Item style={{backgroundColor: 'white', borderRadius: 5, height: 40, paddingRight: 5}}>
+              <Input placeholder={`Pesquisar por ${params.filtro.replace(/[\?=]/g, '')}...`} value={this.state.search}
+                     onChangeText={(text) => this.setState({search: text})}
+                     onSubmitEditing={() => this.search()}/>
+
+              <TouchableOpacity onPress={() => this.search()}>
+                <Icon button transparent name="ios-search"/>
+              </TouchableOpacity>
+            </Item>
+          </View>
           {(this.state.medicos) ? this.medicos() : (this.state.loading) ? <Loader/> : null}
           {this.modal()}
         </Content>
@@ -105,22 +108,22 @@ export default class PesquisaMedico extends Component {
 
   medicos() {
     return (
-      this.state.medicos.map((item, index) =>
-        <Content key={index}>
-          <Card>
-            <CardItem button onPress={() => {
-              this.setModalVisible(!this.state.modalVisible, item);
-            }}>
-              <View>
-                <Text>Nome: {item.nome}</Text>
-                <Text note>Especialidade: {item.especialidade}</Text>
-                <Text note>Atende em {item.atendeEm}</Text>
-                <Text note>Está a {Math.round(item.distancia)} metros</Text>
-              </View>
-            </CardItem>
-          </Card>
-        </Content>
-      ));
+      this.state.medicos.map((item) =>
+        <Card>
+          <CardItem button onPress={() => {
+            this.setModalVisible(!this.state.modalVisible, item);
+          }}>
+
+            <View>
+              <Text>Nome: {item.nome}</Text>
+              <Text note>Especialidade: {item.especialidade}</Text>
+              <Text note>Atende em {item.atendeEm}</Text>
+              <Text note>Está a {Math.round(item.distancia)} metros</Text>
+            </View>
+          </CardItem>
+        </Card>
+      )
+    )
   }
 
   setModalVisible(visible, item) {
@@ -136,10 +139,53 @@ export default class PesquisaMedico extends Component {
     return (
       <Modal
         animationType="slide"
-        transparent={false}
+        transparent={true}
         visible={this.state.modalVisible}
         onRequestClose={() => null}
       >
+        <Container style={{backgroundColor: 'rgba(0, 0, 0, 0.8)', flex: 1, justifyContent: 'center', padding: 20,}}>
+
+          <View style={{borderRadius: 10, backgroundColor: '#f5fcff'}}>
+            <View style={{borderBottomWidth: 1, borderBottomColor: '#d3d3d3'}}>
+              <Title style={{color: 'black', paddingTop: 5, paddingBottom: 10, alignItems: 'stretch'}}>Confirme seu
+                atendimento</Title>
+            </View>
+            <View style={{padding: 20}}>
+
+              <Text>Nome: {item.nome}</Text>
+              <Text note>Especialidade: {item.especialidade}</Text>
+              {(item.endereco) ?
+                <Text note>Endereço: {LocalizacaoService.formatarEndereco(item.endereco)}</Text> : null}
+              <Text note>Atende em: {item.atendeEm}</Text>
+              <Text note>Está a {Math.round(item.distancia)} metros de você</Text>
+              <Text note>Dias em que
+                atende: {(item.diasAtendimentoDomicilio) ? this.diasSemana(item.diasAtendimentoDomicilio) : null}</Text>
+            </View>
+            <View
+              style={{flexDirection: 'row', borderTopWidth: 1, borderTopColor: '#d3d3d3', justifyContent: 'center'}}>
+              <Button small danger
+                      onPress={() => {
+                        this.setModalVisible(!this.state.modalVisible)
+                      }}
+                      style={{margin: 10}}>
+                <Text>Cancelar</Text>
+              </Button>
+
+              <Button small success
+                      onPress={() => {
+                        this.guardarMedico(item);
+                        this.setModalVisible(!this.state.modalVisible, item);
+                        navigate(SceneEnum.CADASTRO_SOLICITACAO);
+                      }}
+                      style={{margin: 10}}>
+                <Text>Confirmar</Text>
+              </Button>
+
+            </View>
+          </View>
+        </Container>
+        {/*
+        <Container style={{backgroundColor: true === true ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff'}}>
         <Header rounded style={{paddingTop: 0}}>
           <Left>
             <Button transparent onPress={() => {
@@ -180,6 +226,7 @@ export default class PesquisaMedico extends Component {
             />
           </View>
         </Content>
+        </Container>*/}
       </Modal>
     );
   }

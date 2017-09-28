@@ -128,17 +128,17 @@ export default class CadastroSolicitacaoScene extends Component {
                     <Label>Descrição da necessidade: * </Label>
                     <Item regular>
                       <Input
+                        onBlur={()=>console.log(this.refs)}
                         autoFocus={true}
                         ref={(ref) => {
-                          this.ref = ref
+                          this._inputRef = ref
                         }}
-                        style={{height: (this.ref && this.ref.height) ? Math.max(this.ref.height) : 40}}
+                        style={{height: (this._inputRef && this._inputRef.height) ? Math.max(this._inputRef.height) : 40}}
                         multiline={true}
                         onChange={(e) => {
-                          this.ref.height = e.nativeEvent.contentSize.height;
+                          this._inputRef.height = e.nativeEvent.contentSize.height;
                           this.setState({
-                            descricaoNecessidade: e.nativeEvent.text,
-                            height: e.nativeEvent.contentSize.height,
+                            descricaoNecessidade: e.nativeEvent.text
                           })
                         }}
 
@@ -161,14 +161,15 @@ export default class CadastroSolicitacaoScene extends Component {
                     <Label>Complemento: </Label>
                     <Item regular>
                       <Input
+                        onBlur={()=>console.log(this.refs)}
                         ref={(ref) => {
-                          this.ref = ref
+                          this.refs = ref
                         }}
-                        style={{height: (this.ref && this.ref.height) ? Math.max(this.ref.height) : 40}}
+                        style={{height: (this.refs && this.refs.height) ? Math.max(this.refs.height) : 40}}
                         label="Complemento"
                         multiline={true}
                         onChange={(e) => {
-                          this.ref.height = e.nativeEvent.contentSize.height;
+                          this.refs.height = e.nativeEvent.contentSize.height;
                           this.setState({complemento: e.nativeEvent.text})
                         }}
                       />

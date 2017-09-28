@@ -4,7 +4,8 @@ import LoginComponent from "../Component/Telas/LoginComponent";
 import {Alert, ToastAndroid} from "react-native";
 import StaticStorageService from "../Services/staticStorageService";
 import SceneEnum from '../Enums/SceneEnum';
-import {Button, Icon} from "native-base";
+import {Container, Content, Header, Body, Title} from 'native-base';
+
 import TouchableItem from "react-navigation";
 // import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
 import Sair from "../Component/Sair";
@@ -12,28 +13,27 @@ import Sair from "../Component/Sair";
 export default class LoginScene extends Component {
   static navigationOptions = {
     title: 'Login',
+    // header : null
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      email: "dogra@teste.com",
-      senha: "123456"
+      email: "medicopaciente",
+      senha: "123"
     };
   }
 
   render() {
     return (
-
-
       <LoginComponent
         login={this.login}
         disabled={this.disabled}
         states={this.state}
         navigation={this.props.navigation}
       />
-    );
+    )
   }
 
   login() {
@@ -47,7 +47,7 @@ export default class LoginScene extends Component {
         if (responseJson.status === 403) {
           ToastAndroid.showWithGravity('Sem acesso', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
         }
-        if(responseJson.errors){
+        if (responseJson.errors) {
           ToastAndroid.showWithGravity(responseJson.errors[0].mensagem, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
           return;
         }

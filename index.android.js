@@ -1,5 +1,5 @@
 import React from "react";
-import {AppRegistry} from "react-native";
+import {AppRegistry, TouchableOpacity, Alert} from "react-native";
 import {StackNavigator} from "react-navigation";
 import CadastroUsuarioScene from "./js/Scenes/cadastroUsuarioScene";
 import LoginScene from "./js/Scenes/loginScene";
@@ -22,25 +22,39 @@ import ModoPesquisaScene from "./js/Scenes/ModoPesquisaScene";
 import SolicitacaoMedicoScene from "./js/Scenes/SolicitacaoMedicoScene";
 
 const App = StackNavigator({
-    Main: {screen: LoginScene},
-    MenuScene: {screen: MenuScene},
-    CadastroUsuario: {screen: CadastroUsuarioScene},
-    CadastroSolicitacaoScene: {screen: CadastroSolicitacaoScene},
-    RecuperarSenhaScene: {screen: RecuperarSenhaScene},
-    CadastroPacienteScene: {screen: CadastroPacienteScene},
-    CadastroMedicoScene: {screen: CadastroMedicoScene},
-    CadastroPessoaScene: {screen: CadastroPessoaScene},
-    PesquisaMedico: {screen: PesquisaMedico},
-    SelecaoContexto: {screen: SelecaoContextoScene},
-    ListagemSolicitacao: {screen: ListagemSolicitacao},
-    ListagemMensagem: {screen: ListagemMensagem},
-    CadastroLocalizacaoScene: {screen: CadastroLocalizacaoScene},
-    integrarAppMenuScene: {screen: IntegrarApp},
-    IntegrarAzumio: {screen: IntegrarAzumio},
-    WebViewMaps: {screen: WebViewMaps},
-    SolicitacaoScene: {screen: SolicitacaoScene},
-    ModoPesquisaScene: {screen: ModoPesquisaScene},
-    SolicitacaoMedicoScene: {screen: SolicitacaoMedicoScene},
+  Main: {screen: LoginScene},
+  MenuScene: {screen: MenuScene},
+  CadastroUsuario: {screen: CadastroUsuarioScene},
+  CadastroSolicitacaoScene: {screen: CadastroSolicitacaoScene},
+  RecuperarSenhaScene: {screen: RecuperarSenhaScene},
+  CadastroPacienteScene: {screen: CadastroPacienteScene},
+  CadastroMedicoScene: {screen: CadastroMedicoScene},
+  CadastroPessoaScene: {screen: CadastroPessoaScene},
+  PesquisaMedico: {screen: PesquisaMedico},
+  SelecaoContexto: {screen: SelecaoContextoScene},
+  ListagemSolicitacao: {screen: ListagemSolicitacao},
+  ListagemMensagem: {screen: ListagemMensagem},
+  CadastroLocalizacaoScene: {screen: CadastroLocalizacaoScene},
+  integrarAppMenuScene: {screen: IntegrarApp},
+  IntegrarAzumio: {screen: IntegrarAzumio},
+  WebViewMaps: {screen: WebViewMaps},
+  SolicitacaoScene: {screen: SolicitacaoScene},
+  ModoPesquisaScene: {screen: ModoPesquisaScene},
+  SolicitacaoMedicoScene: {screen: SolicitacaoMedicoScene},
+}, {
+  headerMode: 'screen',
+  navigationOptions: {
+    headerTintColor:  'white',
+    headerStyle: {
+      backgroundColor: '#0064A3'
+    },
+  }
 });
+
+{/*<App */
+}
+
+{/*/>*/
+}
 
 AppRegistry.registerComponent('MedClickMobile', () => App);

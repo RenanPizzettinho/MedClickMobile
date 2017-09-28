@@ -1,14 +1,15 @@
 import React, {Component} from "react";
-import {Card, Container, Content, List, ListItem, Text} from "native-base";
+import {Body, Card, Container, Content, Icon, List, ListItem, Right, Text} from "native-base";
 import SceneEnum from '../Enums/SceneEnum';
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
+import Divider from "react-native-material-design/lib/Divider";
 // import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
 
 export default class ModoPesquisaScene extends Component {
   static navigationOptions = {
-    title: 'Modo de pesquisa',
+    title: 'Modo de pesquisa'
   };
 
   constructor(props) {
@@ -46,13 +47,26 @@ export default class ModoPesquisaScene extends Component {
 
       <Container>
         <Content>
+          <ListItem itemDivider>
+
+            <Text note style={{margin: 10, textAlign: 'center'}}>Todas as pesquisas consideram sua localização cadastrada.</Text>
+          </ListItem>
+
           <List dataArray={modos} renderRow={(item) =>
-            <ListItem button onPress={() => navigate(SceneEnum.PESQUISA_MEDICO, {
+
+            <ListItem icon button onPress={() => navigate(SceneEnum.PESQUISA_MEDICO, {
               filtro: item.filtro,
               localizacao: this.state.localizacao
             })}>
+              <Body>
+
               <Text>{item.text}</Text>
+              </Body>
+              <Right>
+                <Icon name='arrow-forward'/>
+              </Right>
             </ListItem>
+
           }>
           </List>
         </Content>
@@ -80,7 +94,7 @@ export default class ModoPesquisaScene extends Component {
       <Container>
         <Content>
           <Card>
-            <List primaryText="Teste">
+            <List>
               {(this.hasLocalizacao()) ? this.modoPesquisa() : this.cadastrarLocalizacao()}
             </List>
           </Card>
