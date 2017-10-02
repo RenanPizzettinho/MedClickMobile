@@ -10,6 +10,7 @@ import CheckBoxBase from "../Component/Campos/CheckBoxBase";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import {parseString} from "react-native-xml2js";
 import UsuarioService from "../Services/usuarioService";
+import DrawerComponent from "../Component/Telas/DrawerComponent";
 
 export default class CadastroMedicoScene extends Component {
 
@@ -188,109 +189,115 @@ export default class CadastroMedicoScene extends Component {
   dadosMedico() {
     if (this.state.valido) {
       return (
-        <Card>
-          <Form style={{padding: 10, flex: 1}}>
-            <SelectBase
-              label='Area medica de especialidade'
-              title='Area medica de especialidade'
-              selectedValue={this.state.especialidade}
-              onValueChange={(especialidade) => this.setState({especialidade})}
-              itens={[
-                {value: "Cardiologista"},
-                {value: "Clinico geral"}
-              ]}
-            />
-            <SelectBase
-              label='Atende em qual cidade?'
-              title='Atende em qual cidade?'
-              selectedValue={this.state.atendeEm}
-              onValueChange={(atendeEm) => this.setState({atendeEm})}
-              itens={[
-                {value: "Criciuma"},
-                {value: "Içara"},
-                {value: "Nova Veneza"}
-              ]}
-            />
-            <Label style={{}}>Distância máx. para atendimento: *</Label>
-            <View style={{marginTop: 10, flexDirection: 'column'}}>
-              <Slider
-                style={{flex: 1}}
-                minimumValue={1000}
-                maximumValue={100000}
-                step={1000}
-                value={this.valueSlider}
-                onValueChange={(distanciaMaxima) => {
-                 console.log('props', this.props)
-                  this.setState({distanciaMaxima: distanciaMaxima})
-                }}/>
-              <View style={{alignItems: 'center'}}>
-                <Text>{this.state.distanciaMaxima} metros</Text>
-              </View>
-            </View>
+        <DrawerComponent {...this.props}>
+          <Container>
+            <Content>
+              <Card>
+                <Form style={{padding: 10, flex: 1}}>
+                  <SelectBase
+                    label='Area medica de especialidade'
+                    title='Area medica de especialidade'
+                    selectedValue={this.state.especialidade}
+                    onValueChange={(especialidade) => this.setState({especialidade})}
+                    itens={[
+                      {value: "Cardiologista"},
+                      {value: "Clinico geral"}
+                    ]}
+                  />
+                  <SelectBase
+                    label='Atende em qual cidade?'
+                    title='Atende em qual cidade?'
+                    selectedValue={this.state.atendeEm}
+                    onValueChange={(atendeEm) => this.setState({atendeEm})}
+                    itens={[
+                      {value: "Criciuma"},
+                      {value: "Içara"},
+                      {value: "Nova Veneza"}
+                    ]}
+                  />
+                  <Label style={{}}>Distância máx. para atendimento: *</Label>
+                  <View style={{marginTop: 10, flexDirection: 'column'}}>
+                    <Slider
+                      style={{flex: 1}}
+                      minimumValue={1000}
+                      maximumValue={100000}
+                      step={1000}
+                      value={this.valueSlider}
+                      onValueChange={(distanciaMaxima) => {
+                        console.log('props', this.props)
+                        this.setState({distanciaMaxima: distanciaMaxima})
+                      }}/>
+                    <View style={{alignItems: 'center'}}>
+                      <Text>{this.state.distanciaMaxima} metros</Text>
+                    </View>
+                  </View>
 
-            <View style={{marginTop: 10}}>
+                  <View style={{marginTop: 10}}>
 
-              <Label>Atende nos dias: *</Label>
-              <CheckBoxBase
-                label="Atende na segunda-feira?"
-                checked={this.state.segunda}
-                onPress={() => {
-                  this.setState({segunda: !this.state.segunda});
-                }}
-              />
-              <CheckBoxBase
-                label="Atende na terça-feira?"
-                checked={this.state.terca}
-                onPress={() => {
-                  this.setState({terca: !this.state.terca});
-                }}
-              />
-              <CheckBoxBase
-                label="Atende na quarta-feira?"
-                checked={this.state.quarta}
-                onPress={() => {
-                  this.setState({quarta: !this.state.quarta});
-                }}
-              />
-              <CheckBoxBase
-                label="Atende na quinta-feira?"
-                checked={this.state.quinta}
-                onPress={() => {
-                  this.setState({quinta: !this.state.quinta});
-                }}
-              />
-              <CheckBoxBase
-                label="Atende na sexta-feira?"
-                checked={this.state.sexta}
-                onPress={() => {
-                  this.setState({sexta: !this.state.sexta});
-                }}
-              />
-              <CheckBoxBase
-                label="Atende no sabado?"
-                checked={this.state.sabado}
-                onPress={() => {
-                  this.setState({sabado: !this.state.sabado});
-                }}
-              />
-              <CheckBoxBase
-                label="Atende no domingo?"
-                checked={this.state.domingo}
-                onPress={() => {
-                  this.setState({domingo: !this.state.domingo});
-                }}
-              />
-            </View>
+                    <Label>Atende nos dias: *</Label>
+                    <CheckBoxBase
+                      label="Atende na segunda-feira?"
+                      checked={this.state.segunda}
+                      onPress={() => {
+                        this.setState({segunda: !this.state.segunda});
+                      }}
+                    />
+                    <CheckBoxBase
+                      label="Atende na terça-feira?"
+                      checked={this.state.terca}
+                      onPress={() => {
+                        this.setState({terca: !this.state.terca});
+                      }}
+                    />
+                    <CheckBoxBase
+                      label="Atende na quarta-feira?"
+                      checked={this.state.quarta}
+                      onPress={() => {
+                        this.setState({quarta: !this.state.quarta});
+                      }}
+                    />
+                    <CheckBoxBase
+                      label="Atende na quinta-feira?"
+                      checked={this.state.quinta}
+                      onPress={() => {
+                        this.setState({quinta: !this.state.quinta});
+                      }}
+                    />
+                    <CheckBoxBase
+                      label="Atende na sexta-feira?"
+                      checked={this.state.sexta}
+                      onPress={() => {
+                        this.setState({sexta: !this.state.sexta});
+                      }}
+                    />
+                    <CheckBoxBase
+                      label="Atende no sabado?"
+                      checked={this.state.sabado}
+                      onPress={() => {
+                        this.setState({sabado: !this.state.sabado});
+                      }}
+                    />
+                    <CheckBoxBase
+                      label="Atende no domingo?"
+                      checked={this.state.domingo}
+                      onPress={() => {
+                        this.setState({domingo: !this.state.domingo});
+                      }}
+                    />
+                  </View>
 
-          </Form>
-          <BotaoBase
-            title="Salvar"
-            onPress={() => {
-              this.salvarMedico();
-            }}
-          />
-        </Card>
-      );
+                </Form>
+              </Card>
+              <BotaoBase
+                title="Salvar"
+                onPress={() => {
+                  this.salvarMedico();
+                }}
+              />
+            </Content>
+          </Container>
+        </DrawerComponent>
+      )
     }
   }
 

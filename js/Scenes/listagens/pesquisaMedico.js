@@ -17,7 +17,7 @@ import {
 } from "native-base";
 import MedicoService from "../../Services/medicoService";
 import Card from "react-native-material-design/lib/Card/index";
-import {Image, Modal, TextInput, ToastAndroid, TouchableOpacity} from "react-native";
+import {FlatList, Image, Modal, TextInput, ToastAndroid, TouchableOpacity} from "react-native";
 import BotaoBase from "../../Component/Campos/BotaoBase";
 import styles from "../../StyleSheet/mainStyle";
 import SceneEnum from "../../Enums/SceneEnum";
@@ -27,6 +27,7 @@ import DiasSemana from "../../Enums/DiasSemanaEnum";
 import LocalizacaoService from "../../Services/localizacaoService";
 import {Divider} from "react-native-material-design";
 import {StyleSheet} from "react-native";
+import DrawerComponent from "../../Component/Telas/DrawerComponent";
 
 export default class PesquisaMedico extends Component {
 
@@ -66,6 +67,7 @@ export default class PesquisaMedico extends Component {
           medicos: responseJson.data,
           loading: false,
         });
+
       })
       .catch((error) => {
         this.setState({
@@ -85,30 +87,35 @@ export default class PesquisaMedico extends Component {
   render() {
     const {params} = this.props.navigation.state;
     return (
-      <Container>
-        <Content>
-          <View
-            style={{paddingLeft: 10, paddingRight: 10, paddingTop: 8, paddingBottom: 8, backgroundColor: '#0064A3'}}>
-            <Item style={{backgroundColor: 'white', borderRadius: 5, height: 40, paddingRight: 5}}>
-              <Input placeholder={`Pesquisar por ${params.filtro.replace(/[\?=]/g, '')}...`} value={this.state.search}
-                     onChangeText={(text) => this.setState({search: text})}
-                     onSubmitEditing={() => this.search()}/>
+      <DrawerComponent {...this.props}>
+        <Container>
+          <Content>
+            <View
+              style={{paddingLeft: 10, paddingRight: 10, paddingTop: 8, paddingBottom: 8, backgroundColor: '#0064A3'}}>
+              <Item style={{backgroundColor: 'white', borderRadius: 5, height: 40, paddingRight: 5}}>
+                <Input placeholder={`Pesquisar por ${params.filtro.replace(/[\?=]/g, '')}...`} value={this.state.search}
+                       onChangeText={(text) => this.setState({search: text})}
+                       onSubmitEditing={() => this.search()}/>
 
-              <TouchableOpacity onPress={() => this.search()}>
-                <Icon button transparent name="ios-search"/>
-              </TouchableOpacity>
-            </Item>
-          </View>
-          {(this.state.medicos) ? this.medicos() : (this.state.loading) ? <Loader/> : null}
-          {this.modal()}
-        </Content>
-      </Container>
+                <TouchableOpacity onPress={() => this.search()}>
+                  <Icon button transparent name="ios-search"/>
+                </TouchableOpacity>
+              </Item>
+            </View>
+
+
+            {(this.state.medicos) ? this.medicos() : (this.state.loading) ? <Loader/> : null}
+            {this.modal()}
+          </Content>
+        </Container>
+      </DrawerComponent>
     );
   }
 
+  // this.state.medicos.map((item) =>
   medicos() {
     return (
-      this.state.medicos.map((item) =>
+      <FlatList data={this.state.medicos} renderItem={({item}) =>
         <Card>
           <CardItem button onPress={() => {
             this.setModalVisible(!this.state.modalVisible, item);
@@ -121,8 +128,10 @@ export default class PesquisaMedico extends Component {
               <Text note>Está a {Math.round(item.distancia)} metros</Text>
             </View>
           </CardItem>
-        </Card>
-      )
+        </Card>}
+                keyExtractor={(item, index) => index}
+
+      />
     )
   }
 

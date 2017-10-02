@@ -11,6 +11,7 @@ import CampoTexto from "../Component/Campos/CampoTexto";
 import PacienteService from "../Services/pacienteService";
 import LocalizacaoService from "../Services/localizacaoService";
 import Moment from "moment";
+import DrawerComponent from "../Component/Telas/DrawerComponent";
 
 export default class SolicitacaoMedicoScene extends Component {
 
@@ -216,6 +217,7 @@ export default class SolicitacaoMedicoScene extends Component {
         let solicitacao = this.state.solicitacao;
         let azumio = (paciente.integracoes) ? (paciente.integracoes.azumio) ? (paciente.integracoes.azumio.dados.length > 0 ) : false : false;
         return (
+          <DrawerComponent {...this.props}>
             <Container>
                 <Content>
                     <Card>
@@ -251,6 +253,7 @@ export default class SolicitacaoMedicoScene extends Component {
                     {this.isCancelada()}
                 </Content>
             </Container>
+          </DrawerComponent>
         );
     }
 

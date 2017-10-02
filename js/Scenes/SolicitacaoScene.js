@@ -11,6 +11,7 @@ import MedicoService from "../Services/medicoService";
 import CampoTexto from "../Component/Campos/CampoTexto";
 import LocalizacaoService from "../Services/localizacaoService";
 import Moment from "moment";
+import DrawerComponent from "../Component/Telas/DrawerComponent";
 
 export default class SolicitacaoScene extends Component {
 
@@ -121,6 +122,7 @@ export default class SolicitacaoScene extends Component {
 
     render() {
         return (
+          <DrawerComponent {...this.props}>
             <Container>
                 <Content>
                     <Card>
@@ -155,6 +157,7 @@ export default class SolicitacaoScene extends Component {
                     {this.isCancelada()}
                 </Content>
             </Container>
+          </DrawerComponent>
         );
     }
 }

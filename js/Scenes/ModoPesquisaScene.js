@@ -1,16 +1,14 @@
 import React, {Component} from "react";
-import {Body, Card, Container, Content, Icon, List, ListItem, Right, Text} from "native-base";
+import {Body, Button, Card, Container, Content, Icon, List, ListItem, Right, Text} from "native-base";
 import SceneEnum from '../Enums/SceneEnum';
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
 import Divider from "react-native-material-design/lib/Divider";
+import DrawerComponent from "../Component/Telas/DrawerComponent";
 // import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
 
 export default class ModoPesquisaScene extends Component {
-  static navigationOptions = {
-    title: 'Modo de pesquisa'
-  };
 
   constructor(props) {
     super(props);
@@ -18,6 +16,12 @@ export default class ModoPesquisaScene extends Component {
       localizacao: null
     };
   }
+
+  static navigationOptions = {
+    title: 'Modo de pesquisa',
+
+  };
+
 
   componentWillMount() {
     this.fetchData();
@@ -49,7 +53,8 @@ export default class ModoPesquisaScene extends Component {
         <Content>
           <ListItem itemDivider>
 
-            <Text note style={{margin: 10, textAlign: 'center'}}>Todas as pesquisas consideram sua localização cadastrada.</Text>
+            <Text note style={{margin: 10, textAlign: 'center'}}>Todas as pesquisas consideram sua localização
+              cadastrada.</Text>
           </ListItem>
 
           <List dataArray={modos} renderRow={(item) =>
@@ -90,16 +95,19 @@ export default class ModoPesquisaScene extends Component {
   }
 
   render() {
+
     return (
-      <Container>
-        <Content>
-          <Card>
-            <List>
-              {(this.hasLocalizacao()) ? this.modoPesquisa() : this.cadastrarLocalizacao()}
-            </List>
-          </Card>
-        </Content>
-      </Container>
+      <DrawerComponent {...this.props}>
+        <Container>
+          <Content>
+            <Card>
+              <List>
+                {(this.hasLocalizacao()) ? this.modoPesquisa() : this.cadastrarLocalizacao()}
+              </List>
+            </Card>
+          </Content>
+        </Container>
+      </DrawerComponent>
     );
   }
 

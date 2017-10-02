@@ -1,6 +1,6 @@
 import React from "react";
-import {AppRegistry, TouchableOpacity, Alert} from "react-native";
-import {StackNavigator} from "react-navigation";
+import {AppRegistry, TouchableOpacity, Alert, StatusBar} from "react-native";
+import {DrawerNavigator, StackNavigator} from "react-navigation";
 import CadastroUsuarioScene from "./js/Scenes/cadastroUsuarioScene";
 import LoginScene from "./js/Scenes/loginScene";
 import CadastroSolicitacaoScene from "./js/Scenes/cadastroSolicitacaoScene";
@@ -20,6 +20,9 @@ import WebViewMaps from "./js/Scenes/webViewMaps";
 import SolicitacaoScene from "./js/Scenes/SolicitacaoScene";
 import ModoPesquisaScene from "./js/Scenes/ModoPesquisaScene";
 import SolicitacaoMedicoScene from "./js/Scenes/SolicitacaoMedicoScene";
+import {Button, Icon, View} from "native-base";
+import DrawerComponent from "./js/Component/Telas/DrawerComponent";
+
 
 const App = StackNavigator({
   Main: {screen: LoginScene},
@@ -40,21 +43,40 @@ const App = StackNavigator({
   WebViewMaps: {screen: WebViewMaps},
   SolicitacaoScene: {screen: SolicitacaoScene},
   ModoPesquisaScene: {screen: ModoPesquisaScene},
-  SolicitacaoMedicoScene: {screen: SolicitacaoMedicoScene},
+  SolicitacaoMedicoScene: {screen: SolicitacaoMedicoScene}
 }, {
+  initialRouteName: 'Main',
   headerMode: 'screen',
   navigationOptions: {
-    headerTintColor:  'white',
+    headerTintColor: '#ffffff',
+    tintColor: '#ffffff',
+    titleStyle: {
+      color: '#ffffff',
+    },
     headerStyle: {
       backgroundColor: '#0064A3'
     },
+    headerLeft: <Button transparent
+                        delayLongPress={3800}
+                        onPress={() => DrawerComponent.toggleDrawer()}>
+      <Icon name="menu" style={{color: '#ffffff'}}/>
+    </Button>
   }
 });
 
-{/*<App */
-}
+const AppContent = () =>
+  <View style={{flex: 1}}>
+    <StatusBar backgroundColor="#005387" barStyle="light-content"/>
+    <App/>
+  </View>;
 
-{/*/>*/
-}
 
-AppRegistry.registerComponent('MedClickMobile', () => App);
+// const MainDrawerNavigator = DrawerNavigator({
+//   App: {screen: App},
+//   Menu: {screen: MenuScene},
+// }, {
+//   initialRouteName: 'App',
+//   headerMode: 'screen'
+// })
+
+AppRegistry.registerComponent('MedClickMobile', () => AppContent);

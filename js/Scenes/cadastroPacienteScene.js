@@ -6,154 +6,155 @@ import SceneEnum from "../Enums/SceneEnum";
 import {Body, Card, Container, Content, Form, H3, List, ListItem, Text, View} from "native-base";
 import CheckBoxBase from "../Component/Campos/CheckBoxBase";
 import BotaoBase from "../Component/Campos/BotaoBase";
-import Divider from "react-native-material-design/lib/Divider";
 import Moment from "moment";
+import DrawerComponent from "../Component/Telas/DrawerComponent";
 
 export default class CadastroPacienteScene extends Component {
 
-    static navigationOptions = {
-        title: 'Perfil de paciente',
+  static navigationOptions = {
+    title: 'Perfil de paciente',
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      idPaciente: null,
+      possuiDiabete: false,
+      possuiPressaoAlta: false,
+    };
+  }
+
+  componentWillMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    PacienteService.get(StaticStorageService.usuarioSessao._id)
+      .then((response) => {
+        let dados = response.data;
+        console.log('RESPONSE: ', dados);
+        if (dados === undefined) return;
+        this.setState({
+          idPaciente: dados._id,
+          possuiDiabete: dados.possuiDiabete || false,
+          possuiPressaoAlta: dados.possuiPressaoAlta || false,
+          integracoes: dados.integracoes || null
+        });
+      });
+  }
+
+  salvarPaciente(state) {
+    const userId = StaticStorageService.usuarioSessao._id;
+    const {navigate} = this.props.navigation;
+
+    let form = {
+      possuiDiabete: state.possuiDiabete,
+      possuiPressaoAlta: state.possuiPressaoAlta
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            idPaciente: null,
-            possuiDiabete: false,
-            possuiPressaoAlta: false,
-        };
+    if (!this.state.idPaciente) {
+      PacienteService.salvar(userId, form)
+        .then((response) => {
+          ToastAndroid.showWithGravity('Informações de paciente cadastradas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+          console.log('RESPONSE: ', response);
+          StaticStorageService.usuarioSessao.idPaciente = response.data._id;
+          console.log('USUARIO: ', StaticStorageService.usuarioSessao);
+          navigate(SceneEnum.MENU);
+        });
+    } else {
+      PacienteService.atualizar(userId, form)
+        .then((response) => {
+          ToastAndroid.showWithGravity('Informações de paciente atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+          console.log('RESPONSE: ', response);
+          StaticStorageService.usuarioSessao.idPaciente = response.data._id;
+          console.log('USUARIO: ', StaticStorageService.usuarioSessao);
+          navigate(SceneEnum.MENU);
+        });
     }
+  }
 
-    componentWillMount() {
-        this.fetchData();
-    }
+  atualizarDadosAzumio() {
+    ToastAndroid.showWithGravity('Atualizando', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+    PacienteService.atualizarAzumio(this.state.idPaciente)
+      .then((resp) => {
+        console.log(resp);
+        this.setState({
+          integracoes: {
+            azumio: resp.integracoes.azumio
+          }
+        });
+        ToastAndroid.showWithGravity('Informações da Azumio atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+      })
+      .catch((err) => console.log(err));
+  }
 
-    fetchData() {
-        PacienteService.get(StaticStorageService.usuarioSessao._id)
-            .then((response) => {
-                let dados = response.data;
-                console.log('RESPONSE: ', dados);
-                if (dados === undefined) return;
-                this.setState({
-                    idPaciente: dados._id,
-                    possuiDiabete: dados.possuiDiabete || false,
-                    possuiPressaoAlta: dados.possuiPressaoAlta || false,
-                    integracoes: dados.integracoes || null
-                });
-            });
-    }
+  integracoesAzumio(dados) {
+    console.log(dados);
+    return (
+      <View>
+        <Card>
+          <H3 style={{textAlign: "center"}}>Instant Heart Rates</H3>
+          <Body>
+          <List dataArray={dados}
+                itemDivider={true}
+                renderRow={(item) =>
+                  <ListItem>
+                    <Text
+                      note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
+                  </ListItem>
+                }>
+          </List>
+          <Text>Atualizados
+            em: {Moment(dados.atualizadoEm).format('DD/MM/YYYY')}</Text>
+          </Body>
+        </Card>
+        <BotaoBase
+          text={'Atualizar dados'}
+          title={'Atualizar dados'}
+          disabled={false}
+          onPress={() => this.atualizarDadosAzumio()}
+        />
+      </View>
+    );
+  }
 
-    salvarPaciente(state) {
-        const userId = StaticStorageService.usuarioSessao._id;
-        const {navigate} = this.props.navigation;
-
-        let form = {
-            possuiDiabete: state.possuiDiabete,
-            possuiPressaoAlta: state.possuiPressaoAlta
-        };
-
-        if (!this.state.idPaciente) {
-            PacienteService.salvar(userId, form)
-                .then((response) => {
-                    ToastAndroid.showWithGravity('Informações de paciente cadastradas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    console.log('RESPONSE: ', response);
-                    StaticStorageService.usuarioSessao.idPaciente = response.data._id;
-                    console.log('USUARIO: ', StaticStorageService.usuarioSessao);
-                    navigate(SceneEnum.MENU);
-                });
-        } else {
-            PacienteService.atualizar(userId, form)
-                .then((response) => {
-                    ToastAndroid.showWithGravity('Informações de paciente atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    console.log('RESPONSE: ', response);
-                    StaticStorageService.usuarioSessao.idPaciente = response.data._id;
-                    console.log('USUARIO: ', StaticStorageService.usuarioSessao);
-                    navigate(SceneEnum.MENU);
-                });
-        }
-    }
-
-    atualizarDadosAzumio() {
-        ToastAndroid.showWithGravity('Atualizando', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-        PacienteService.atualizarAzumio(this.state.idPaciente)
-            .then((resp) => {
-                console.log(resp);
-                this.setState({
-                    integracoes: {
-                        azumio: resp.integracoes.azumio
-                    }
-                });
-                ToastAndroid.showWithGravity('Informações da Azumio atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-            })
-            .catch((err) => console.log(err));
-    }
-
-    integracoesAzumio(dados) {
-        console.log(dados);
-        return (
-            <View>
-                <Card>
-                    <H3 style={{textAlign: "center"}}>Instant Heart Rates</H3>
-                    <Body>
-                    <List dataArray={dados}
-                          itemDivider={true}
-                          renderRow={(item) =>
-                              <ListItem>
-                                  <Text note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
-                              </ListItem>
-                          }>
-                    </List>
-                    <Text>Atualizados
-                        em: {Moment(dados.atualizadoEm).format('DD/MM/YYYY')}</Text>
-                    </Body>
-                </Card>
-                <BotaoBase
-                    text={'Atualizar dados'}
-                    title={'Atualizar dados'}
-                    disabled={false}
-                    onPress={() => this.atualizarDadosAzumio()}
+  render() {
+    let integracoes = this.state.integracoes;
+    let azumio = (integracoes) ? (integracoes.azumio) ? (integracoes.azumio.token) : false : false;
+    return (
+      <DrawerComponent {...this.props}>
+        <Container>
+          <Content>
+            <Card>
+              <Form>
+                <CheckBoxBase
+                  label="Possui diabetes?"
+                  checked={this.state.possuiDiabete}
+                  onPress={() => {
+                    this.setState({possuiDiabete: !this.state.possuiDiabete});
+                  }}
                 />
-            </View>
-        );
-    }
+                <CheckBoxBase
+                  label="Possui pressão alta?"
+                  checked={this.state.possuiPressaoAlta}
+                  onPress={() => {
+                    this.setState({possuiPressaoAlta: !this.state.possuiPressaoAlta});
+                  }}
+                />
 
-    render() {
-        let integracoes = this.state.integracoes;
-        let azumio = (integracoes) ? (integracoes.azumio) ? (integracoes.azumio.token) : false : false;
-        return (
-            <Container>
-                <Content>
-                    <Card>
-                        <H3 style={{textAlign: "center"}}>Dados do paciente</H3>
-                        <Divider/>
-                        <Form>
-                            <CheckBoxBase
-                                label="Possui diabetes?"
-                                checked={this.state.possuiDiabete}
-                                onPress={() => {
-                                    this.setState({possuiDiabete: !this.state.possuiDiabete});
-                                }}
-                            />
-                            <CheckBoxBase
-                                label="Possui pressão alta?"
-                                checked={this.state.possuiPressaoAlta}
-                                onPress={() => {
-                                    this.setState({possuiPressaoAlta: !this.state.possuiPressaoAlta});
-                                }}
-                            />
-
-                        </Form>
-                    </Card>
-                    <BotaoBase
-                        title="Salvar"
-                        onPress={() => {
-                            this.salvarPaciente(this.state);
-                        }}
-                    />
-                    {(azumio) ? this.integracoesAzumio(integracoes.azumio.dados) : null}
-                </Content>
-            </Container>
-        );
-    }
+              </Form>
+            </Card>
+            <BotaoBase
+              title="Salvar"
+              onPress={() => {
+                this.salvarPaciente(this.state);
+              }}
+            />
+            {(azumio) ? this.integracoesAzumio(integracoes.azumio.dados) : null}
+          </Content>
+        </Container>
+      </DrawerComponent>
+    );
+  }
 }

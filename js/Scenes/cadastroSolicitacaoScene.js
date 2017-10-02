@@ -25,6 +25,7 @@ import LocalizacaoService from "../Services/localizacaoService";
 import DatePicker from "react-native-datepicker";
 import moment from 'moment';
 import 'moment/locale/pt-br';
+import DrawerComponent from "../Component/Telas/DrawerComponent";
 
 moment.locale('pt-BR');
 
@@ -101,113 +102,113 @@ export default class CadastroSolicitacaoScene extends Component {
 
   render() {
     return (
-      <Container>
-        <Content>
-          <ScrollView>
-            <Card>
-              <CardItem header style={{
-                backgroundColor: "#F2F2F2",
-                paddingTop: 0,
-                flexDirection: 'column',
-                alignItems: 'stretch'
-              }}>
+      <DrawerComponent {...this.props}>
+        <Container>
+          <Content>
+            <ScrollView>
+              <Card>
+                <CardItem header style={{
+                  backgroundColor: "#F2F2F2",
+                  paddingTop: 0,
+                  flexDirection: 'column',
+                  alignItems: 'stretch'
+                }}>
 
-                <Label style={{lineHeight: 25, marginBottom: 5}}>Médico escolhido: </Label>
+                  <Label style={{lineHeight: 25, marginBottom: 5}}>Médico escolhido: </Label>
 
-                <View style={{flexDirection: 'column', flex: 1}}>
-                  <H3 style={{flex: 1, lineHeight: 20, textAlign: 'center'}}>{this.state.medicoConsulta.nome}</H3>
-                  <Text note style={{textAlign: 'center'}}>{this.state.medicoConsulta.especialidade}</Text>
-                </View>
-
-              </CardItem>
-              <Form>
-                <CardItem>
-                  <Body style={{flex: 1, alignItems: 'stretch'}}>
-
-                  <View>
-                    <Label>Descrição da necessidade: * </Label>
-                    <Item regular>
-                      <Input
-                        onBlur={()=>console.log(this.refs)}
-                        autoFocus={true}
-                        ref={(ref) => {
-                          this._inputRef = ref
-                        }}
-                        style={{height: (this._inputRef && this._inputRef.height) ? Math.max(this._inputRef.height) : 40}}
-                        multiline={true}
-                        onChange={(e) => {
-                          this._inputRef.height = e.nativeEvent.contentSize.height;
-                          this.setState({
-                            descricaoNecessidade: e.nativeEvent.text
-                          })
-                        }}
-
-                      />
-                    </Item>
+                  <View style={{flexDirection: 'column', flex: 1}}>
+                    <H3 style={{flex: 1, lineHeight: 20, textAlign: 'center'}}>{this.state.medicoConsulta.nome}</H3>
+                    <Text note style={{textAlign: 'center'}}>{this.state.medicoConsulta.especialidade}</Text>
                   </View>
 
-                  <View style={{marginTop: 10}}>
-                    <Label>Local da consulta:</Label>
-                    <Item regular disabled style={{backgroundColor: '#F2F2F2'}}>
-                      <Input
-                        disabled
-                        style={{height: 60, color: '#6E6E6E'}}
-                        multiline={true}
-                        value={LocalizacaoService.formatarEndereco(this.state.endereco)}
-                      />
-                    </Item>
-                  </View>
-                  <View style={{marginTop: 10}}>
-                    <Label>Complemento: </Label>
-                    <Item regular>
-                      <Input
-                        onBlur={()=>console.log(this.refs)}
-                        ref={(ref) => {
-                          this.refs = ref
-                        }}
-                        style={{height: (this.refs && this.refs.height) ? Math.max(this.refs.height) : 40}}
-                        label="Complemento"
-                        multiline={true}
-                        onChange={(e) => {
-                          this.refs.height = e.nativeEvent.contentSize.height;
-                          this.setState({complemento: e.nativeEvent.text})
-                        }}
-                      />
-                    </Item>
-                  </View>
-
-                  <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
-                    <Label>Data: </Label>
-                    <DatePicker
-                      style={{flex: 1}}
-                      date={this.state.dataConsulta}
-                      mode='date'
-                      format="LL"
-                      // format='DD/MM/YYYY'
-                      minDate={new Date()}
-                      androidMode='calendar'
-                      showIcon={true}
-
-                      customStyles={{
-                        dateInput: {
-                          alignItems: 'center',
-                          padding: 0,
-                          borderWidth: 0,
-                          borderBottomWidth: 1
-                        },
-                      }}
-                      onDateChange={(dataConsulta) => {
-                        // this.setState({dataConsulta : moment(dataConsulta, 'LL').format('DD/MM/YYYY')});
-                        this.setState({dataConsulta});
-                        console.log(this.state)
-                      }}/>
-                  </View>
-                  <Text note style={{textAlign: 'center'}}>{moment(this.state.dataConsulta, "LL").format('dddd')}</Text>
-                  </Body>
                 </CardItem>
+                <Form>
+                  <CardItem>
+                    <Body style={{flex: 1, alignItems: 'stretch'}}>
+
+                    <View>
+                      <Label>Descrição da necessidade: * </Label>
+                      <Item regular>
+                        <Input
+                          autoFocus={true}
+                          ref={(ref) => {
+                            this._inputRef = ref
+                          }}
+                          style={{height: (this._inputRef && this._inputRef.height) ? Math.max(this._inputRef.height) : 40}}
+                          multiline={true}
+                          onChange={(e) => {
+                            this._inputRef.height = e.nativeEvent.contentSize.height;
+                            this.setState({
+                              descricaoNecessidade: e.nativeEvent.text
+                            })
+                          }}
+
+                        />
+                      </Item>
+                    </View>
+
+                    <View style={{marginTop: 10}}>
+                      <Label>Local da consulta:</Label>
+                      <Item regular disabled style={{backgroundColor: '#F2F2F2'}}>
+                        <Input
+                          disabled
+                          style={{height: 60, color: '#6E6E6E'}}
+                          multiline={true}
+                          value={LocalizacaoService.formatarEndereco(this.state.endereco)}
+                        />
+                      </Item>
+                    </View>
+                    <View style={{marginTop: 10}}>
+                      <Label>Complemento endereço: </Label>
+                      <Item regular>
+                        <Input
+                          ref={(ref) => {
+                            this.refs = ref
+                          }}
+                          style={{height: (this.refs && this.refs.height) ? Math.max(this.refs.height) : 40}}
+                          label="Complemento"
+                          multiline={true}
+                          onChange={(e) => {
+                            this.refs.height = e.nativeEvent.contentSize.height;
+                            this.setState({complemento: e.nativeEvent.text})
+                          }}
+                        />
+                      </Item>
+                    </View>
+
+                    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+                      <Label>Data: </Label>
+                      <DatePicker
+                        style={{flex: 1}}
+                        date={this.state.dataConsulta}
+                        mode='date'
+                        format="LL"
+                        // format='DD/MM/YYYY'
+                        minDate={new Date()}
+                        androidMode='calendar'
+                        showIcon={true}
+
+                        customStyles={{
+                          dateInput: {
+                            alignItems: 'center',
+                            padding: 0,
+                            borderWidth: 0,
+                            borderBottomWidth: 1
+                          },
+                        }}
+                        onDateChange={(dataConsulta) => {
+                          // this.setState({dataConsulta : moment(dataConsulta, 'LL').format('DD/MM/YYYY')});
+                          this.setState({dataConsulta});
+                          console.log(this.state)
+                        }}/>
+                    </View>
+                    <Text note
+                          style={{textAlign: 'center'}}>{moment(this.state.dataConsulta, "LL").format('dddd')}</Text>
+                    </Body>
+                  </CardItem>
 
 
-                {/*<ListItem style={{flexDirection: "column"}}>
+                  {/*<ListItem style={{flexDirection: "column"}}>
                   <View style={{flexDirection: 'row'}}>
                     <Label>Data: </Label>
                     <DatePicker
@@ -238,18 +239,19 @@ export default class CadastroSolicitacaoScene extends Component {
 
                 </ListItem>*/}
 
-              </Form>
+                </Form>
 
 
-            </Card>
-            <BotaoBase
-              title="Registrar"
-              disabled={this.disabled(this.state)}
-              onPress={() => this.cadastrar()}
-            />
-          </ScrollView>
-        </Content>
-      </Container>
+              </Card>
+              <BotaoBase
+                title="Registrar"
+                disabled={this.disabled(this.state)}
+                onPress={() => this.cadastrar()}
+              />
+            </ScrollView>
+          </Content>
+        </Container>
+      </DrawerComponent>
     )
   }
 

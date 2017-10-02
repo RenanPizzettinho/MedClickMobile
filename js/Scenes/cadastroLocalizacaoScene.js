@@ -8,6 +8,7 @@ import ContextoEnum from "../Enums/ContextoEnum";
 import MapView from "react-native-maps";
 import LocalizacaoService from "../Services/localizacaoService";
 import BotaoBase from "../Component/Campos/BotaoBase";
+import DrawerComponent from "../Component/Telas/DrawerComponent";
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -16,205 +17,207 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default class CadastroLocalizacaoScene extends Component {
 
-    static navigationOptions = {
-        title: 'Informações de localização',
+  static navigationOptions = {
+    title: 'Informações de localização',
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      localizacao: {},
+      error: null,
+      coordinate: {
+        latitude: -28.6811714,
+        longitude: -49.3760146,
+
+      },
+      endereco: {
+        teste: 1
+      },
+    };
+  }
+
+  componentWillMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    (StaticStorageService.contexto === ContextoEnum.PACIENTE) ? this.paciente() : this.medico();
+  }
+
+
+  paciente() {
+    PacienteService.get(StaticStorageService.usuarioSessao._id)
+      .then(this.setLocalizacao.bind(this))
+      .catch((erro) => console.log('ERRO:', erro));
+  }
+
+  medico() {
+    MedicoSevice.get(StaticStorageService.usuarioSessao._id)
+      .then(this.setLocalizacao.bind(this))
+      .catch((erro) => console.log('ERRO:', erro));
+  }
+
+  setLocalizacao(response) {
+    console.log('RESPONSE: ', response.data.localizacao);
+    let dados = response.data;
+    if (dados.localizacao === undefined) {
+      return;
+    }
+    this.setState({
+      localizacao: {
+        longitude: dados.localizacao.longitude,
+        latitude: dados.localizacao.latitude
+      },
+      coordinate: {
+        longitude: dados.localizacao.longitude,
+        latitude: dados.localizacao.latitude
+      }
+    });
+  }
+
+  save() {
+    let body = {
+      localizacao: {
+        latitude: this.state.coordinate.latitude,
+        longitude: this.state.coordinate.longitude
+      },
+      endereco: this.state.endereco
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            localizacao: {},
-            error: null,
-            coordinate: {
-                latitude: -28.6811714,
-                longitude: -49.3760146,
-
-            },
-            endereco: {
-                teste: 1
-            },
-        };
+    if (StaticStorageService.contexto === ContextoEnum.PACIENTE) {
+      PacienteService.atualizar(StaticStorageService.usuarioSessao._id, body)
+        .then((response) => {
+          ToastAndroid.showWithGravity(`Endereço atualizado`, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+          console.log('RESPONSE: ', response);
+        })
+        .catch((error => console.log('ERRO', error)));
+    } else {
+      MedicoSevice.atualizar(StaticStorageService.usuarioSessao._id, body)
+        .then((response) => {
+          ToastAndroid.showWithGravity(`Endereço atualizado`, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+          console.log('RESPONSE: ', response)
+        })
+        .catch((error => console.log('ERRO', error)));
     }
+  }
 
-    componentWillMount() {
-        this.fetchData();
-    }
+  getDescricaoEndereco() {
+    LocalizacaoService.getEndereco(this.state.coordinate.latitude, this.state.coordinate.longitude)
+      .then((response) => {
+        console.log('ENDERECO: ', response.results[0].address_components[0].short_name);
+        let endereco = this.getEndereco(response);
+        this.setState({endereco});
+        ToastAndroid.showWithGravity(JSON.stringify(this.state.endereco), ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+        this.save();
+      })
+      .catch((error) => console.log('ERRO: ', error));
+  }
 
-    fetchData() {
-        (StaticStorageService.contexto === ContextoEnum.PACIENTE) ? this.paciente() : this.medico();
-    }
-
-
-    paciente() {
-        PacienteService.get(StaticStorageService.usuarioSessao._id)
-            .then(this.setLocalizacao.bind(this))
-            .catch((erro) => console.log('ERRO:', erro));
-    }
-
-    medico() {
-        MedicoSevice.get(StaticStorageService.usuarioSessao._id)
-            .then(this.setLocalizacao.bind(this))
-            .catch((erro) => console.log('ERRO:', erro));
-    }
-
-    setLocalizacao(response) {
-        console.log('RESPONSE: ', response.data.localizacao);
-        let dados = response.data;
-        if (dados.localizacao === undefined) {
-            return;
+  getEndereco(response) {
+    let addressComponents = response.results[0].address_components;
+    let endereco = {};
+    addressComponents.forEach((componente) => {
+      componente.types.some((type) => {
+        switch (type) {
+          case 'route':
+            endereco.rua = componente.short_name;
+            break;
+          case 'sublocality':
+            endereco.bairro = componente.short_name;
+            break;
+          case 'administrative_area_level_2':
+            endereco.cidade = componente.short_name;
+            break;
+          case 'administrative_area_level_1':
+            endereco.estado = componente.short_name;
+            break;
+          case 'country':
+            endereco.pais = componente.short_name;
+            break;
+          case 'postal_code':
+            endereco.cep = (componente.short_name.length === 5) ? componente.short_name + '-000' : componente.short_name;
+            break;
         }
-        this.setState({
-            localizacao: {
-                longitude: dados.localizacao.longitude,
-                latitude: dados.localizacao.latitude
-            },
-            coordinate: {
-                longitude: dados.localizacao.longitude,
-                latitude: dados.localizacao.latitude
-            }
-        });
-    }
+        return true;
+      })
+    });
+    console.log('ENDERECO: ', endereco);
+    return endereco;
+  }
 
-    save() {
-        let body = {
-            localizacao: {
-                latitude: this.state.coordinate.latitude,
-                longitude: this.state.coordinate.longitude
-            },
-            endereco: this.state.endereco
-        };
+  render() {
+    return (
+      <DrawerComponent {...this.props}>
+        <View style={{
+          flex: 1,
+          //     ...StyleSheet.absoluteFillObject,
+          //     justifyContent: 'flex-end',
+          //     alignItems: 'center',
 
-        if (StaticStorageService.contexto === ContextoEnum.PACIENTE) {
-            PacienteService.atualizar(StaticStorageService.usuarioSessao._id, body)
-                .then((response) => {
-                    ToastAndroid.showWithGravity(`Endereço atualizado`, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    console.log('RESPONSE: ', response);
-                })
-                .catch((error => console.log('ERRO', error)));
-        } else {
-            MedicoSevice.atualizar(StaticStorageService.usuarioSessao._id, body)
-                .then((response) => {
-                    ToastAndroid.showWithGravity(`Endereço atualizado`, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                    console.log('RESPONSE: ', response)
-                })
-                .catch((error => console.log('ERRO', error)));
-        }
-    }
+        }}>
+          <MapView
+            style={styles.map}
+            provider='google'
+            followsUserLocation={true}
+            showsCompass={true}
+            toolbarEnabled={true}
+            zoomEnabled={true}
+            loadingEnabled={true}
+            showsScale={true}
+            showsUserLocation={true}
+            onPress={(e) => {
+              this.setState({coordinate: e.nativeEvent.coordinate});
+              console.log('COORDINATE: ', `${this.state.coordinate.latitude} - ${this.state.coordinate.longitude}`);
+            }}
+            initialRegion={{
+              latitude: this.state.coordinate.latitude,
+              longitude: this.state.coordinate.longitude,
 
-    getDescricaoEndereco() {
-        LocalizacaoService.getEndereco(this.state.coordinate.latitude, this.state.coordinate.longitude)
-            .then((response) => {
-                console.log('ENDERECO: ', response.results[0].address_components[0].short_name);
-                let endereco = this.getEndereco(response);
-                this.setState({endereco});
-                ToastAndroid.showWithGravity(JSON.stringify(this.state.endereco), ToastAndroid.SHORT, ToastAndroid.BOTTOM);
-                this.save();
-            })
-            .catch((error) => console.log('ERRO: ', error));
-    }
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }}
+          >
+            <MapView.Marker
+              coordinate={this.state.coordinate}
+              title={(StaticStorageService.contexto === ContextoEnum.PACIENTE) ? 'Onde quero ser atendido' : 'A partir de onde atendo'}
+            />
 
-    getEndereco(response) {
-        let addressComponents = response.results[0].address_components;
-        let endereco = {};
-        addressComponents.forEach((componente) => {
-            componente.types.some((type) => {
-                switch (type) {
-                    case 'route':
-                        endereco.rua = componente.short_name;
-                        break;
-                    case 'sublocality':
-                        endereco.bairro = componente.short_name;
-                        break;
-                    case 'administrative_area_level_2':
-                        endereco.cidade = componente.short_name;
-                        break;
-                    case 'administrative_area_level_1':
-                        endereco.estado = componente.short_name;
-                        break;
-                    case 'country':
-                        endereco.pais = componente.short_name;
-                        break;
-                    case 'postal_code':
-                        endereco.cep = (componente.short_name.length === 5) ? componente.short_name + '-000' : componente.short_name;
-                        break;
-                }
-                return true;
-            })
-        });
-        console.log('ENDERECO: ', endereco);
-        return endereco;
-    }
-
-    render() {
-        return (
-            <View style={{
-                flex: 1,
-                //     ...StyleSheet.absoluteFillObject,
-                //     justifyContent: 'flex-end',
-                //     alignItems: 'center',
-
-            }}>
-                <MapView
-                    style={styles.map}
-                    provider='google'
-                    followsUserLocation={true}
-                    showsCompass={true}
-                    toolbarEnabled={true}
-                    zoomEnabled={true}
-                    loadingEnabled={true}
-                    showsScale={true}
-                    showsUserLocation={true}
-                    onPress={(e) => {
-                        this.setState({coordinate: e.nativeEvent.coordinate});
-                        console.log('COORDINATE: ', `${this.state.coordinate.latitude} - ${this.state.coordinate.longitude}`);
-                    }}
-                    initialRegion={{
-                      latitude : this.state.coordinate.latitude,
-                      longitude : this.state.coordinate.longitude,
-
-                      latitudeDelta: LATITUDE_DELTA,
-                      longitudeDelta: LONGITUDE_DELTA,
-                    }}
-                >
-                    <MapView.Marker
-                        coordinate={this.state.coordinate}
-                        title={(StaticStorageService.contexto === ContextoEnum.PACIENTE) ? 'Onde quero ser atendido' : 'A partir de onde atendo'}
-                    />
-
-                </MapView>
-                <View>
-                    <BotaoBase
-                        style={{flexDirection: 'row'}}
-                        title={'Salvar'}
-                        text={'Salvar'}
-                        onPress={() => this.getDescricaoEndereco()}
-                    />
-                </View>
-            </View>
-        );
-    }
+          </MapView>
+          <View>
+            <BotaoBase
+              style={{flexDirection: 'row'}}
+              title={'Salvar'}
+              text={'Salvar'}
+              onPress={() => this.getDescricaoEndereco()}
+            />
+          </View>
+        </View>
+      </DrawerComponent>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    map: {
-        flex: 1,
-        // position: 'absolute',
-        // top: 0,
-        // left: 0,
-        // right: 0,
-        // bottom: 0,
-        // marginBottom: 0,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        marginVertical: 20,
-        backgroundColor: 'transparent',
-    },
-    bubble: {
-        backgroundColor: 'rgba(255,255,255,0.7)',
-        paddingHorizontal: 18,
-        paddingVertical: 12,
-        borderRadius: 20,
-        flexDirection: 'row'
-    },
+  map: {
+    flex: 1,
+    // position: 'absolute',
+    // top: 0,
+    // left: 0,
+    // right: 0,
+    // bottom: 0,
+    // marginBottom: 0,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    marginVertical: 20,
+    backgroundColor: 'transparent',
+  },
+  bubble: {
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 20,
+    flexDirection: 'row'
+  },
 });

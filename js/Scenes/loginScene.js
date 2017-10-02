@@ -1,16 +1,14 @@
 import React, {Component} from "react";
 import LoginService from "../Services/loginService";
 import LoginComponent from "../Component/Telas/LoginComponent";
-import {Alert, ToastAndroid} from "react-native";
+import {Alert, ToastAndroid, Navigator, DrawerLayoutAndroid, StatusBar} from "react-native";
 import StaticStorageService from "../Services/staticStorageService";
 import SceneEnum from '../Enums/SceneEnum';
-import {Container, Content, Header, Body, Title} from 'native-base';
+import {Container, Content, Header, Body, Title, Left, Button, Icon, Right, Drawer, View, Text} from 'native-base';
 
-import TouchableItem from "react-navigation";
-// import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
-import Sair from "../Component/Sair";
 
-export default class LoginScene extends Component {
+export default class LoginScene extends React.Component {
+
   static navigationOptions = {
     title: 'Login',
     // header : null
@@ -20,19 +18,20 @@ export default class LoginScene extends Component {
     super(props);
 
     this.state = {
-      email: "medicopaciente",
+      email: "paciente",
       senha: "123"
     };
   }
 
   render() {
     return (
-      <LoginComponent
-        login={this.login}
-        disabled={this.disabled}
-        states={this.state}
-        navigation={this.props.navigation}
-      />
+
+        <LoginComponent
+          login={this.login}
+          disabled={this.disabled}
+          states={this.state}
+          navigation={this.props.navigation}
+        />
     )
   }
 
@@ -71,3 +70,4 @@ export default class LoginScene extends Component {
     return !this.state.email || !this.state.senha;
   }
 }
+

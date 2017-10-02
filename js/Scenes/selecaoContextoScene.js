@@ -4,14 +4,15 @@ import ContextoEnum from '../Enums/ContextoEnum';
 import {Alert, Image, TouchableOpacity} from "react-native";
 import SceneEnum from '../Enums/SceneEnum';
 import {Body, Button, Card, Icon, CardItem, Container, Content, Left, Text, Thumbnail, Header, Title} from "native-base";
-import TouchableItem from "react-navigation/src/views/TouchableItem";
 
 export default class SelecaoContextoScene extends React.Component {
 
-  static navigationOptions = {
+  static navigationOptions = ({navigation}) => ({
     title: 'Seleção de contexto',
-    // header: null
-  };
+    headerLeft :  <Button transparent onPress={() => navigation.goBack()}>
+      <Icon name="arrow-back" style={{color: '#ffffff'}}/>
+    </Button>
+  });
 
   constructor(props) {
     super(props);
@@ -21,19 +22,19 @@ export default class SelecaoContextoScene extends React.Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
     return (
       <Container>
-       {/* <Header>
-          <Left>
-            <Button transparent onPress={() => navigate(SceneEnum.LOGIN)}>
-              <Icon name='arrow-back' />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Seleção de contexto</Title>
-          </Body>
-        </Header>*/}
+       {/*<Header>*/}
+          {/*<Left>*/}
+            {/*<Button transparent onPress={() => navigate(SceneEnum.LOGIN)}>*/}
+            {/*<Button transparent onPress={() => DrawerComponent.toggleDrawer()}>*/}
+              {/*<Icon name='arrow-back' />*/}
+            {/*</Button>*/}
+          {/*</Left>*/}
+          {/*<Body>*/}
+            {/*<Title>Seleção de contexto</Title>*/}
+          {/*</Body>*/}
+        {/*</Header>*/}
         <Content>
           <TouchableOpacity onPress={() => this.entrarPaciente()}>
             <Card>

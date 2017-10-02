@@ -7,6 +7,7 @@ import SceneEnum from "../../Enums/SceneEnum";
 import StatusSolicitacaoEnum from "../../Enums/StatusSolicitacaoEnum";
 import Moment from "moment";
 import ContextoEnum from "../../Enums/ContextoEnum";
+import DrawerComponent from "../../Component/Telas/DrawerComponent";
 
 export default class listagemSolicitacaoMedico extends Component {
 
@@ -83,7 +84,8 @@ export default class listagemSolicitacaoMedico extends Component {
 
     render() {
         return (
-            <Container>
+          <DrawerComponent {...this.props}>
+          <Container>
                 <Content>
                     <Card>
                         <List>
@@ -118,6 +120,7 @@ export default class listagemSolicitacaoMedico extends Component {
                     </Card>
                 </Content>
             </Container>
+          </DrawerComponent>
         )
     }
 
