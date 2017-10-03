@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import styles from "../../StyleSheet/mainStyle";
 import {Button, Image, Text, TextInput, TouchableHighlight, View} from "react-native";
 import SceneEnum from '../../Enums/SceneEnum';
+import DataComponent from '../Campos/DataComponent';
 
 export default class LoginComponent extends Component {
   constructor(props) {

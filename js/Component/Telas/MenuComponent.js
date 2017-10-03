@@ -69,7 +69,19 @@ export default class MenuComponent extends Component {
       },
     ];
 
-    this.menus = this.menus.filter((item) => {
+    this.aplicativos = [{
+        header: 'Instant Heart Rate',
+        nota: 'Traga dados de batimento cardiaco',
+        irPara: SceneEnum.INTEGRAR_AZUMIO,
+        icone: require('../../Images/ihrLogo.png'),
+        perfil : ContextoEnum.PACIENTE
+      }];
+
+
+    console.log(',emi', this.props)
+
+    this.menus = (this.props.aplicativos ? this.aplicativos : this.menus).filter((item) => {
+
       return item.perfil === StaticStorageService.contexto || item.perfil === null;
     });
   }

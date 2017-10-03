@@ -26,17 +26,23 @@ import DatePicker from "react-native-datepicker";
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import DrawerComponent from "../Component/Telas/DrawerComponent";
+import ButtonDrawer from "../Component/Campos/ButtonDrawer";
+import {Calendar} from 'react-native-calendars';
 
 moment.locale('pt-BR');
 
+let self;
 export default class CadastroSolicitacaoScene extends Component {
 
   static navigationOptions = {
     title: 'Solicitar atendimento',
+    headerLeft: <ButtonDrawer onPress={() => self.drawer.toggleDrawer()} />
   };
+
 
   constructor(props) {
     super(props);
+    self = this;
     this.state = {
       paciente: {},
       descricaoNecessidade: "",
@@ -102,7 +108,7 @@ export default class CadastroSolicitacaoScene extends Component {
 
   render() {
     return (
-      <DrawerComponent {...this.props}>
+      <DrawerComponent ref={(ref) => self.drawer = ref} {...this.props}>
         <Container>
           <Content>
             <ScrollView>
@@ -197,51 +203,36 @@ export default class CadastroSolicitacaoScene extends Component {
                           },
                         }}
                         onDateChange={(dataConsulta) => {
+
                           // this.setState({dataConsulta : moment(dataConsulta, 'LL').format('DD/MM/YYYY')});
                           this.setState({dataConsulta});
                           console.log(this.state)
                         }}/>
                     </View>
+
+                    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+                      <Label>Data: </Label>
+                      <Calendar
+                        style={{flex: 1}}
+                        date={this.state.dataConsulta}
+                        mode='date'
+                        format="LL"
+                        // format='DD/MM/YYYY'
+                        minDate={new Date()}
+                        markedDates={{
+                          '2017-10-24': {selected: true, marked: true},
+                          '2017-10-25': {marked: true},
+                          '2017-10-26': {disabled: true}
+                        }}
+                      />
+                    </View>
+
+
                     <Text note
                           style={{textAlign: 'center'}}>{moment(this.state.dataConsulta, "LL").format('dddd')}</Text>
                     </Body>
                   </CardItem>
-
-
-                  {/*<ListItem style={{flexDirection: "column"}}>
-                  <View style={{flexDirection: 'row'}}>
-                    <Label>Data: </Label>
-                    <DatePicker
-                      style={{flex: 1}}
-                      date={this.state.dataConsulta}
-                      mode='date'
-                      format="LL"
-                      // format='DD/MM/YYYY'
-                      minDate={new Date()}
-                      androidMode='calendar'
-                      showIcon={true}
-
-                      customStyles={{
-                        dateInput: {
-                          alignItems: 'center',
-                          padding: 0,
-                          borderWidth: 0,
-                          borderBottomWidth: 1
-                        },
-                      }}
-                      onDateChange={(dataConsulta) => {
-                        // this.setState({dataConsulta : moment(dataConsulta, 'LL').format('DD/MM/YYYY')});
-                        this.setState({dataConsulta});
-                        console.log(this.state)
-                      }}/>
-                  </View>
-                  <Text note>{moment(this.state.dataConsulta, "LL").format('dddd')}</Text>
-
-                </ListItem>*/}
-
                 </Form>
-
-
               </Card>
               <BotaoBase
                 title="Registrar"

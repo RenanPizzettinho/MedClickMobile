@@ -28,15 +28,19 @@ import LocalizacaoService from "../../Services/localizacaoService";
 import {Divider} from "react-native-material-design";
 import {StyleSheet} from "react-native";
 import DrawerComponent from "../../Component/Telas/DrawerComponent";
+import ButtonDrawer from "../../Component/Campos/ButtonDrawer";
 
+let self;
 export default class PesquisaMedico extends Component {
 
   static navigationOptions = {
     title: 'Pesquisar médico',
+    headerLeft: <ButtonDrawer onPress={() => self.drawer.toggleDrawer()}/>
   };
 
   constructor(props) {
     super(props);
+    self = this;
     this.state = {
       modalVisible: false,
       search: null,
@@ -87,7 +91,7 @@ export default class PesquisaMedico extends Component {
   render() {
     const {params} = this.props.navigation.state;
     return (
-      <DrawerComponent {...this.props}>
+      <DrawerComponent ref={(ref) => self.drawer = ref} {...this.props}>
         <Container>
           <Content>
             <View

@@ -1,30 +1,43 @@
 import React, {Component} from "react";
-import {Body, Button, Card, Container, Content, Icon, List, ListItem, Right, Text} from "native-base";
+import {
+  Body, Button, Card, Container, Content,  Item, List, ListItem, Picker, Right, Text,
+  View,Icon
+} from "native-base";
+
+import {UIManager} from 'react-native';
 import SceneEnum from '../Enums/SceneEnum';
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
 import Divider from "react-native-material-design/lib/Divider";
 import DrawerComponent from "../Component/Telas/DrawerComponent";
-// import TouchableItem from "../../node_modules/react-navigation/lib/views/TouchableItem";
+import ButtonDrawer from "../Component/Campos/ButtonDrawer";
+import {NavigationActions} from 'react-navigation'
 
+
+let self;
 export default class ModoPesquisaScene extends Component {
 
   constructor(props) {
     super(props);
+    self = this;
     this.state = {
-      localizacao: null
+      localizacao: null,
+      language: null
     };
   }
 
-  static navigationOptions = {
+  static navigationOptions = ({navigation}) => ({
     title: 'Modo de pesquisa',
+    headerLeft: <ButtonDrawer onPress={() => self.drawer.toggleDrawer()}/>,
+    // headerRight: <Button transparent ><Picker><Item label="Alterar contexto"></Item></Picker>><Icon name='more' style={{color : '#fff'}}/></Button>
 
-  };
 
+  });
 
   componentWillMount() {
     this.fetchData();
+
   }
 
   fetchData() {
@@ -97,9 +110,11 @@ export default class ModoPesquisaScene extends Component {
   render() {
 
     return (
-      <DrawerComponent {...this.props}>
+
+      <DrawerComponent ref={(ref) => self.drawer = ref} {...this.props}>
         <Container>
           <Content>
+
             <Card>
               <List>
                 {(this.hasLocalizacao()) ? this.modoPesquisa() : this.cadastrarLocalizacao()}

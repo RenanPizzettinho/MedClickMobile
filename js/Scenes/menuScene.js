@@ -11,11 +11,6 @@ export default class MenuScene extends Component {
 
     title: 'Menu',
     // header: null
-    headerLeft: <Button transparent
-                        delayLongPress={3800}
-                        onPress={() => navigation.goBack()}>
-      <Icon name="arrow-back" style={{color: '#ffffff'}}/>
-    </Button>
 })
 
 

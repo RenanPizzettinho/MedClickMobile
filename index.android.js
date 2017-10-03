@@ -14,13 +14,13 @@ import SelecaoContextoScene from "./js/Scenes/selecaoContextoScene";
 import ListagemSolicitacao from "./js/Scenes/listagens/listagemSolicitacao";
 import ListagemMensagem from "./js/Scenes/listagens/listagemMensagem";
 import CadastroLocalizacaoScene from "./js/Scenes/cadastroLocalizacaoScene";
-import IntegrarApp from "./js/Scenes/integrarAppMenuScene";
+import integrarAppMenuScene from "./js/Scenes/integrarAppMenuScene";
 import IntegrarAzumio from "./js/Scenes/integrarAzumio";
 import WebViewMaps from "./js/Scenes/webViewMaps";
 import SolicitacaoScene from "./js/Scenes/SolicitacaoScene";
 import ModoPesquisaScene from "./js/Scenes/ModoPesquisaScene";
 import SolicitacaoMedicoScene from "./js/Scenes/SolicitacaoMedicoScene";
-import {Button, Icon, View} from "native-base";
+import {Button, Icon, Text, View} from "native-base";
 import DrawerComponent from "./js/Component/Telas/DrawerComponent";
 
 
@@ -38,7 +38,7 @@ const App = StackNavigator({
   ListagemSolicitacao: {screen: ListagemSolicitacao},
   ListagemMensagem: {screen: ListagemMensagem},
   CadastroLocalizacaoScene: {screen: CadastroLocalizacaoScene},
-  integrarAppMenuScene: {screen: IntegrarApp},
+  integrarAppMenuScene: {screen: integrarAppMenuScene},
   IntegrarAzumio: {screen: IntegrarAzumio},
   WebViewMaps: {screen: WebViewMaps},
   SolicitacaoScene: {screen: SolicitacaoScene},
@@ -47,7 +47,7 @@ const App = StackNavigator({
 }, {
   initialRouteName: 'Main',
   headerMode: 'screen',
-  navigationOptions: {
+  navigationOptions: ({navigation}) => ({
     headerTintColor: '#ffffff',
     tintColor: '#ffffff',
     titleStyle: {
@@ -56,19 +56,18 @@ const App = StackNavigator({
     headerStyle: {
       backgroundColor: '#0064A3'
     },
-    headerLeft: <Button transparent
-                        delayLongPress={3800}
-                        onPress={() => DrawerComponent.toggleDrawer()}>
-      <Icon name="menu" style={{color: '#ffffff'}}/>
+    headerRight: <Button transparent onPress={() => navigation.navigate("SelecaoContexto")}>
+      <Icon name='ios-people' style={{color: '#fff'}}/>
     </Button>
-  }
+
+  })
 });
 
 const AppContent = () =>
   <View style={{flex: 1}}>
     <StatusBar backgroundColor="#005387" barStyle="light-content"/>
     <App/>
-  </View>;
+  </View>
 
 
 // const MainDrawerNavigator = DrawerNavigator({

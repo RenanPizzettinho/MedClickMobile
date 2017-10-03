@@ -7,60 +7,51 @@ import {Container, Content, Form, Item} from "native-base";
 
 
 export default class CadastroUsuarioComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = props.states;
-        this.salvar = props.salvar;
-        this.disabled = props.disabled;
-    }
+  constructor(props) {
+    super(props);
+    this.state = props.states;
+    this.salvar = props.salvar;
+    this.disabled = props.disabled;
+  }
 
-    render() {
-        return (
-            <Container>
-                <Content>
-                    <Card>
-                        <Form>
-                            <Item inlineLabel>
-                                <CampoTexto
-                                    label="Email"
-                                    onChange={(email) => {
-                                        this.setState({email});
-                                    }}
-                                />
-                            </Item>
-                            <Item inlineLabel>
-                                <CampoTexto
-                                    label="Nome"
-                                    onChange={(nome) => {
-                                        this.setState({nome});
-                                    }}
-                                />
-                            </Item>
-                            <Item inlineLabel>
-                                <CampoSenha
-                                    label="Senha"
-                                    onChange={(senha) => {
-                                        this.setState({senha});
-                                    }}
-                                />
-                            </Item>
-                            <Item inlineLabel>
-                                <CampoSenha
-                                    label="Verificar senha"
-                                    onChange={(verificarSenha) => {
-                                        this.setState({verificarSenha});
-                                    }}
-                                />
-                            </Item>
-                        </Form>
-                    </Card>
-                    <BotaoBase
-                        title="Cadastrar"
-                        disabled={this.disabled(this.state)}
-                        onPress={() => this.salvar(this.state)}
-                    />
-                </Content>
-            </Container>
-        );
-    }
+  render() {
+    return (
+      <Container>
+        <Content>
+          <Card style={{paddingBottom: 15}}>
+            <CampoTexto
+              label="Email"
+              onChange={(email) => {
+                this.setState({email});
+              }}
+            />
+
+            <CampoTexto
+              label="Nome"
+              onChange={(nome) => {
+                this.setState({nome});
+              }}
+            />
+            <CampoSenha
+              label="Senha"
+              onChange={(senha) => {
+                this.setState({senha});
+              }}
+            />
+            <CampoSenha
+              label="Verificar senha"
+              onChange={(verificarSenha) => {
+                this.setState({verificarSenha});
+              }}
+            />
+          </Card>
+          <BotaoBase
+            title="Cadastrar"
+            disabled={this.disabled(this.state)}
+            onPress={() => this.salvar(this.state)}
+          />
+        </Content>
+      </Container>
+    );
+  }
 }

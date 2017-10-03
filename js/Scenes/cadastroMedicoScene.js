@@ -11,16 +11,18 @@ import BotaoBase from "../Component/Campos/BotaoBase";
 import {parseString} from "react-native-xml2js";
 import UsuarioService from "../Services/usuarioService";
 import DrawerComponent from "../Component/Telas/DrawerComponent";
+import ButtonDrawer from "../Component/Campos/ButtonDrawer";
 
+let self;
 export default class CadastroMedicoScene extends Component {
 
   static navigationOptions = {
     title: 'Perfil de médico',
+    headerLeft: <ButtonDrawer onPress={() => self.drawer.toggleDrawer()}/>
   };
 
   constructor(props) {
     super(props);
-
     this.state = {
       crm: '',
       estado: 'SC',
@@ -37,7 +39,7 @@ export default class CadastroMedicoScene extends Component {
       sabado: false,
       domingo: false
     };
-
+    self = this;
   }
 
 
@@ -189,7 +191,6 @@ export default class CadastroMedicoScene extends Component {
   dadosMedico() {
     if (this.state.valido) {
       return (
-        <DrawerComponent {...this.props}>
           <Container>
             <Content>
               <Card>
@@ -296,62 +297,63 @@ export default class CadastroMedicoScene extends Component {
               />
             </Content>
           </Container>
-        </DrawerComponent>
       )
     }
   }
 
   render() {
     return (
-      <Container>
-        <Content>
-          <Card>
-            <Form style={{padding: 10}}>
-              <CampoTexto
-                label={'Nome: *'}
-                value={this.state.nome}
-                onChange={(nome) => {
-                  this.setState({nome});
-                  this.setState({valido: false});
-                }}
-              />
-              <CampoTexto
-                label="CRM: *"
-                value={this.state.crm}
-                onChange={(crm) => {
-                  this.setState({crm});
-                  this.setState({valido: false});
-                }}
-              />
-              <SelectBase
-                label='Estado do registro'
-                title='Estado do registro'
-                selectedValue={this.state.estado}
-                onValueChange={(estado) => {
-                  this.setState({estado});
-                  this.setState({valido: false});
-                }}
-                itens={[
-                  {value: "SC"},
-                  {value: "PR"},
-                  {value: "RS"},
-                  {value: "RJ"},
-                  {value: "SP"}
-                ]}
-              />
-            </Form>
-            {(!this.state.valido) ?
-              <BotaoBase
-                title="Validar Crm"
-                onPress={() => this.validarCrm()}
-              />
-              : null
-            }
-          </Card>
-          {this.dadosMedico()}
+      <DrawerComponent ref={ (ref) => self.drawer = ref} {...this.props}>
+        <Container>
+          <Content>
+            <Card>
+              <Form style={{padding: 10}}>
+                <CampoTexto
+                  label={'Nome: *'}
+                  value={this.state.nome}
+                  onChange={(nome) => {
+                    this.setState({nome});
+                    this.setState({valido: false});
+                  }}
+                />
+                <CampoTexto
+                  label="CRM: *"
+                  value={this.state.crm}
+                  onChange={(crm) => {
+                    this.setState({crm});
+                    this.setState({valido: false});
+                  }}
+                />
+                <SelectBase
+                  label='Estado do registro'
+                  title='Estado do registro'
+                  selectedValue={this.state.estado}
+                  onValueChange={(estado) => {
+                    this.setState({estado});
+                    this.setState({valido: false});
+                  }}
+                  itens={[
+                    {value: "SC"},
+                    {value: "PR"},
+                    {value: "RS"},
+                    {value: "RJ"},
+                    {value: "SP"}
+                  ]}
+                />
+              </Form>
+              {(!this.state.valido) ?
+                <BotaoBase
+                  title="Validar Crm"
+                  onPress={() => this.validarCrm()}
+                />
+                : null
+              }
+            </Card>
+            {this.dadosMedico()}
 
-        </Content>
-      </Container>
+          </Content>
+        </Container>
+      </DrawerComponent>
     );
   }
 }

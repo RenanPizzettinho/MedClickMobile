@@ -12,6 +12,7 @@ export default class LoginScene extends React.Component {
   static navigationOptions = {
     title: 'Login',
     // header : null
+    headerRight : null
   };
 
   constructor(props) {
@@ -25,7 +26,6 @@ export default class LoginScene extends React.Component {
 
   render() {
     return (
-
         <LoginComponent
           login={this.login}
           disabled={this.disabled}

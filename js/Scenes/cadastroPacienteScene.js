@@ -3,16 +3,21 @@ import {ToastAndroid, Alert} from "react-native";
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
 import SceneEnum from "../Enums/SceneEnum";
-import {Body, Card, Container, Content, Form, H3, List, ListItem, Text, View} from "native-base";
+import {Body, Button, Card, Container, Content, Form, H3, List, ListItem, Text, Title, View} from "native-base";
 import CheckBoxBase from "../Component/Campos/CheckBoxBase";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import Moment from "moment";
 import DrawerComponent from "../Component/Telas/DrawerComponent";
+import ButtonDrawer from "../Component/Campos/ButtonDrawer";
 
+let self;
 export default class CadastroPacienteScene extends Component {
 
   static navigationOptions = {
+    // header: (<View><Text>Perfil deo paciente</Text></View>),
+    // headerTitle : <View style={{flexDirection:'column', }}><Text style={{color: '#fff'}}>Paciente</Text><Title>Perfil de paciente</Title></View>,
     title: 'Perfil de paciente',
+    headerLeft: <ButtonDrawer onPress={() => self.drawer.toggleDrawer()}/>
   };
 
   constructor(props) {
@@ -23,6 +28,7 @@ export default class CadastroPacienteScene extends Component {
       possuiDiabete: false,
       possuiPressaoAlta: false,
     };
+    self = this;
   }
 
   componentWillMount() {
@@ -75,7 +81,7 @@ export default class CadastroPacienteScene extends Component {
   }
 
   atualizarDadosAzumio() {
-    ToastAndroid.showWithGravity('Atualizando', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+    ToastAndroid.showWithGravity('Atualizando...', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
     PacienteService.atualizarAzumio(this.state.idPaciente)
       .then((resp) => {
         console.log(resp);
@@ -84,29 +90,33 @@ export default class CadastroPacienteScene extends Component {
             azumio: resp.integracoes.azumio
           }
         });
-        ToastAndroid.showWithGravity('Informações da Azumio atualizadas', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+        console.log('RESP', resp)
+        ToastAndroid.showWithGravity('Informações do aplicativo Instant Heart Rates atualizadas.', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        ToastAndroid.showWithGravity('Erro ao atualizar dados..', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+      });
   }
 
   integracoesAzumio(dados) {
     console.log(dados);
     return (
       <View>
-        <Card>
-          <H3 style={{textAlign: "center"}}>Instant Heart Rates</H3>
+        <Card style={{paddingTop: 10, paddingBottom: 10}}>
+          <H3 style={{textAlign: "center", marginBottom: 15}}>Instant Heart Rate</H3>
           <Body>
           <List dataArray={dados}
                 itemDivider={true}
                 renderRow={(item) =>
                   <ListItem>
                     <Text
-                      note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
+                      // note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
+                      note>{`Em ${Moment(item.dataLeitura).format('DD/MM/YYYY')} - Batimentos: ${item.batimentos} BPM`}</Text>
                   </ListItem>
                 }>
           </List>
-          <Text>Atualizados
-            em: {Moment(dados.atualizadoEm).format('DD/MM/YYYY')}</Text>
+          <Text>Atualizado em: {this.state.integracoes.azumio.atualizadoEm === undefined ? 'sem informações' : Moment(this.state.integracoes.azumio.atualizadoEm).format("DD/MM/YYYY [ às ] HH:MM")}</Text>
           </Body>
         </Card>
         <BotaoBase
@@ -123,7 +133,7 @@ export default class CadastroPacienteScene extends Component {
     let integracoes = this.state.integracoes;
     let azumio = (integracoes) ? (integracoes.azumio) ? (integracoes.azumio.token) : false : false;
     return (
-      <DrawerComponent {...this.props}>
+      <DrawerComponent ref={(ref) => self.drawer = ref} {...this.props}>
         <Container>
           <Content>
             <Card>

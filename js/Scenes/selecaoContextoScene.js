@@ -4,6 +4,7 @@ import ContextoEnum from '../Enums/ContextoEnum';
 import {Alert, Image, TouchableOpacity} from "react-native";
 import SceneEnum from '../Enums/SceneEnum';
 import {Body, Button, Card, Icon, CardItem, Container, Content, Left, Text, Thumbnail, Header, Title} from "native-base";
+import DataComponent from "./../Component/Campos/DataComponent"
 
 export default class SelecaoContextoScene extends React.Component {
 
@@ -11,7 +12,8 @@ export default class SelecaoContextoScene extends React.Component {
     title: 'Seleção de contexto',
     headerLeft :  <Button transparent onPress={() => navigation.goBack()}>
       <Icon name="arrow-back" style={{color: '#ffffff'}}/>
-    </Button>
+    </Button>,
+    headerRight : null
   });
 
   constructor(props) {
@@ -35,6 +37,7 @@ export default class SelecaoContextoScene extends React.Component {
             {/*<Title>Seleção de contexto</Title>*/}
           {/*</Body>*/}
         {/*</Header>*/}
+
         <Content>
           <TouchableOpacity onPress={() => this.entrarPaciente()}>
             <Card>

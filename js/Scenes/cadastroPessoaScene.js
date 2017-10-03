@@ -8,15 +8,20 @@ import BotaoBase from "../Component/Campos/BotaoBase";
 import CheckBoxBase from "../Component/Campos/CheckBoxBase";
 import {DatePicker} from "react-native-datepicker";
 import DrawerComponent from "../Component/Telas/DrawerComponent";
+import ButtonDrawer from "../Component/Campos/ButtonDrawer";
 
+let self;
 export default class CadastroPessoaScene extends Component {
 
   static navigationOptions = {
     title: 'Informações pessoais',
+    headerLeft: <ButtonDrawer onPress={() => self.drawer.toggleDrawer()} />
+
   };
 
   constructor(props) {
     super(props);
+    self = this;
     this.state = {
       nome: null,
       cpf: null,
@@ -88,7 +93,7 @@ export default class CadastroPessoaScene extends Component {
 
   render() {
     return (
-      <DrawerComponent {...this.props}>
+      <DrawerComponent ref={ (ref) => self.drawer = ref} {...this.props}>
         <Container>
           <Content>
             <Card>

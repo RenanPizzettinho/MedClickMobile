@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View} from "native-base";
+import {Button, View} from "native-base";
 import {StyleSheet, ToastAndroid, Alert, Dimensions} from "react-native";
 import PacienteService from "../Services/pacienteService";
 import StaticStorageService from "../Services/staticStorageService";
@@ -9,20 +9,18 @@ import MapView from "react-native-maps";
 import LocalizacaoService from "../Services/localizacaoService";
 import BotaoBase from "../Component/Campos/BotaoBase";
 import DrawerComponent from "../Component/Telas/DrawerComponent";
+import ButtonDrawer from "../Component/Campos/ButtonDrawer";
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.004; //Very high zoom level
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
+let self;
 export default class CadastroLocalizacaoScene extends Component {
-
-  static navigationOptions = {
-    title: 'Informações de localização',
-  };
-
   constructor(props) {
     super(props);
+    self = this;
     this.state = {
       localizacao: {},
       error: null,
@@ -36,6 +34,12 @@ export default class CadastroLocalizacaoScene extends Component {
       },
     };
   }
+
+  static navigationOptions = {
+    title: 'Informações de localização',
+    headerLeft: <ButtonDrawer onPress={() => self.drawer.toggleDrawer()}/>
+  };
+
 
   componentWillMount() {
     this.fetchData();
@@ -106,10 +110,12 @@ export default class CadastroLocalizacaoScene extends Component {
     LocalizacaoService.getEndereco(this.state.coordinate.latitude, this.state.coordinate.longitude)
       .then((response) => {
         console.log('ENDERECO: ', response.results[0].address_components[0].short_name);
+
         let endereco = this.getEndereco(response);
         this.setState({endereco});
         ToastAndroid.showWithGravity(JSON.stringify(this.state.endereco), ToastAndroid.SHORT, ToastAndroid.BOTTOM);
         this.save();
+        this.props.navigation.goBack();
       })
       .catch((error) => console.log('ERRO: ', error));
   }
@@ -147,8 +153,9 @@ export default class CadastroLocalizacaoScene extends Component {
   }
 
   render() {
+    const {goBack} = this.props.navigation;
     return (
-      <DrawerComponent {...this.props}>
+      <DrawerComponent ref={(ref) => self.drawer = ref} {...this.props}>
         <View style={{
           flex: 1,
           //     ...StyleSheet.absoluteFillObject,
@@ -189,7 +196,7 @@ export default class CadastroLocalizacaoScene extends Component {
               style={{flexDirection: 'row'}}
               title={'Salvar'}
               text={'Salvar'}
-              onPress={() => this.getDescricaoEndereco()}
+              onPress={() => {this.getDescricaoEndereco()}}
             />
           </View>
         </View>
