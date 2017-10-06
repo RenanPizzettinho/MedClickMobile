@@ -22,6 +22,7 @@
     "react-native": "0.44.0",
     "react-native-calendars": "^1.6.3",
     "react-native-datepicker": "^1.6.0",
+    "react-native-keyboard-aware-scroll-view": "^0.3.0",
     "react-native-maps": "^0.16.3",
     "react-native-material-design": "^0.3.7",
     "react-native-material-kit": "^0.4.1",

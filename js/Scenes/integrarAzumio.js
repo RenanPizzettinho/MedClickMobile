@@ -25,8 +25,6 @@ export default class IntegrarAzumio extends Component {
     const uri = `${azumio}/${StaticStorageService.usuarioSessao.idPaciente}`;
     console.log(uri);
     return (
-
-
       <DrawerComponent ref={(ref) => self.drawer = ref} {...this.props}>
           <WebView
             ref="webview"
@@ -36,7 +34,6 @@ export default class IntegrarAzumio extends Component {
             style={{height: 900}}
           />
       </DrawerComponent>
-
     );
   }
 

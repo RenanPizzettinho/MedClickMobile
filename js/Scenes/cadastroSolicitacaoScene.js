@@ -210,22 +210,22 @@ export default class CadastroSolicitacaoScene extends Component {
                         }}/>
                     </View>
 
-                    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
-                      <Label>Data: </Label>
-                      <Calendar
-                        style={{flex: 1}}
-                        date={this.state.dataConsulta}
-                        mode='date'
-                        format="LL"
-                        // format='DD/MM/YYYY'
-                        minDate={new Date()}
-                        markedDates={{
-                          '2017-10-24': {selected: true, marked: true},
-                          '2017-10-25': {marked: true},
-                          '2017-10-26': {disabled: true}
-                        }}
-                      />
-                    </View>
+                    {/*<View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>*/}
+                      {/*<Label>Data: </Label>*/}
+                      {/*<Calendar*/}
+                        {/*style={{flex: 1}}*/}
+                        {/*date={this.state.dataConsulta}*/}
+                        {/*mode='date'*/}
+                        {/*format="LL"*/}
+                        {/*// format='DD/MM/YYYY'*/}
+                        {/*minDate={new Date()}*/}
+                        {/*markedDates={{*/}
+                          {/*'2017-10-24': {selected: true, marked: true},*/}
+                          {/*'2017-10-25': {marked: true},*/}
+                          {/*'2017-10-26': {disabled: true}*/}
+                        {/*}}*/}
+                      {/*/>*/}
+                    {/*</View>*/}
 
 
                     <Text note

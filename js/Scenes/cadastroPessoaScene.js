@@ -96,8 +96,8 @@ export default class CadastroPessoaScene extends Component {
       <DrawerComponent ref={ (ref) => self.drawer = ref} {...this.props}>
         <Container>
           <Content>
-            <Card>
-              <Form style={{paddingLeft: 10, paddingRight: 10}}>
+            <Card style={{paddingBottom: 15}}>
+              <Form style={{paddingLeft: 10, paddingRight: 20}}>
                 <CampoTexto
                   label="Nome completo"
                   disabled={this.state.idMedico}

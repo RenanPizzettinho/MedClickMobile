@@ -7,12 +7,13 @@ import SceneEnum from '../Enums/SceneEnum';
 import {Container, Content, Header, Body, Title, Left, Button, Icon, Right, Drawer, View, Text} from 'native-base';
 
 
+
 export default class LoginScene extends React.Component {
 
   static navigationOptions = {
     title: 'Login',
     // header : null
-    headerRight : null
+    headerRight: null
   };
 
   constructor(props) {
@@ -27,6 +28,7 @@ export default class LoginScene extends React.Component {
   render() {
     return (
         <LoginComponent
+          style={{flex: 1}}
           login={this.login}
           disabled={this.disabled}
           states={this.state}

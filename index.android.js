@@ -67,7 +67,7 @@ const AppContent = () =>
   <View style={{flex: 1}}>
     <StatusBar backgroundColor="#005387" barStyle="light-content"/>
     <App/>
-  </View>
+  </View>;
 
 
 // const MainDrawerNavigator = DrawerNavigator({

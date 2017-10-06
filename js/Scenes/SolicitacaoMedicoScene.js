@@ -194,20 +194,20 @@ export default class SolicitacaoMedicoScene extends Component {
         console.log('DADOS: ', dados);
         return (
             <View>
-                <ListItem>
+                <ListItem style={{margin: 0}}>
                     <H3 style={{textAlign: "center"}}>Azumio</H3>
                 </ListItem>
-                <CardItem>
-                    <View>
+                {/*<CardItem style={{margin: 0}}>*/}
+                    {/*<View >*/}
                         {dados.map((item, index) =>
                             (index < 5)?
-                            <ListItem key={index}>
-                                <Text
-                                    note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>
+                            <ListItem key={index} style={{margin: 0}} >
+                                {/*<Text note>{`Batimentos: ${item.batimentos} - Data marcação: ${Moment(item.dataLeitura).format('DD/MM/YYYY')}`}</Text>*/}
+                                <Text note>{`Em ${Moment(item.dataLeitura).format('DD/MM/YYYY')} - Batimentos: ${item.batimentos} BPM`}</Text>
                             </ListItem>:null
                         )}
-                    </View>
-                </CardItem>
+                    {/*</View>*/}
+                {/*</CardItem>*/}
             </View>
         );
     }
@@ -224,8 +224,8 @@ export default class SolicitacaoMedicoScene extends Component {
                         <ListItem>
                             <H3 style={{textAlign: "center"}}>Informações do paciente</H3>
                         </ListItem>
-                        <CardItem>
-                            <Divider/>
+                        <CardItem style={{marginBottom: 0}}>
+
                             <Body>
                             <Text note>{`Nome: ${solicitacao.nomePaciente}`}</Text>
                             {(paciente.possuiDiabete) ? <Text note>Possui diabetes</Text> : null}

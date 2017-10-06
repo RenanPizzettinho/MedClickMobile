@@ -10,6 +10,7 @@ export default class CampoSenha extends Component {
     render() {
         return (
             <CampoBase
+                {...this.props}
                 label={this.props.label}
                 onChange={this.props.onChange}
                 secureTextEntry={true}
